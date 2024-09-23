@@ -4,6 +4,14 @@ This is a proof of concept for a SermonIndex app using Remix.
 
 ## Development
 
+Install the deps:
+- Node.js
+- npm
+
+```shell
+npm install
+```
+
 Run the dev server:
 
 ```shellscript
