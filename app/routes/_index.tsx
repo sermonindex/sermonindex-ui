@@ -1,19 +1,18 @@
-import type {MetaFunction} from "@remix-run/node";
-import {Header} from "~/components/header";
-import {FeaturedSpeakers} from "~/components/speakers";
+import type { MetaFunction } from "@remix-run/node";
+import { FeaturedSpeakers } from "~/components/speakers";
 
 export const meta: MetaFunction = () => {
-    return [
-        {title: "SermonIndex"},
-        {name: "description...", content: "This is a PoC..."},
-    ];
+  return [
+    { title: "SermonIndex" },
+    { name: "description...", content: "This is a PoC..." },
+  ];
 };
 
 export default function Index() {
-    return (
-        <div className="pt-[0rem]">
-            <Header />
-            <FeaturedSpeakers />
-        </div>
-    );
+  return (
+    <div className="pt-[0rem]">
+      {/* <Header /> */}
+      <FeaturedSpeakers />
+    </div>
+  );
 }
