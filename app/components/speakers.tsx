@@ -9,8 +9,7 @@ export const FeaturedSpeakers = () => {
         { name: 'Bill McLeod', icon: 'app/assets/speakers/billmcleod.webp' },
         { name: 'Carter Conlon', icon: 'app/assets/speakers/carterconlon.webp' },
         { name: 'Chuck Smith', icon: 'app/assets/speakers/chucksmith.webp' },
-        // todo: is this file really a gif or is it a webp? It saved as a gif :/
-        { name: 'Corrie Ten Boom', icon: 'app/assets/speakers/corrietenboom.gif' },
+        { name: 'Corrie Ten Boom', icon: 'app/assets/speakers/corrietenboom.webp' },
         // ... add more speakers
     ];
 
