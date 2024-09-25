@@ -41,7 +41,7 @@ export const FeaturedSpeakers = () => {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl p-4 bg-white border-b-2 border-[#707032] rounded-lg mt-44 px-8">
+    <div className="p-2 bg-white border-b-2 border-[#707032] rounded-lg">
       <div className="flex flex-wrap justify-center">
         {speakers.map((speaker, index) => (
           <div key={index} className="flex flex-col items-center m-2">
