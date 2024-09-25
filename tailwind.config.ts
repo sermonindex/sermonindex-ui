@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         sans: [
+          "Verdana",
           '"Inter"',
           "ui-sans-serif",
           "system-ui",
@@ -14,7 +15,6 @@ export default {
           '"Segoe UI Emoji"',
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
-          "Verdana",
         ],
       },
       colors: {
