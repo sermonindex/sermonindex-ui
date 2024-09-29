@@ -41,14 +41,16 @@ export const FeaturedSpeakers = () => {
   ];
 
   return (
-    <div className="p-2 bg-white border-b-2 border-[#707032] rounded-lg">
-      <div className="flex flex-wrap justify-center">
-        {speakers.map((speaker, index) => (
-          <div key={index} className="flex flex-col items-center m-2">
-            <img src={speaker.icon} alt={speaker.name} className="w-16 h-16 rounded-full"/>
-            <p className="text-center mt-2 text-sm">{speaker.name}</p>
-          </div>
-        ))}
+    <div className="p-4">
+      <div className="p-2 bg-white border-b-2 border-[#707032] rounded-lg">
+        <div className="flex flex-wrap justify-center">
+          {speakers.map((speaker, index) => (
+            <div key={index} className="flex flex-col items-center m-2">
+              <img src={speaker.icon} alt={speaker.name} className="w-16 h-16 rounded-full"/>
+              <p className="text-center mt-2 text-sm">{speaker.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
