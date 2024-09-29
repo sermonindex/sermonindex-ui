@@ -76,7 +76,7 @@ export const AllSpeakers = () => {
   });
 
   return (
-    <div className="px-4">
+    <div className="px-4 pb-4">
       <div className="p-2 bg-white border-b-2 border-[#707032] rounded-lg">
         All Speakers
         {/* Display grouped speakers */}
