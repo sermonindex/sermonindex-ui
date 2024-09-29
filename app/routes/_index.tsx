@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div>
+    <div className="pt-20">
       <FeaturedSpeakers/>
       <AllSpeakers/>
     </div>
