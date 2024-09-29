@@ -1,5 +1,5 @@
 import type {MetaFunction} from "@remix-run/node";
-import {FeaturedSpeakers} from "~/components/speakers";
+import {AllSpeakers, FeaturedSpeakers} from "~/components/speakers";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,6 +12,7 @@ export default function Index() {
   return (
     <div>
       <FeaturedSpeakers/>
+      <AllSpeakers/>
     </div>
-);
+  );
 }
