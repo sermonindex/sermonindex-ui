@@ -39,7 +39,7 @@ export default function App() {
     </head>
     <body>
     <header className="fixed top-0 left-0 w-full z-10">
-      <div className="flex px-20 min-h-4 items-center justify-left bg-si-main">
+      <div className="flex px-4 min-h-4 items-center justify-left bg-si-main">
         <Link to="/">
           <img
             className="h-20 py-3 pr-8"
@@ -50,10 +50,9 @@ export default function App() {
         <div className="flex space-x-6">
           {Pages.map((page) => {
             const active = location.pathname === `/${page}`;
-
                 return (
                   <Link
-                    className={`block capitalize font-semibold ${
+                    className={`block capitalize font-semibold text-white ${
                       active ? "text-yellow-600" : ""
                     } hover:text-yellow-600`}
                     key={page}
