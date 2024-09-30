@@ -1,12 +1,12 @@
-import type {LinksFunction} from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
 import {
-  Link,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLocation,
+    Link,
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    useLocation,
 } from "@remix-run/react";
 
 import "./tailwind.css";
@@ -51,27 +51,27 @@ export default function App() {
           {Pages.map((page) => {
             const active = location.pathname === `/${page}`;
 
-            return (
-              <Link
-                className={`block capitalize ${
-                  active ? "text-yellow-600" : ""
-                } hover:text-yellow-600`}
-                key={page}
-                to={`/${page}`}
-              >
-                {page}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </header>
-    <main>
-      <Outlet/>
-    </main>
-    <ScrollRestoration/>
-    <Scripts/>
-    </body>
+                return (
+                  <Link
+                    className={`block capitalize font-semibold ${
+                      active ? "text-yellow-600" : ""
+                    } hover:text-yellow-600`}
+                    key={page}
+                    to={`/${page}`}
+                  >
+                    {page}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </header>
+        <main>
+          <Outlet />
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
     </html>
   );
 }
