@@ -43,13 +43,13 @@ const speakers = [
 export const FeaturedSpeakers = () => {
 
   return (
-    <div className="p-4">
-      <div className="p-2 bg-white border-b-2 border-[#707032] rounded-lg">
+    <div className="px-4 pb-4">
+      <div className="p-2 bg-white border-b-2 rounded-lg">
         <div className="flex flex-wrap justify-center">
           {speakers.map((speaker, index) => (
             <div key={index} className="flex flex-col items-center m-2">
-              <img src={speaker.icon} alt={speaker.name} className="w-16 h-16 rounded-full"/>
-              <p className="text-center mt-2 text-sm">{speaker.name}</p>
+              <img src={speaker.icon} alt={speaker.name} className="w-14 h-14 rounded-full"/>
+              <p className="text-center mt-2 text-sm text-slate-800">{speaker.name}</p>
             </div>
           ))}
         </div>
@@ -84,10 +84,10 @@ export const AllSpeakers = () => {
           {Object.entries(groupedSpeakers).map(([letter, group]) => {
             return (
               <div key={letter} className="p-2">
-                <h2 className="text-lg font-semibold mt-4">{letter}</h2>
+                <h2 className="text-lg font-semibold text-slate-800 mt-4">{letter}</h2>
                 <ul>
                   {group.map(speaker => (
-                    <li key={speaker.name}>{speaker.name}</li>
+                    <li className="text-slate-700 text-sm" key={speaker.name}>{speaker.name}</li>
                   ))}
                 </ul>
               </div>

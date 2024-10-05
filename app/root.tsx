@@ -1,12 +1,12 @@
-import type { LinksFunction } from "@remix-run/node";
+import type {LinksFunction} from "@remix-run/node";
 import {
-    Link,
-    Links,
-    Meta,
-    Outlet,
-    Scripts,
-    ScrollRestoration,
-    useLocation,
+  Link,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLocation,
 } from "@remix-run/react";
 
 import "./tailwind.css";
@@ -42,35 +42,35 @@ export default function App() {
       <div className="flex px-4 min-h-4 items-center justify-left bg-si-main">
         <Link to="/">
           <img
-            className="h-20 py-3 pr-8"
+            className="h-14 md:h-20 py-3 pr-8"
             src="/sermon-index.svg"
             alt="sermon-index"
           />
         </Link>
-        <div className="flex space-x-6">
+        <div className="flex space-x-2 md:space-x-6">
           {Pages.map((page) => {
             const active = location.pathname === `/${page}`;
-                return (
-                  <Link
-                    className={`block capitalize font-semibold text-white ${
-                      active ? "text-yellow-600" : ""
-                    } hover:text-yellow-600`}
-                    key={page}
-                    to={`/${page}`}
-                  >
-                    {page}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </header>
-        <main>
-          <Outlet />
-        </main>
-        <ScrollRestoration />
-        <Scripts />
-      </body>
+            return (
+              <Link
+                className={`block capitalize font-semibold text-white text-sm md:text-xl ${
+                  active ? "text-yellow-600" : ""
+                } hover:text-yellow-600`}
+                key={page}
+                to={`/${page}`}
+              >
+                {page}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </header>
+    <main>
+      <Outlet/>
+    </main>
+    <ScrollRestoration/>
+    <Scripts/>
+    </body>
     </html>
   );
 }

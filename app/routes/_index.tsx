@@ -1,5 +1,6 @@
 import type {MetaFunction} from "@remix-run/node";
 import {AllSpeakers, FeaturedSpeakers} from "~/components/speakers";
+import {FeaturedMessage} from "~/components/featured";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,7 +11,8 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div className="pt-20">
+    <div className="pt-20">{/* The top padding if for the header which is a fixed height */}
+      <FeaturedMessage/>
       <FeaturedSpeakers/>
       <AllSpeakers/>
     </div>
