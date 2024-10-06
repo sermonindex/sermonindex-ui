@@ -1,29 +1,34 @@
-import {MessagePlayer, MessageType} from "~/components/player";
+import { MessagePlayer, MessageType } from "~/components/player";
 
-export const FeaturedMessage = () => {
+interface FeaturedMessageProps {
+  sermon: Partial<Sermon>;
+}
+
+export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   /// Theoretically featured would just take a SID (sermon id) and use the API to get the rest of this info
   return (
     <div className="p-4">
-      <div className="bg-white border-slate-100 rounded-lg">
+      <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full text-black">
+        Featured Message
+      </h1>
+      <div className="bg-white">
         <div className="p-2">
           <MessagePlayer
-            title="True Discipleship"
-            url="https://ia902204.us.archive.org/6/items/SERMONINDEX_SID15051/SID15051.mp3"
-            iconUrl="app/assets/profiles/zacpoonen.png"
-            speaker="Zac Poonen"
-            description="Zac Poonen shares his heart plainly at a christian conference. He speaks on true discipleship
-              and those that follow Christ and don't gather men and honor to themselves. This message is throbbing with
-              love and unselfish desire yet has a strong rebuke and correction for many in ministry. May God allow this
-              message to be a balm to many before that great day before God in heaven where all things will be made
-              bare."
+            title={sermon.title ?? ""}
+            url={sermon.audioUrl ?? ""}
+            iconUrl={sermon.contributor?.imageUrl ?? ""}
+            speaker={sermon.contributor?.fullName ?? ""}
+            description={sermon.description ?? ""}
             media={MessageType.Audio}
-            downloads={3832}
-            topic={"Discipleship"}
-            scriptures={["Matthew 28:19-20"]}
+            downloads={sermon.hits ?? 0}
+            // TODO: @Caleb Return these from the API in a better format
+            // TODO: Topics can be a list probably?
+            topic={sermon.topics?.map((topic) => topic.name).join(", ") ?? ""}
+            scriptures={sermon.bibleReferences?.map((ref) => ref.text) ?? []}
             // todo: experiment with comments
           />
         </div>
       </div>
     </div>
   );
-}
+};
