@@ -39,7 +39,7 @@ export default function App() {
       </head>
       <body>
         <header className="flex h-20">
-          <div className="flex container md:mx-auto bg-si-main border-x-2 border-b-2 border-gray-300">
+          <div className="flex container mx-auto bg-si-main border-x-2 border-b-2 border-gray-300">
             <div className="flex pl-10 items-center justify-left">
               <Link to="/">
                 <img
@@ -54,7 +54,7 @@ export default function App() {
 
                   return (
                     <Link
-                      className={`block capitalize font-semibold ${
+                      className={`block capitalize text-white font-semibold ${
                         active ? "text-yellow-600" : ""
                       } hover:text-yellow-600`}
                       key={page}

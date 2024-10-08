@@ -64,9 +64,9 @@ export const AudioPlayer = (props: React.PropsWithChildren<{ message: MessagePla
       <div className={"p-2 flex items-center space-x-4"}>
         <img src={message.iconUrl} alt={message.speaker} className="flex-none rounded-lg bg-slate-100"
              loading={"lazy"}/>
-        <div className="min-w-0 flex-auto space-y-2">
+        <div className="flex-auto space-y-2">
           <h2 className={"text-slate-900 text-lg leading-6 font-semibold truncate"}>{message.title}</h2>
-          <div className={"flex space-x-6 leading-6 text-sm truncate"}>
+          <div className={"flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 leading-6 text-sm"}>
             <p className={"text-si-main"}>
               <abbr title={"Speaker"}>by</abbr> {message.speaker}
             </p>
@@ -74,11 +74,10 @@ export const AudioPlayer = (props: React.PropsWithChildren<{ message: MessagePla
               Topic: {message.topic}
             </p>
             <p className={"text-si-main"}>
-              Scripture(s): {"Matthew 28:19-20"} {/*todo: unravel array into string here*/}
+              Scripture(s): {message.scriptures?.join(", ")}
             </p>
-
           </div>
-          <p className={"text-slate-700 text-sm italic overflow-auto max-h-20"}>{message.description}</p>
+          <p className={"text-slate-700 text-sm italic"}>{message.description}</p>
           <div className="flex justify-end">
             <p className={"text-si-main text-sm justify-right"}>
               {message.downloads} downloads
