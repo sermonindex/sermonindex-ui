@@ -1,58 +1,54 @@
-interface Contributor {
-  id: number;
+export type ListResponse<T> = {
+  values: T[];
+};
 
+export interface IErrorResponse {
+  error: string;
+  message: string;
+  statusCode: number;
+}
+
+export enum ContributorType {
+  INDIVIDUAL = "INDIVIDUAL",
+  CONFERENCE = "CONFERENCE",
+}
+
+export interface Contributor {
+  id: number;
   firstName: string;
   lastName: string;
   fullName: string;
   description?: string;
   imageUrl?: string;
   featured: boolean;
-}
-
-interface Topic {
-  id: number;
-  name: string;
-}
-
-interface BibleReference {
-  id: number;
-
-  book: string;
-
-  startChapter: number;
-  endChapter: number;
-
-  startVerse: number;
-  endVerse: number;
-
-  text: string;
-
-  sermonId: number;
-
+  type: ContributorType;
   createdAt: string;
   updatedAt: string;
 }
 
-interface Sermon {
+export interface Sermon {
   id: number;
   mysqlId?: number;
 
-  contributor: Partial<Contributor>;
+  contributorId: number;
+  contributorFullName: string;
+  contributorImageUrl?: string;
 
   title: string;
   description?: string;
 
+  // oldAudioUrl: string;
   audioUrl?: string;
   videoUrl?: string;
 
-  bibleReferences: BibleReference[];
-  topics: Topic[];
+  bibleReferences: string[];
+  topics: string[];
 
   hits: number;
   featured: boolean;
+  // previouslyFeatured: boolean;
 
-  preachedAt?: Date;
-
+  preachedAt?: string;
+  updatedAt: string;
   createdAt: string;
-  updatedAt: Date;
 }

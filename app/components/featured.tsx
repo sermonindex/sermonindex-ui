@@ -1,30 +1,30 @@
-import {MessagePlayer, MessageType} from "~/components/player";
-import React from "react";
-import {StandardHeader} from "~/common/section";
+import React from 'react';
+import { Sermon } from '~/api/interfaces';
+import { StandardHeader } from '~/common/section';
+import { MessagePlayer, MessageType } from '~/components/player';
 
 interface FeaturedMessageProps {
-  sermon: Partial<Sermon>;
+  sermon: Sermon;
 }
 
-export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({sermon}) => {
+export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   /// Theoretically featured would just take a SID (sermon id) and use the API to get the rest of this info
   return (
     <div className="px-4 pt-4">
-      <StandardHeader text={"Featured Message"}/>
+      <StandardHeader text={'Featured Message'} />
       <div className="bg-white">
         <div className="p-2">
           <MessagePlayer
-            title={sermon.title ?? ""}
-            url={sermon.audioUrl ?? ""}
-            iconUrl={sermon.contributor?.imageUrl ?? ""}
-            speaker={sermon.contributor?.fullName ?? ""}
-            description={sermon.description ?? ""}
+            title={sermon.title}
+            url={sermon.audioUrl ?? ''}
+            iconUrl={sermon.contributorImageUrl}
+            speaker={sermon.contributorFullName}
+            description={sermon.description ?? ''}
             media={MessageType.Audio}
             downloads={sermon.hits ?? 0}
-            // TODO: @Caleb Return these from the API in a better format
             // TODO: Topics can be a list probably?
-            topic={sermon.topics?.map((topic) => topic.name).join(", ") ?? ""}
-            scriptures={sermon.bibleReferences?.map((ref) => ref.text) ?? []}
+            topic={sermon.topics.join(', ')}
+            scriptures={sermon.bibleReferences}
             // todo: experiment with comments
           />
         </div>

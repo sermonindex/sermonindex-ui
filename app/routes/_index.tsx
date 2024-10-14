@@ -1,63 +1,57 @@
-import type {LoaderFunctionArgs, MetaFunction} from "@remix-run/node";
-import {useLoaderData} from "@remix-run/react";
-import {formatDownloads} from "~/common/format-downloads";
-import {FeaturedMessage} from "~/components/featured";
-import SermonCarousel from "~/components/sermon-carosel";
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { ListResponse, Sermon } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
+import { formatDownloads } from '~/common/format-downloads';
+import { FeaturedMessage } from '~/components/featured';
+import SermonCarousel from '~/components/sermon-carosel';
 
 export const meta: MetaFunction = () => {
   return [
-    {title: "SermonIndex"},
-    {name: "description...", content: "This is a PoC..."},
+    { title: 'SermonIndex' },
+    { name: 'description...', content: 'This is a PoC...' },
   ];
 };
 
-export async function loader({params}: LoaderFunctionArgs) {
-  // TODO: Fetch the sermons from the API in parallel (Promise.all or rxjs forkJoin)
-  // TODO: handle errors
-  const popular = await fetch("http://localhost:3000/sermons/popular", {
-    headers: {
-      Authorization: `Bearer ${process.env.API_TOKEN}`,
-    },
-  });
-  const popularSermons = await popular.json();
+export async function loader({ params }: LoaderFunctionArgs) {
+  const [popular, recent, featured] = await Promise.all([
+    fetchApi<ListResponse<Sermon>>('/sermons/popular'),
+    fetchApi<ListResponse<Sermon>>('/sermons/recent'),
+    fetchApi<Sermon>('/sermons/featured'),
+  ]);
 
-  const recent = await fetch("http://localhost:3000/sermons/recent", {
-    headers: {
-      Authorization: `Bearer ${process.env.API_TOKEN}`,
-    },
-  });
-  const recentSermons = await recent.json();
+  if (
+    'statusCode' in popular ||
+    'statusCode' in recent ||
+    'statusCode' in featured
+  ) {
+    throw new Response('Oh no! Something went wrong!', {
+      status: 500,
+    });
+  }
 
-  const featured = await fetch("http://localhost:3000/sermons/featured", {
-    headers: {
-      Authorization: `Bearer ${process.env.API_TOKEN}`,
-    },
-  });
-  const featuredSermons = await featured.json();
-
-  return {popularSermons, recentSermons, featuredSermons};
+  return { popular, recent, featured };
 }
 
 export default function Index() {
-  const data = useLoaderData<typeof loader>();
+  const { popular, recent, featured } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
       <div className="flex w-full bg-white">
-        <FeaturedMessage sermon={data.featuredSermons[0]}/>
+        <FeaturedMessage sermon={featured} />
       </div>
 
       <SermonCarousel
-        title={"Recent Uploads"}
-        sermons={data.recentSermons}
+        title={'Recent Uploads'}
+        sermons={recent.values}
         customizer={(sermon) => {
-          // TODO: Remove the partial Sermon constraint on the SermonCarousel component
           // TODO: Use a better date library (moment or dayjs)
           const date = new Date(sermon.createdAt as string);
-          const prettyDate = date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
+          const prettyDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
           });
 
           return <span className="font-thin">{`${prettyDate} `}</span>;
@@ -65,11 +59,11 @@ export default function Index() {
       />
 
       <SermonCarousel
-        title={"Popular Sermons"}
-        sermons={data.popularSermons}
+        title={'Popular Sermons'}
+        sermons={popular.values}
         customizer={(sermon) => (
           <span className="font-thin">{`${formatDownloads(
-            sermon.hits
+            sermon.hits,
           )} Downloads`}</span>
         )}
       />

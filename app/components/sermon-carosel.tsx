@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "@remix-run/react";
-import {StandardHeader} from "~/common/section";
+import { Link } from '@remix-run/react';
+import React, { useEffect, useState } from 'react';
+import { Sermon } from '~/api/interfaces';
+import { StandardHeader } from '~/common/section';
 
 interface SermonCarouselProps {
   title: string;
-  sermons: Partial<Sermon>[];
-  customizer?: (sermon: Partial<Sermon>) => JSX.Element;
+  sermons: Sermon[];
+  customizer?: (sermon: Sermon) => JSX.Element;
 }
 
 export const SermonCarousel: React.FC<SermonCarouselProps> = ({
-                                                                title,
-                                                                sermons,
-                                                                customizer,
-                                                              }) => {
+  title,
+  sermons,
+  customizer,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -39,28 +40,30 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
     setWindowWidth(window.innerWidth);
 
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const visibleItems = sermons.slice(
     currentIndex,
-    currentIndex + getItemsToShow()
+    currentIndex + getItemsToShow(),
   );
 
   return (
     // TODO: Style for mobile
     <div className="px-4 bg-white text-black">
-      <StandardHeader text={title}/>
+      <StandardHeader text={title} />
       <div className="flex w-full">
-        <button
-          onClick={previousItem}
-          disabled={currentIndex === 0}
-          className="px-4 py-2 rounded-l-lg rounded-r-none hover:bg-gray-200"
-        >
-          ❮
-        </button>
+        <span className="flex items-center">
+          <button
+            onClick={previousItem}
+            disabled={currentIndex === 0}
+            className="px-4 py-6 rounded-full hover:bg-gray-200"
+          >
+            ❮
+          </button>
+        </span>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 h-72 overflow-hidden">
           {visibleItems.map((sermon, index) => (
             <div key={index} className="h-72">
@@ -69,9 +72,11 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                 <span className="text-lg font-semibold truncate">
                   {sermon.title}
                 </span>
-                <span className="font-medium pb-4">
-                  <span className="font-light">by</span>{" "}
-                  {` ${sermon.contributor?.fullName}`}
+                <span className="pb-4">
+                  <span className="font-light">by </span>
+                  <span className="font-medium">
+                    {sermon.contributorFullName}
+                  </span>
                 </span>
 
                 <span className="h-32">
@@ -79,8 +84,10 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                     {sermon.description}
                   </span>
                 </span>
-                <Link to={`/sermon/${sermon.id}`}
-                      className="flex items-center space-x-2 text-lg pt-2 hover:text-si-main">
+                <Link
+                  to={`/sermon/${sermon.id}`}
+                  className="flex items-center space-x-2 text-lg pt-2 hover:text-si-main"
+                >
                   <svg
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
@@ -90,9 +97,8 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <circle cx="12" cy="12" r="10"/>
-                    {" "}
-                    <polygon points="10 8 16 12 10 16 10 8"/>
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="10 8 16 12 10 16 10 8" />
                   </svg>
                   <span>LISTEN NOW</span>
                 </Link>
@@ -100,13 +106,15 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
             </div>
           ))}
         </div>
-        <button
-          onClick={nextItem}
-          disabled={currentIndex >= sermons.length - getItemsToShow()}
-          className="px-4 py-2 rounded-r-lg rounded-l-none hover:bg-gray-200"
-        >
-          ❯
-        </button>
+        <span className="flex items-center">
+          <button
+            onClick={nextItem}
+            disabled={currentIndex >= sermons.length - getItemsToShow()}
+            className="px-4 py-6 rounded-full hover:bg-gray-200"
+          >
+            ❯
+          </button>
+        </span>
       </div>
     </div>
   );

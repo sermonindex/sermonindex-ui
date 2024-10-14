@@ -15,10 +15,10 @@
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
     "@vidstack/react": "^1.12.11",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-select": "^5.8.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.12.1",
