@@ -1,9 +1,9 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import {LoaderFunctionArgs} from "@remix-run/node";
+import {useLoaderData} from "@remix-run/react";
 
 export async function loader({
-  params,
-}: LoaderFunctionArgs) {
+                               params,
+                             }: LoaderFunctionArgs) {
   // Dynamical routing -> name
 
   const apiUrl = "http://localhost:3000/creators/details?fullName=Zac%20Poonen";
@@ -24,8 +24,8 @@ export default function Index() {
   console.log(data);
 
   return (
-  <>
-    <img src={data.imageUrl}></img>
-    <h1>#Bible Page</h1>
-  </>);
+    <>
+      <img src={data.imageUrl}></img>
+      <h1>#Bible Page</h1>
+    </>);
 }

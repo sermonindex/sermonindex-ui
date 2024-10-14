@@ -1,16 +1,16 @@
-import { MessagePlayer, MessageType } from "~/components/player";
+import {MessagePlayer, MessageType} from "~/components/player";
+import React from "react";
+import {StandardHeader} from "~/common/section";
 
 interface FeaturedMessageProps {
   sermon: Partial<Sermon>;
 }
 
-export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
+export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({sermon}) => {
   /// Theoretically featured would just take a SID (sermon id) and use the API to get the rest of this info
   return (
-    <div className="p-4">
-      <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full text-black">
-        Featured Message
-      </h1>
+    <div className="px-4 pt-4">
+      <StandardHeader text={"Featured Message"}/>
       <div className="bg-white">
         <div className="p-2">
           <MessagePlayer

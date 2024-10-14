@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
+import {Link} from "@remix-run/react";
+import {StandardHeader} from "~/common/section";
 
 interface SermonCarouselProps {
   title: string;
@@ -7,10 +9,10 @@ interface SermonCarouselProps {
 }
 
 export const SermonCarousel: React.FC<SermonCarouselProps> = ({
-  title,
-  sermons,
-  customizer,
-}) => {
+                                                                title,
+                                                                sermons,
+                                                                customizer,
+                                                              }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -49,11 +51,8 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
 
   return (
     // TODO: Style for mobile
-    // TODO: Link the sermon to the sermon page
-    <div className="p-4 bg-white text-black">
-      <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full">
-        {title}
-      </h1>
+    <div className="px-4 bg-white text-black">
+      <StandardHeader text={title}/>
       <div className="flex w-full">
         <button
           onClick={previousItem}
@@ -80,7 +79,8 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                     {sermon.description}
                   </span>
                 </span>
-                <span className="flex items-center space-x-2 text-lg pt-2">
+                <Link to={`/sermon/${sermon.id}`}
+                      className="flex items-center space-x-2 text-lg pt-2 hover:text-si-main">
                   <svg
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
@@ -90,11 +90,12 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <circle cx="12" cy="12" r="10" />{" "}
-                    <polygon points="10 8 16 12 10 16 10 8" />
+                    <circle cx="12" cy="12" r="10"/>
+                    {" "}
+                    <polygon points="10 8 16 12 10 16 10 8"/>
                   </svg>
                   <span>LISTEN NOW</span>
-                </span>
+                </Link>
               </div>
             </div>
           ))}
