@@ -1,6 +1,7 @@
+// Don't re-arrange these imports or else vidstack styling breaks
+import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-import '@vidstack/react/player/styles/default/theme.css';
 
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import {
