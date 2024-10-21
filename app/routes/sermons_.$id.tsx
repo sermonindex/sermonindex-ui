@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { Sermon } from '~/api/interfaces';
+import { Contributor, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
@@ -17,11 +17,21 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { sermon };
+  const contributor = await fetchApi<Contributor>(
+    `/contributors/id/${sermon.contributorId}`,
+  );
+
+  if ('statusCode' in contributor) {
+    throw new Response('Oh no! Something went wrong!', {
+      status: 500,
+    });
+  }
+
+  return { sermon, contributor };
 }
 
 export default function Component() {
-  const { sermon } = useLoaderData<typeof loader>();
+  const { sermon, contributor } = useLoaderData<typeof loader>();
 
   return (
     <div className={'p-10'}>
@@ -36,26 +46,29 @@ export default function Component() {
           <StandardHeader text={'Speaker'} />
           <div className={'p-4 flex'}>
             <img
-              className="flex-none rounded-lg bg-slate-100"
+              className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
               loading={'lazy'}
               src={sermon.contributorImageUrl ?? ''}
               alt={sermon.contributorFullName}
             />
-            <p className={'text-slate-800 p-4'}>
-              Lots of words around the image that describe the life of the
-              speaker
-            </p>
+            {/* todo(jdf): make the text wrap the image */}
+            <p className={'text-slate-800 p-4'}>{contributor.description}</p>
           </div>
         </div>
         <div className="flex-grow sm:w-1/3">
           {/* ... Scriptures content ... */}
           <StandardHeader text={'Scriptures'} />
-          <div className={'p-4'}>
-            {sermon.bibleReferences.map((reference, index) => (
-              <div key={index} className={'text-slate-800'}>
-                {reference}
-              </div>
-            ))}
+          <div className="p-4">
+            {Array.isArray(sermon.bibleReferences) &&
+            sermon.bibleReferences.length > 0 ? (
+              sermon.bibleReferences.map((reference, index) => (
+                <div key={index} className="text-slate-800">
+                  {reference}
+                </div>
+              ))
+            ) : (
+              <div className="text-slate-800">No references available.</div>
+            )}
           </div>
         </div>
       </div>
