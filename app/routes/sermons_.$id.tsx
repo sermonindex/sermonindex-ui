@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { Contributor, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
@@ -43,7 +43,14 @@ export default function Component() {
       <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
         <div className="flex-grow sm:w-2/3">
           {/* ... Speaker bio ... */}
-          <StandardHeader text={'Speaker'} />
+          <Link
+            to={`/speakers/${contributor.fullName
+              .toLowerCase()
+              .replace(/ /g, '-')}`}
+          >
+            {/* todo(jdf): make a SpeakerLink that just takes a contributor object */}
+            <StandardHeader text={contributor.fullName} />
+          </Link>
           <div className={'p-4 flex'}>
             <img
               className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
@@ -51,6 +58,7 @@ export default function Component() {
               src={sermon.contributorImageUrl ?? ''}
               alt={sermon.contributorFullName}
             />
+
             {/* todo(jdf): make the text wrap the image */}
             <p className={'text-slate-800 p-4'}>{contributor.description}</p>
           </div>
