@@ -40,7 +40,7 @@ export default function Index() {
           <img
             src={contributor.imageUrl}
             alt={contributor.fullName}
-            className="flex-none w-24 h-24 rounded-2xl"
+            className="flex-none w-24 h-24 rounded-2xl object-cover"
           />
           <p className="text-left text-sm text-slate-800">
             {contributor.description}

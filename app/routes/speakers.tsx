@@ -45,7 +45,7 @@ export default function Index() {
                 <img
                   src={contributor.imageUrl}
                   alt={contributor.fullName}
-                  className="w-14 h-14 rounded-full"
+                  className="w-14 h-14 rounded-full object-cover"
                 />
                 <p className="text-center mt-2 text-sm text-slate-800">
                   {contributor.fullName}

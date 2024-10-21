@@ -43,7 +43,7 @@ export default function App() {
         <div className="flex pl-6 items-center justify-left">
           <Link to="/">
             <img
-              className="h-20 min-w-full py-3 pr-8"
+              className="h-20 min-w-full py-3 pr-8 object-contain"
               src="/sermon-index.svg"
               alt="sermon-index"
             />
