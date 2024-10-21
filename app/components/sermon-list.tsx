@@ -1,6 +1,6 @@
-import { Link } from "@remix-run/react";
-import { Sermon } from "~/api/interfaces";
-import { formatDownloads } from "~/common/format-downloads";
+import { Link } from '@remix-run/react';
+import { Sermon } from '~/api/interfaces';
+import { formatDownloads } from '~/common/format-downloads';
 
 export interface SermonListProps {
   sermons: Sermon[];

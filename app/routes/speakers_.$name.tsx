@@ -1,12 +1,12 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
-import { Contributor, ListResponse, Sermon } from "~/api/interfaces";
-import { fetchApi } from "~/api/sdk";
-import { SermonList } from "~/components/sermon-list";
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
+import { Contributor, ListResponse, Sermon } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
+import { SermonList } from '~/components/sermon-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const fullName = params.name?.replace(/-/g, " ");
+  const fullName = params.name?.replace(/-/g, ' ');
 
   const [contributors, sermons] = await Promise.all([
     fetchApi<ListResponse<Contributor>>(`/contributors?fullName=${fullName}`),
@@ -14,11 +14,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
   ]);
 
   if (
-    "statusCode" in contributors ||
-    "statusCode" in sermons ||
+    'statusCode' in contributors ||
+    'statusCode' in sermons ||
     !contributors.values.length
   ) {
-    throw new Response("Oh no! Something went wrong!", {
+    throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
@@ -28,7 +28,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { contributor, sermons } = useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>('');
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
@@ -58,7 +58,7 @@ export default function Index() {
         <div className="">
           <SermonList
             sermons={sermons.values.filter((s) =>
-              s.title.toLowerCase().includes(filter)
+              s.title.toLowerCase().includes(filter),
             )}
           />
         </div>

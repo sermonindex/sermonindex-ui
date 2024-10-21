@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { Contributor } from "~/api/interfaces";
+import { Link } from 'react-router-dom';
+import { Contributor } from '~/api/interfaces';
 
 export interface SpeakerListProps {
   contributors: Contributor[];
@@ -30,7 +30,7 @@ export const SpeakerList = ({ contributors }: SpeakerListProps) => {
                 <Link
                   to={`/speakers/${contributor.fullName
                     .toLowerCase()
-                    .replace(/ /g, "-")}`}
+                    .replace(/ /g, '-')}`}
                 >
                   <li
                     className="group flex items-center justify-between min-h-10 pl-2 my-1 text-md rounded-md text-slate-700 hover:cursor-pointer hover:underline hover:bg-gray-300"

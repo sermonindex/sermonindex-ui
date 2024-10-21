@@ -9,8 +9,8 @@ export interface IErrorResponse {
 }
 
 export enum ContributorType {
-  INDIVIDUAL = "INDIVIDUAL",
-  CONFERENCE = "CONFERENCE",
+  INDIVIDUAL = 'INDIVIDUAL',
+  CONFERENCE = 'CONFERENCE',
 }
 
 export interface Contributor {

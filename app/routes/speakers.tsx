@@ -1,18 +1,18 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
-import { Contributor, ListResponse } from "~/api/interfaces";
-import { fetchApi } from "~/api/sdk";
-import { SpeakerList } from "~/components/speaker-list";
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { Link, useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
+import { Contributor, ListResponse } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
+import { SpeakerList } from '~/components/speaker-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
-    fetchApi<ListResponse<Contributor>>("/contributors/featured"),
-    fetchApi<ListResponse<Contributor>>("/contributors"),
+    fetchApi<ListResponse<Contributor>>('/contributors/featured'),
+    fetchApi<ListResponse<Contributor>>('/contributors'),
   ]);
 
-  if ("statusCode" in featured || "statusCode" in contributors) {
-    throw new Response("Oh no! Something went wrong!", {
+  if ('statusCode' in featured || 'statusCode' in contributors) {
+    throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
@@ -22,7 +22,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { featured, contributors } = useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>('');
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
@@ -35,7 +35,7 @@ export default function Index() {
             <Link
               to={`/speakers/${contributor.fullName
                 .toLowerCase()
-                .replace(/ /g, "-")}`}
+                .replace(/ /g, '-')}`}
               key={index}
             >
               <div
@@ -66,7 +66,7 @@ export default function Index() {
           />
           <SpeakerList
             contributors={contributors.values.filter((c) =>
-              c.fullName.toLowerCase().includes(filter)
+              c.fullName.toLowerCase().includes(filter),
             )}
           />
         </div>

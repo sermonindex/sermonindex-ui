@@ -1,7 +1,7 @@
-import { IErrorResponse } from "./interfaces";
+import { IErrorResponse } from './interfaces';
 
 // TODO: Add SI_API_URL to .env
-const SI_API_URL = "http://localhost:3000";
+const SI_API_URL = 'http://localhost:3000';
 
 export async function fetchApi<T>(path: string): Promise<T | IErrorResponse> {
   const response = await fetch(`${SI_API_URL}${path}`);
