@@ -11,6 +11,7 @@ import {
 
 import React from 'react';
 import { Sermon } from '~/api/interfaces';
+import { formatDownloads } from '~/common/format-downloads';
 
 export enum MessageType {
   Audio = 'audio',
@@ -108,7 +109,7 @@ export const AudioPlayer = (
           <p className="text-slate-700 text-sm italic">{message.description}</p>
           <div className="flex justify-end">
             <p className="text-si-main text-sm justify-right">
-              {message.downloads} downloads
+              {formatDownloads(message.downloads)} downloads
             </p>
           </div>
         </div>
@@ -147,7 +148,7 @@ export const AudioPlayer = (
             </p>
             <div className="flex justify-end">
               <p className={'text-si-main text-sm justify-right'}>
-                {message.downloads} downloads
+                {formatDownloads(message.downloads)} downloads
               </p>
             </div>
           </div>
