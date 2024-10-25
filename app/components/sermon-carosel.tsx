@@ -85,7 +85,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
                   </span>
                 </span>
                 <Link
-                  to={`/sermon/${sermon.id}`}
+                  to={`/sermons/${sermon.id}`}
                   className="flex items-center space-x-2 text-lg pt-2 hover:text-si-main"
                 >
                   <svg
