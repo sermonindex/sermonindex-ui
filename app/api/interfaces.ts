@@ -51,4 +51,6 @@ export interface Sermon {
   preachedAt?: string;
   updatedAt: string;
   createdAt: string;
+
+  transcript?: string
 }

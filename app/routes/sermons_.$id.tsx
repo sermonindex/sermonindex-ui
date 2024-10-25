@@ -37,6 +37,7 @@ export default function Component() {
     <div className={'p-10'}>
       <StandardHeader text={sermon.title} />
       <div className={'p-2'}>
+        {/* todo(jdf): handle text only sermons */}
         <SermonPlayer sermon={sermon} />
       </div>
 
@@ -83,20 +84,19 @@ export default function Component() {
       <div>
         {/* ... Sermon summary ... */}
         <div className={'pt-8'}>
-          <StandardHeader text={'Summary Of Sermon Page'} />
+          <StandardHeader text={'Sermon Summary'} />
           <div className={'p-4'}>
             <p className={'text-slate-800'}>
-              This is going to be a concise summary of the message The fact that
-              this is going to be SEO will be :fire:
+              {sermon.description}
             </p>
           </div>
         </div>
-        {/* ... Sermon summary ... */}
+        {/* ... Sermon transcript ... */}
         <div className={'pt-8'}>
-          <StandardHeader text={'Transcription OR Text Sermon'} />
+          <StandardHeader text={'Sermon Transcription'} />
           <div className={'p-4'}>
             <p className={'text-slate-800'}>
-              This is going to be the full transcription of the sermon
+              {sermon.transcript}
             </p>
           </div>
         </div>
