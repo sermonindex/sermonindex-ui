@@ -7,11 +7,13 @@ import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import {
   DefaultAudioLayout,
   defaultLayoutIcons,
+  DefaultVideoLayout,
 } from '@vidstack/react/player/layouts/default';
 
 import React from 'react';
 import { Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
+import { hasContent, isNumber } from '~/common/sanitize';
 
 export enum MessageType {
   Audio = 'audio',
@@ -57,6 +59,39 @@ export function sermonIntoMessagePlayerProps(
   };
 }
 
+export const MessageDescription = ({
+  description,
+}: {
+  description: string;
+}) => {
+  if (hasContent(description)) {
+    return (
+      <div className="p-2 space-y-2">
+        <p className="text-slate-700 text-sm italic">{description}</p>
+        <div className="flex justify-end"></div>
+      </div>
+    );
+  }
+  return <div />;
+};
+
+export const MessageDownloads = ({
+  downloads,
+}: {
+  downloads: number | undefined;
+}) => {
+  if (isNumber(downloads)) {
+    return (
+      <div className="flex justify-end pt-2">
+        <p className={'text-si-main text-sm justify-right'}>
+          {formatDownloads(downloads)} downloads
+        </p>
+      </div>
+    );
+  }
+  return <div />;
+};
+
 export const SermonPlayer = (
   props: React.PropsWithChildren<{ sermon: Sermon }>,
 ) => {
@@ -68,24 +103,37 @@ export const SermonPlayer = (
 /// more about the behavior of these.
 export const MessagePlayer = (message: MessagePlayerProps) => {
   switch (message.media) {
-    case MessageType.Audio:
-      return <AudioPlayer message={message} />;
     case MessageType.Video:
       return <VideoPlayer message={message} />;
+    case MessageType.Audio:
+      return <AudioPlayer message={message} />;
     default:
-      console.log(
-        "todo: implement unknown media player (VidStack has an 'unknown' src type, but I haven't checked how it behaves",
-      );
+      /// We will assume this is a text message; right now, this does nothing
+      return <div />;
   }
 };
 
+/// A simple video player that uses VidStack's MediaPlayer
+///
+/// todo list:
+///  - Try to add the chrome cast / or air play buttons
+///  - Try to add a customized thumbnail for the video player
 export const VideoPlayer = (
   props: React.PropsWithChildren<{ message: MessagePlayerProps }>,
 ) => {
   const { message } = props;
   return (
-    <div className={'bg-si-main'}>
-      <a className={'text-blue-200'}>Not Yet Implemented</a>
+    <div className="pt-2">
+      <MessageDescription description={message.description} />
+      <MediaPlayer title={message.title} src={message.url}>
+        <MediaProvider />
+        <DefaultVideoLayout
+          icons={defaultLayoutIcons}
+          colorScheme="light"
+          slots={{ googleCastButton: true }}
+        />
+      </MediaPlayer>
+      <MessageDownloads downloads={message.downloads} />
     </div>
   );
 };
