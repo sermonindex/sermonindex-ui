@@ -153,14 +153,7 @@ export const AudioPlayer = (
   return (
     <div>
       {message.bodyOnly ? (
-        <div className="p-2 space-y-2">
-          <p className="text-slate-700 text-sm italic">{message.description}</p>
-          <div className="flex justify-end">
-            <p className="text-si-main text-sm justify-right">
-              {formatDownloads(message.downloads)} downloads
-            </p>
-          </div>
-        </div>
+        <MessageDescription description={message.description} />
       ) : (
         <div className={'p-2 flex items-start space-x-4'}>
           <img
@@ -191,14 +184,7 @@ export const AudioPlayer = (
                 Scripture(s): {message.scriptures?.join(', ')}
               </p>
             </div>
-            <p className={'text-slate-700 text-sm italic'}>
-              {message.description}
-            </p>
-            <div className="flex justify-end">
-              <p className={'text-si-main text-sm justify-right'}>
-                {formatDownloads(message.downloads)} downloads
-              </p>
-            </div>
+            <MessageDescription description={message.description} />
           </div>
         </div>
       )}
@@ -211,6 +197,7 @@ export const AudioPlayer = (
             slots={{ googleCastButton: true }}
           />
         </MediaPlayer>
+        <MessageDownloads downloads={message.downloads} />
       </div>
     </div>
   );
