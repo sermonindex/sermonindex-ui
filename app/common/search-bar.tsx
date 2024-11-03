@@ -5,17 +5,21 @@ interface SearchProps {
   // Either on change or on submit should be defined
   onChange?: any; // todo: redefine as callable
   onSubmit?: any; // todo: redefine as callable
+  parentStyle?: string;
+  inputStyle?: string;
 }
 
 export const SearchBar: React.FC<SearchProps> = ({
   placeholder,
   onChange,
   onSubmit,
+  parentStyle,
+  inputStyle,
 }) => {
   return (
-    <div className="relative flex flex-grow">
+    <div className={`relative flex flex-grow ${parentStyle}`}>
       <input
-        className="flex-grow bg-gray-50 text-gray-900 text-sm rounded-lg px-4 py-2 pr-10"
+        className={`flex-grow bg-gray-50 text-gray-900 text-sm rounded-lg px-4 py-2 pr-10 ${inputStyle}`}
         placeholder={placeholder}
         onChange={(e) => {
           /* todo */
