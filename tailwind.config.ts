@@ -31,7 +31,7 @@ export default {
         'si-main': '#707035',
         'si-green': '#807F41',
         'si-olive': '#908F51',
-        'si-light': '#FFFFE3',
+        'si-light': '#F8F8F2',
         'si-brown': '#A58768',
         'si-tan': '#D9CDB6',
         'si-accent': '#D4AF37',

@@ -14,21 +14,34 @@ interface PageLink {
 }
 
 const Links: { [key: string]: PageLink } = {
-  speakers: { name: 'Speakers', linkTo: 'speakers' },
-  top100: { name: 'Top 100', linkTo: 'top-100' },
-  recommended: { name: 'Recommended', linkTo: 'recommended' },
+  speakers: { name: 'All Speakers', linkTo: 'speakers' },
+  top100: { name: 'Top 100 Sermons', linkTo: 'top-100' },
+  recommended: { name: 'Recommended Sermons', linkTo: 'recommended' },
   // todo: Do we want these, maybe on a large screen display???
-  // tozer: { name: 'Tozer', linkTo: '/todo/speaker/id' },
-  // ravenhill: { name: 'Ravenhill', linkTo: '/todo/speaker/id' },
-  // sparks: { name: 'Sparks', linkTo: '/todo/speaker/id' },
+  tozer: { name: 'Tozer', linkTo: '/todo/speaker/id' },
+  ravenhill: { name: 'Ravenhill', linkTo: '/todo/speaker/id' },
+  sparks: { name: 'Sparks', linkTo: '/todo/speaker/id' },
   // wilkerson: { name: 'Wilkerson', linkTo: '/todo/speaker/id' },
   // chan: { name: 'Chan', linkTo: '/todo/speaker/id' },
-  // poonen: { name: 'Poonen', linkTo: '/todo/speaker/id' },
+  poonen: { name: 'Poonen', linkTo: '/todo/speaker/id' },
   divide: { name: '|', linkTo: '' },
   about: { name: 'About', linkTo: 'about' },
   podcast: { name: 'Podcast', linkTo: 'podcast' },
   topics: { name: 'Topics', linkTo: 'topics' },
   blog: { name: 'Blog', linkTo: 'blog' },
+};
+
+const BibleLinks: { [key: string]: PageLink } = {
+  bible: { name: 'All Bibles', linkTo: 'bibles' },
+  bsb: { name: 'BSB', linkTo: 'bibles/bsb' },
+  kjv: { name: 'KJV', linkTo: 'bibles/kjv' },
+  web: { name: 'WEB', linkTo: 'bibles/web' },
+  ylt: { name: 'YLT', linkTo: 'bibles/ylt' },
+  divide: { name: '|', linkTo: '' },
+  v1: { name: 'John 1:1', linkTo: 'todo' },
+  v2: { name: 'John 3:16', linkTo: 'todo' },
+  v3: { name: 'Proverbs 3:5', linkTo: 'todo' },
+  v4: { name: 'Psalm 18:2', linkTo: 'todo' },
 };
 
 export const Header = () => {
@@ -41,7 +54,7 @@ export const Header = () => {
         <Link to="/">
           <div className="flex-shrink-0">
             <img
-              className="h-24 min-w-full py-3 pr-8 object-contain"
+              className="h-20 min-w-full py-3 pr-8 object-contain"
               src="/sermon-index.svg"
               alt="sermon-index"
             />
@@ -53,16 +66,15 @@ export const Header = () => {
       </div>
       {/* Second navbar - page links */}
       <div className="flex px-8 bg-si-olive items-center justify-center py-1">
-        <ul className="flex space-x-6">
+        <ul className="flex space-x-6 text-white text-lg">
           {Object.values(Links).map((link: PageLink) => {
             if (link.linkTo === '') {
               return <span key={link.name}>{link.name}</span>;
             }
-            console.log(location.pathname, link.linkTo);
             const active = location.pathname === `/${link.linkTo}`;
             return (
               <Link
-                className={`block capitalize text-white ${
+                className={`block capitalize ${
                   active ? 'text-si-accent' : ''
                 } hover:text-si-accent`}
                 key={link.name}
@@ -74,6 +86,31 @@ export const Header = () => {
           })}
         </ul>
       </div>
+      {/* Bible navbar */}
+      <div className="flex px-8 bg-si-light items-center justify-center py-1">
+        <ul className="flex space-x-6 text-si-main items-center">
+          {Object.values(BibleLinks).map((link: PageLink) => {
+            if (link.linkTo === '') {
+              return <span key={link.name}>{link.name}</span>;
+            }
+            const active = location.pathname === `/${link.linkTo}`;
+            return (
+              <Link
+                className={`block capitalize ${
+                  active ? 'text-si-accent' : ''
+                } hover:text-si-accent`}
+                key={link.name}
+                to={`/${link.linkTo}`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </ul>
+      </div>
+      {/* Third navbar - shortcuts */}
+      <div className="border-b-2 border-si-gray"></div>
+      {/* todo: breadcrumbs */}
     </header>
   );
 };
