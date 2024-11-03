@@ -11,6 +11,7 @@ import {
 
 import './tailwind.css';
 import { Header } from '~/components/header';
+import { Footer } from '~/components/footer';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -42,6 +43,7 @@ export default function App() {
           <section className="container mx-auto border-x-2 border-si-gray">
             <Header />
             <Outlet />
+            <Footer />
           </section>
         </main>
         <ScrollRestoration />
