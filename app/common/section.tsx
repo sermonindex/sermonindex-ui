@@ -5,10 +5,12 @@ interface Props {
   className?: string; // Allow for custom classes
 }
 
+/// This is a common section heading for page content
+/// todo: It would be nice to add an optional "copy link" icon that hyperlinks to this section
 export const StandardHeader: React.FC<Props> = ({ text, className }) => {
   return (
     <h1
-      className={`text-2xl pl-4 py-2 bg-si-gray rounded-lg w-full text-black ${className}`}
+      className={`text-xl pl-4 py-2 bg-si-gray rounded-lg w-full text-black ${className}`}
     >
       {text}
     </h1>
