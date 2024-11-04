@@ -1,3 +1,11 @@
+import {
+  RiFacebookLine,
+  RiInstagramLine,
+  RiPinterestLine,
+  RiTwitterXLine,
+  RiYoutubeLine,
+} from 'react-icons/ri';
+
 export const Footer = () => {
   return (
     <footer className="flexflex-col pt-10">
@@ -18,7 +26,7 @@ export const Footer = () => {
           </div>
 
           <hr className="my-2 border-si-olive" />
-          {/* three columns for about, follow, and receive updates */}
+          {/* About Column */}
           <div className="flex flex-row justify-between py-4">
             <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">About</h3>
@@ -32,17 +40,53 @@ export const Footer = () => {
                 <li>Privacy Policy</li>
               </ul>
             </div>
+            {/* Follow, Social Media Column */}
             <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">Follow</h3>
-              <ul className="text-si-light text-sm">
-                {/* todo: pull heroicons and add here, format as per mock-up */}
-                <li>Facebook</li>
-                <li>Twitter</li>
-                <li>YouTube</li>
-                <li>Instagram</li>
-                <li>todo</li>
+              <ul className="flex flex-row text-si-light text-sm space-x-2 pt-2">
+                <a
+                  href="https://www.facebook.com/search/top?q=sermonindex.net"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                >
+                  <RiFacebookLine className="text-si-light size-6" />
+                </a>
+                <a
+                  href="https://x.com/SermonIndex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X"
+                >
+                  <RiTwitterXLine className="text-si-light size-6" />
+                </a>
+                <a
+                  href="https://www.instagram.com/sermonindexnet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
+                  <RiInstagramLine className="text-si-light size-6" />
+                </a>
+                <a
+                  href="https://ca.pinterest.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Pinterest"
+                >
+                  <RiPinterestLine className="text-si-light size-6" />
+                </a>
+                <a
+                  href="https://www.youtube.com/@sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Youtube"
+                >
+                  <RiYoutubeLine className="text-si-light size-6" />
+                </a>
               </ul>
             </div>
+            {/* Subscribe Column */}
             <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">
                 Receive Updates
