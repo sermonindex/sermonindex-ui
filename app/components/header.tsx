@@ -50,11 +50,11 @@ export const Header = () => {
   return (
     <header className="flex flex-col">
       {/* Top navbar - logo, search bar, and site options */}
-      <div className="flex h-28 px-8 bg-si-dark items-center justify-between">
+      <div className="flex h-28 px-8 bg-si-main items-center justify-between">
         <Link to="/">
           <div className="flex-shrink-0">
             <img
-              className="h-20 min-w-full py-3 pr-8 object-contain"
+              className="h-24 min-w-full py-3 pr-8 object-contain"
               src="/sermon-index.svg"
               alt="sermon-index"
             />
@@ -68,16 +68,20 @@ export const Header = () => {
         </div>
       </div>
       {/* Second navbar - page links */}
-      <div className="flex px-8 bg-si-olive items-center justify-center py-1">
+      <div className="flex px-8 bg-si-dark items-center justify-center py-2">
         <ul className="flex space-x-6 text-white text-lg">
           {Object.values(Links).map((link: PageLink) => {
             if (link.linkTo === '') {
-              return <span key={link.name}>{link.name}</span>;
+              return (
+                <span className="text-si-olive" key={link.name}>
+                  {link.name}
+                </span>
+              );
             }
             const active = location.pathname === `/${link.linkTo}`;
             return (
               <Link
-                className={`block capitalize ${
+                className={`block capitalize font-semibold ${
                   active ? 'text-si-accent' : ''
                 } hover:text-si-accent`}
                 key={link.name}
@@ -90,8 +94,8 @@ export const Header = () => {
         </ul>
       </div>
       {/* Bible navbar */}
-      <div className="flex px-8 bg-si-light items-center justify-center py-1">
-        <ul className="flex space-x-6 text-si-main items-center">
+      <div className="flex px-8 bg-si-light items-center justify-center py-2">
+        <ul className="flex space-x-6 text-si-dark items-center">
           {Object.values(BibleLinks).map((link: PageLink) => {
             if (link.linkTo === '') {
               return <span key={link.name}>{link.name}</span>;
@@ -99,7 +103,7 @@ export const Header = () => {
             const active = location.pathname === `/${link.linkTo}`;
             return (
               <Link
-                className={`block capitalize ${
+                className={`block capitalize font-semibold ${
                   active ? 'text-si-accent' : ''
                 } hover:text-si-accent`}
                 key={link.name}
