@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Contributor, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SermonList } from '~/components/sermon-list';
+import { StandardHeader } from '~/common/section';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const fullName = params.name?.replace(/-/g, ' ');
@@ -33,9 +34,7 @@ export default function Index() {
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
       <div className="flex flex-col w-full p-4 bg-white text-black">
-        <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full">
-          {contributor.fullName}
-        </h1>
+        <StandardHeader text={contributor.fullName} />
         <div className="flex space-x-6 p-4">
           <img
             src={contributor.imageUrl}
@@ -46,9 +45,7 @@ export default function Index() {
             {contributor.description}
           </p>
         </div>
-        <h1 className="text-2xl pl-4 py-2 mt-8 text-black bg-gray-300 rounded-lg w-full">
-          Sermons
-        </h1>
+        <StandardHeader text="Sermons" />
         <input
           className="my-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
           placeholder="Find a sermon..."

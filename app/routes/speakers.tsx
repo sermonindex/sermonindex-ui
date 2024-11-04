@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Contributor, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SpeakerList } from '~/components/speaker-list';
+import { StandardHeader } from '~/common/section';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
@@ -27,9 +28,7 @@ export default function Index() {
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
       <div className="flex flex-col w-full p-4 bg-white text-black">
-        <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full">
-          Featured Speakers
-        </h1>
+        <StandardHeader text="Featured Speakers" />
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
           {featured.values.map((contributor, index) => (
             <Link
@@ -54,9 +53,7 @@ export default function Index() {
             </Link>
           ))}
         </div>
-        <h1 className="text-2xl pl-4 py-2 bg-gray-300 rounded-lg w-full">
-          All Speakers
-        </h1>
+        <StandardHeader text="All Speakers" />
         <div className="">
           <input
             className="mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
