@@ -5,6 +5,21 @@ import {
   RiTwitterXLine,
   RiYoutubeLine,
 } from 'react-icons/ri';
+import { Link } from '@remix-run/react';
+
+interface FooterAboutLink {
+  name: string;
+  linkTo: string;
+}
+
+const AboutLinks: { [key: string]: FooterAboutLink } = {
+  about: { name: 'About Us', linkTo: 'about' },
+  commendations: { name: 'Commendations', linkTo: 'todo' },
+  support: { name: 'Get Support', linkTo: 'todo' },
+  brand: { name: 'Brand Guidelines', linkTo: 'todo' },
+  copying: { name: 'Copying Permissions', linkTo: 'todo' },
+  privacy: { name: 'Privacy Policy', linkTo: 'todo' },
+};
 
 export const Footer = () => {
   return (
@@ -31,13 +46,17 @@ export const Footer = () => {
             <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">About</h3>
               <ul className="text-si-light text-sm">
-                {/* todo: link pages... */}
-                <li>About Us</li>
-                <li>Commendations</li>
-                <li>Get Support</li>
-                <li>Brand Guidelines</li>
-                <li>Copying Permissions</li>
-                <li>Privacy Policy</li>
+                {Object.values(AboutLinks).map((link: FooterAboutLink) => {
+                  return (
+                    <Link
+                      className={`block capitalize hover:text-si-accent`}
+                      key={link.name}
+                      to={`/${link.linkTo}`}
+                    >
+                      {link.name}
+                    </Link>
+                  );
+                })}
               </ul>
             </div>
             {/* Follow, Social Media Column */}
