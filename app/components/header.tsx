@@ -68,8 +68,8 @@ export const Header = () => {
         </div>
       </div>
       {/* Second navbar - page links */}
-      <div className="flex px-8 bg-si-dark items-center justify-center py-2">
-        <ul className="flex space-x-6 text-white text-lg">
+      <div className="flex px-8 bg-si-olive items-center justify-center py-2">
+        <ul className="flex space-x-6 text-white text-xl">
           {Object.values(Links).map((link: PageLink) => {
             if (link.linkTo === '') {
               return (
@@ -81,7 +81,7 @@ export const Header = () => {
             const active = location.pathname === `/${link.linkTo}`;
             return (
               <Link
-                className={`block capitalize font-semibold ${
+                className={`block capitalize ${
                   active ? 'text-si-accent' : ''
                 } hover:text-si-accent`}
                 key={link.name}
@@ -95,7 +95,7 @@ export const Header = () => {
       </div>
       {/* Bible navbar */}
       <div className="flex px-8 bg-si-light items-center justify-center py-2">
-        <ul className="flex space-x-6 text-si-dark items-center">
+        <ul className="flex space-x-6 text-si-dark text-lg items-center">
           {Object.values(BibleLinks).map((link: PageLink) => {
             if (link.linkTo === '') {
               return <span key={link.name}>{link.name}</span>;
@@ -103,7 +103,7 @@ export const Header = () => {
             const active = location.pathname === `/${link.linkTo}`;
             return (
               <Link
-                className={`block capitalize font-semibold ${
+                className={`block capitalize ${
                   active ? 'text-si-accent' : ''
                 } hover:text-si-accent`}
                 key={link.name}
