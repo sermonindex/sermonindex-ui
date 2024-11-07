@@ -86,16 +86,14 @@ export default function Component() {
         <div className={'pt-8'}>
           <StandardHeader text={'Sermon Summary'} />
           <div className={'p-4'}>
-            <p className={'text-slate-800'}>
-              {sermon.description}
-            </p>
+            <p className={'text-slate-800'}>{sermon.description}</p>
           </div>
         </div>
         {/* ... Sermon transcript ... */}
         <div className={'pt-8'}>
           <StandardHeader text={'Sermon Transcription'} />
           <div className={'p-4'}>
-            <p className={'text-slate-800'}>
+            <p className={'text-slate-800 whitespace-pre-line'}>
               {sermon.transcript}
             </p>
           </div>
