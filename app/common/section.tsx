@@ -10,7 +10,7 @@ interface Props {
 export const StandardHeader: React.FC<Props> = ({ text, className }) => {
   return (
     <h1
-      className={`text-xl pl-4 py-2 bg-si-gray rounded-lg w-full text-black ${className}`}
+      className={`text-xl pl-4 py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark ${className}`}
     >
       {text}
     </h1>

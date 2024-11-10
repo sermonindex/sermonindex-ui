@@ -38,7 +38,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-      <div className="flex w-full bg-white">
+      <div className="flex">
         <FeaturedMessage sermon={featured} />
       </div>
 

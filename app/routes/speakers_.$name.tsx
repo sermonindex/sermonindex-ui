@@ -33,7 +33,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-      <div className="flex flex-col w-full p-4 bg-white text-black">
+      <div className="flex flex-col w-full p-4">
         <StandardHeader text={contributor.fullName} />
         <div className="flex space-x-6 p-4">
           <img
@@ -41,13 +41,11 @@ export default function Index() {
             alt={contributor.fullName}
             className="flex-none w-24 h-24 rounded-2xl object-cover"
           />
-          <p className="text-left text-sm text-slate-800">
-            {contributor.description}
-          </p>
+          <p className="text-left text-sm">{contributor.description}</p>
         </div>
         <StandardHeader text="Sermons" />
         <input
-          className="my-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+          className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
           placeholder="Find a sermon..."
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
           required

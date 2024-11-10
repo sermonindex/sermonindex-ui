@@ -61,7 +61,7 @@ export default function Component() {
             />
 
             {/* todo(jdf): make the text wrap the image */}
-            <p className={'text-slate-800 p-4'}>{contributor.description}</p>
+            <p className={'p-4'}>{contributor.description}</p>
           </div>
         </div>
         <div className="flex-grow sm:w-1/3">
@@ -71,12 +71,10 @@ export default function Component() {
             {Array.isArray(sermon.bibleReferences) &&
             sermon.bibleReferences.length > 0 ? (
               sermon.bibleReferences.map((reference, index) => (
-                <div key={index} className="text-slate-800">
-                  {reference}
-                </div>
+                <div key={index}>{reference}</div>
               ))
             ) : (
-              <div className="text-slate-800">No references available.</div>
+              <div>No references available.</div>
             )}
           </div>
         </div>
@@ -86,16 +84,14 @@ export default function Component() {
         <div className={'pt-8'}>
           <StandardHeader text={'Sermon Summary'} />
           <div className={'p-4'}>
-            <p className={'text-slate-800'}>{sermon.description}</p>
+            <p>{sermon.description}</p>
           </div>
         </div>
         {/* ... Sermon transcript ... */}
         <div className={'pt-8'}>
           <StandardHeader text={'Sermon Transcription'} />
           <div className={'p-4'}>
-            <p className={'text-slate-800 whitespace-pre-line'}>
-              {sermon.transcript}
-            </p>
+            <p className="whitespace-pre-line">{sermon.transcript}</p>
           </div>
         </div>
       </div>

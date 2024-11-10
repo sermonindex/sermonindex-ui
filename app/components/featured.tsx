@@ -12,22 +12,20 @@ export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   return (
     <div className="px-4 pt-4">
       <StandardHeader text={'Featured Message'} />
-      <div className="bg-white">
-        <div className="p-2">
-          <MessagePlayer
-            title={sermon.title}
-            url={sermon.audioUrl ?? ''}
-            iconUrl={sermon.contributorImageUrl}
-            speaker={sermon.contributorFullName}
-            description={sermon.description ?? ''}
-            media={MessageType.Audio}
-            downloads={sermon.hits ?? 0}
-            // TODO: Topics can be a list probably?
-            topic={sermon.topics.join(', ')}
-            scriptures={sermon.bibleReferences}
-            // todo: experiment with comments
-          />
-        </div>
+      <div className="p-2">
+        <MessagePlayer
+          title={sermon.title}
+          url={sermon.audioUrl ?? ''}
+          iconUrl={sermon.contributorImageUrl}
+          speaker={sermon.contributorFullName}
+          description={sermon.description ?? ''}
+          media={MessageType.Audio}
+          downloads={sermon.hits ?? 0}
+          // TODO: Topics can be a list probably?
+          topic={sermon.topics.join(', ')}
+          scriptures={sermon.bibleReferences}
+          // todo: experiment with comments
+        />
       </div>
     </div>
   );

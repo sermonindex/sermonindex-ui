@@ -12,8 +12,7 @@ export const SermonList = ({ sermons }: SermonListProps) => {
       {sermons.map((sermon) => (
         <Link to={`/sermons/${sermon.id}`}>
           <li
-            // className="group flex flex-col text-slate-700 hover:cursor-pointer hover:underline hover:bg-gray-300"
-            className="flex flex-col p-2 border-b-2 group hover:cursor-pointer hover:bg-gray-300"
+            className="flex flex-col p-2 border-b-2 group hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
             key={sermon.id}
           >
             <span className="text-lg font-bold group-hover:underline">

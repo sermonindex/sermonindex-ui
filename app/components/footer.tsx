@@ -24,7 +24,7 @@ const AboutLinks: { [key: string]: FooterAboutLink } = {
 export const Footer = () => {
   return (
     <footer className="flexflex-col pt-10">
-      <div className="h-8 bg-si-olive border-t-2 border-si-gray"></div>
+      <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-dim"></div>
       <div className="bg-si-dark p-4">
         <div className="mx-10">
           <div className="flex flex-row justify-between py-4">

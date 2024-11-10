@@ -52,7 +52,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
 
   return (
     // TODO: Style for mobile
-    <div className="px-4 bg-white text-black">
+    <div className="px-4">
       <StandardHeader text={title} />
       <div className="flex w-full">
         <span className="flex items-center">

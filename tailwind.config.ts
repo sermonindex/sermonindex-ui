@@ -41,6 +41,7 @@ export default {
       },
     },
   },
+  darkMode: 'class',
   exports: {
     plugins: [require('@vidstack/react/tailwind.cjs')],
   },

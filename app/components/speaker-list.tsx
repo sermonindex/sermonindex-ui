@@ -22,7 +22,7 @@ export const SpeakerList = ({ contributors }: SpeakerListProps) => {
       {Object.entries(contributorsGrouped).map(([letter, group]) => {
         return (
           <div key={letter} className="flex flex-col w-full">
-            <h2 className="text-lg font-semibold capitalize text-slate-800 border-slate-600 border-b-2">
+            <h2 className="text-lg font-semibold capitalize border-slate-600 border-b-2">
               {letter}
             </h2>
             <ul>
@@ -33,7 +33,7 @@ export const SpeakerList = ({ contributors }: SpeakerListProps) => {
                     .replace(/ /g, '-')}`}
                 >
                   <li
-                    className="group flex items-center justify-between min-h-10 pl-2 my-1 text-md rounded-md text-slate-700 hover:cursor-pointer hover:underline hover:bg-gray-300"
+                    className="group flex items-center justify-between min-h-10 pl-2 my-1 text-md rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700"
                     key={contributor.fullName}
                   >
                     <span>{contributor.fullName}</span>

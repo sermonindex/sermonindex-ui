@@ -40,11 +40,13 @@ export default function App() {
       </head>
       <body>
         <main>
-          <section className="container mx-auto border-x-2 border-si-gray">
-            <Header />
-            <Outlet />
-            <Footer />
-          </section>
+          <div className="bg-si-light dark:bg-si-slate text-si-slate dark:text-si-light">
+            <section className="container mx-auto border-x-2 border-si-gray dark:border-si-dim">
+              <Header />
+              <Outlet />
+              <Footer />
+            </section>
+          </div>
         </main>
         <ScrollRestoration />
         <Scripts />

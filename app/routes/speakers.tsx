@@ -27,7 +27,7 @@ export default function Index() {
 
   return (
     <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-      <div className="flex flex-col w-full p-4 bg-white text-black">
+      <div className="flex flex-col w-full p-4">
         <StandardHeader text="Featured Speakers" />
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
           {featured.values.map((contributor, index) => (
@@ -46,7 +46,7 @@ export default function Index() {
                   alt={contributor.fullName}
                   className="w-14 h-14 rounded-full object-cover"
                 />
-                <p className="text-center mt-2 text-sm text-slate-800">
+                <p className="text-center mt-2 text-sm">
                   {contributor.fullName}
                 </p>
               </div>
@@ -56,7 +56,7 @@ export default function Index() {
         <StandardHeader text="All Speakers" />
         <div className="">
           <input
-            className="mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+            className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
             placeholder="Find a speaker..."
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
             required

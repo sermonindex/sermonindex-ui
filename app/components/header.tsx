@@ -1,5 +1,7 @@
 import { Link, useLocation } from '@remix-run/react';
 import { SearchBar } from '~/common/search-bar';
+import { useState } from 'react';
+import { IoMoon, IoSunny } from 'react-icons/io5';
 
 const Pages = ['speakers', 'audio', 'video', 'text', 'about'];
 const Shortcuts = ['bible', 'hymns', 'books', 'pictures'];
@@ -46,6 +48,12 @@ const BibleLinks: { [key: string]: PageLink } = {
 
 export const Header = () => {
   const location = useLocation();
+  const [dark, setDark] = useState(false);
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle('dark');
+  };
 
   return (
     <header className="flex flex-col">
@@ -65,6 +73,12 @@ export const Header = () => {
             placeholder="Search Sermons..."
             inputStyle="border-2 border-si-olive"
           />
+        </div>
+        <div className="text-si-light">
+          <button onClick={() => darkModeHandler()}>
+            {dark && <IoSunny />}
+            {!dark && <IoMoon />}
+          </button>
         </div>
       </div>
       {/* Second navbar - page links */}
@@ -94,8 +108,8 @@ export const Header = () => {
         </ul>
       </div>
       {/* Bible navbar */}
-      <div className="flex px-8 bg-si-light items-center justify-center py-2">
-        <ul className="flex space-x-6 text-si-dark text-lg items-center">
+      <div className="flex px-8 bg-si-light dark:bg-si-dark items-center justify-center py-2">
+        <ul className="flex space-x-6 text-lg items-center">
           {Object.values(BibleLinks).map((link: PageLink) => {
             if (link.linkTo === '') {
               return <span key={link.name}>{link.name}</span>;
@@ -116,9 +130,9 @@ export const Header = () => {
         </ul>
       </div>
       {/* Third navbar - shortcuts */}
-      <div className="border-b-2 border-si-gray"></div>
+      <div className="border-b-2 border-si-gray dark:border-si-dim"></div>
       {/* todo: breadcrumbs...I need to think more about how this will work */}
-      <div className="text-si-main text-sm p-2">{'> Home '}</div>
+      <div className="text-sm p-2">{'> Home '}</div>
     </header>
   );
 };

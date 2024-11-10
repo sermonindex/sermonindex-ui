@@ -67,7 +67,7 @@ export const MessageDescription = ({
   if (hasContent(description)) {
     return (
       <div className="p-2 space-y-2">
-        <p className="text-slate-700 text-sm italic">{description}</p>
+        <p>{description}</p>
         <div className="flex justify-end"></div>
       </div>
     );
@@ -83,7 +83,7 @@ export const MessageDownloads = ({
   if (isNumber(downloads)) {
     return (
       <div className="flex justify-end pt-2">
-        <p className={'text-si-main text-sm justify-right'}>
+        <p className={'text-sm justify-right'}>
           {formatDownloads(downloads)} downloads
         </p>
       </div>
@@ -153,7 +153,7 @@ export const VideoPlayer = (
 
       {/* Slider for media type selection */}
       <div className="flex items-center justify-center space-x-4">
-        <span className="text-sm text-gray-600">Audio</span>
+        <span className="text-sm">Audio</span>
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -164,7 +164,7 @@ export const VideoPlayer = (
             }
           />
           <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-si-main dark:peer-focus:ring-si-main rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-si-main"></div>
-          <span className="ml-3 text-sm text-gray-600">Video</span>
+          <span className="ml-3 text-sm">Video</span>
         </label>
       </div>
     </div>
@@ -196,11 +196,7 @@ export const AudioPlayer = (
             loading={'lazy'}
           />
           <div className="flex-auto space-y-2">
-            <h2
-              className={
-                'text-slate-900 text-lg leading-6 font-semibold truncate'
-              }
-            >
+            <h2 className={'text-lg leading-6 font-semibold truncate'}>
               {message.title}
             </h2>
             <div
@@ -208,14 +204,12 @@ export const AudioPlayer = (
                 'flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 leading-6 text-sm'
               }
             >
-              <p className={'text-si-main'}>
+              <p>
                 {/* todo: make speaker link to speaker page */}
                 <abbr title={'Speaker'}>by</abbr> {message.speaker}
               </p>
-              <p className={'text-si-main'}>Topic: {message.topic}</p>
-              <p className={'text-si-main'}>
-                Scripture(s): {message.scriptures?.join(', ')}
-              </p>
+              <p> Topic: {message.topic}</p>
+              <p>Scripture(s): {message.scriptures?.join(', ')}</p>
             </div>
             <MessageDescription description={message.description} />
           </div>
