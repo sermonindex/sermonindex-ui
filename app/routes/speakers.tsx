@@ -42,7 +42,11 @@ export default function Index() {
                 className="flex flex-col items-center m-2 hover:underline"
               >
                 <img
-                  src={contributor.imageUrl}
+                  src={
+                    contributor.imageUrl
+                      ? contributor.imageUrl
+                      : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+                  }
                   alt={contributor.fullName}
                   className="w-14 h-14 rounded-full object-cover"
                 />

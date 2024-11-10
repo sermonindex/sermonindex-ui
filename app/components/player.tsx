@@ -190,7 +190,11 @@ export const AudioPlayer = (
       ) : (
         <div className={'p-2 flex items-start space-x-4'}>
           <img
-            src={message.iconUrl}
+            src={
+              message.iconUrl
+                ? message.iconUrl
+                : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+            }
             alt={message.speaker}
             className="flex-none rounded-lg bg-slate-100"
             loading={'lazy'}

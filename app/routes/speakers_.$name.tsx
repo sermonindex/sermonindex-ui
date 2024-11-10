@@ -37,7 +37,11 @@ export default function Index() {
         <StandardHeader text={contributor.fullName} />
         <div className="flex space-x-6 p-4">
           <img
-            src={contributor.imageUrl}
+            src={
+              contributor.imageUrl
+                ? contributor.imageUrl
+                : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+            }
             alt={contributor.fullName}
             className="flex-none w-24 h-24 rounded-2xl object-cover"
           />
