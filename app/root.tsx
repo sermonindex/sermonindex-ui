@@ -1,12 +1,10 @@
 import type { LinksFunction } from '@remix-run/node';
 import {
-  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLocation,
 } from '@remix-run/react';
 
 import './tailwind.css';
@@ -25,8 +23,6 @@ export const links: LinksFunction = () => [
     href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
   },
 ];
-
-const Pages = ['speakers', 'sermons', 'bible', 'about'];
 
 export default function App() {
   return (

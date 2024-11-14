@@ -3,9 +3,6 @@ import { SearchBar } from '~/common/search-bar';
 import { useState } from 'react';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 
-const Pages = ['speakers', 'audio', 'video', 'text', 'about'];
-const Shortcuts = ['bible', 'hymns', 'books', 'pictures'];
-
 interface PageLink {
   name: string;
   linkTo: string;
