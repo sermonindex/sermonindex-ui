@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@remix-run/react';
 import { SearchBar } from '~/common/search-bar';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 
 interface PageLink {
@@ -47,10 +47,32 @@ export const Header = () => {
   const location = useLocation();
   const [dark, setDark] = useState(false);
 
-  const darkModeHandler = () => {
-    setDark(!dark);
-    document.body.classList.toggle('dark');
+  const darkModeHandler = (dark: boolean) => {
+    setDark(dark);
+    // Store the preference for future visits
+    localStorage.setItem('si-dark-mode', dark ? 'dark' : 'light');
+
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
+
+  useEffect(() => {
+    // On initial load, check system preference and localStorage
+    const prefersDarkMode = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    ).matches;
+    const storedMode = localStorage.getItem('si-color-mode');
+
+    if (storedMode) {
+      const dark = storedMode === 'dark';
+      darkModeHandler(dark); // Use stored preference
+    } else {
+      darkModeHandler(prefersDarkMode); // Use system preference
+    }
+  }, []);
 
   return (
     <header className="flex flex-col">
@@ -71,11 +93,23 @@ export const Header = () => {
             inputStyle="border-2 border-si-olive"
           />
         </div>
-        <div className="text-si-light">
-          <button onClick={() => darkModeHandler()}>
-            {dark && <IoSunny />}
-            {!dark && <IoMoon />}
-          </button>
+
+        <div className="flex items-center justify-center text-si-light">
+          <div className="px-3 text-white text-lg">
+            <IoMoon />
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={!dark}
+              onChange={() => darkModeHandler(!dark)}
+            />
+            <div className="w-11 h-6 bg-white peer-focus:outline-none rounded-full peer after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-si-main after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+            <div className="px-3 text-white text-lg">
+              <IoSunny />
+            </div>
+          </label>
         </div>
       </div>
       {/* Second navbar - page links */}
