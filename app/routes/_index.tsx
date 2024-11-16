@@ -5,6 +5,7 @@ import { fetchApi } from '~/api/sdk';
 import { formatDownloads } from '~/common/format-downloads';
 import { FeaturedMessage } from '~/components/featured';
 import SermonCarousel from '~/components/sermon-carosel';
+import SiPage from '~/components/si-page';
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,36 +38,38 @@ export default function Index() {
   const { popular, recent, featured } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-      <div className="flex">
-        <FeaturedMessage sermon={featured} />
+    <SiPage>
+      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
+        <div className="flex">
+          <FeaturedMessage sermon={featured} />
+        </div>
+
+        <SermonCarousel
+          title={'Recent Uploads'}
+          sermons={recent.values}
+          customizer={(sermon) => {
+            // TODO: Use a better date library (moment or dayjs)
+            const date = new Date(sermon.createdAt as string);
+            const prettyDate = date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+
+            return <span className="font-thin">{`${prettyDate} `}</span>;
+          }}
+        />
+
+        <SermonCarousel
+          title={'Popular Sermons'}
+          sermons={popular.values}
+          customizer={(sermon) => (
+            <span className="font-thin">{`${formatDownloads(
+              sermon.hits,
+            )} Downloads`}</span>
+          )}
+        />
       </div>
-
-      <SermonCarousel
-        title={'Recent Uploads'}
-        sermons={recent.values}
-        customizer={(sermon) => {
-          // TODO: Use a better date library (moment or dayjs)
-          const date = new Date(sermon.createdAt as string);
-          const prettyDate = date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          });
-
-          return <span className="font-thin">{`${prettyDate} `}</span>;
-        }}
-      />
-
-      <SermonCarousel
-        title={'Popular Sermons'}
-        sermons={popular.values}
-        customizer={(sermon) => (
-          <span className="font-thin">{`${formatDownloads(
-            sermon.hits,
-          )} Downloads`}</span>
-        )}
-      />
-    </div>
+    </SiPage>
   );
 }

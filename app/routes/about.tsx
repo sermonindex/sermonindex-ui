@@ -1,3 +1,9 @@
+import SiPage from '~/components/si-page';
+
 export default function Index() {
-  return <h1>#About Page</h1>;
+  return (
+    <SiPage>
+      <h1>#About Page</h1>
+    </SiPage>
+  );
 }

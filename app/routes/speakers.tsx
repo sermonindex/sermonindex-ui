@@ -5,6 +5,7 @@ import { Contributor, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SpeakerList } from '~/components/speaker-list';
 import { StandardHeader } from '~/common/section';
+import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
@@ -26,52 +27,54 @@ export default function Index() {
   const [filter, setFilter] = useState<string>('');
 
   return (
-    <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-      <div className="flex flex-col w-full p-4">
-        <StandardHeader text="Featured Speakers" />
-        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
-          {featured.values.map((contributor, index) => (
-            <Link
-              to={`/speakers/${contributor.fullName
-                .toLowerCase()
-                .replace(/ /g, '-')}`}
-              key={index}
-            >
-              <div
+    <SiPage>
+      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
+        <div className="flex flex-col w-full p-4">
+          <StandardHeader text="Featured Speakers" />
+          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
+            {featured.values.map((contributor, index) => (
+              <Link
+                to={`/speakers/${contributor.fullName
+                  .toLowerCase()
+                  .replace(/ /g, '-')}`}
                 key={index}
-                className="flex flex-col items-center m-2 hover:underline"
               >
-                <img
-                  src={
-                    contributor.imageUrl
-                      ? contributor.imageUrl
-                      : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
-                  }
-                  alt={contributor.fullName}
-                  className="w-14 h-14 rounded-full object-cover"
-                />
-                <p className="text-center mt-2 text-sm">
-                  {contributor.fullName}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <StandardHeader text="All Speakers" />
-        <div className="">
-          <input
-            className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
-            placeholder="Find a speaker..."
-            onChange={(e) => setFilter(e.target.value.toLowerCase())}
-            required
-          />
-          <SpeakerList
-            contributors={contributors.values.filter((c) =>
-              c.fullName.toLowerCase().includes(filter),
-            )}
-          />
+                <div
+                  key={index}
+                  className="flex flex-col items-center m-2 hover:underline"
+                >
+                  <img
+                    src={
+                      contributor.imageUrl
+                        ? contributor.imageUrl
+                        : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+                    }
+                    alt={contributor.fullName}
+                    className="w-14 h-14 rounded-full object-cover"
+                  />
+                  <p className="text-center mt-2 text-sm">
+                    {contributor.fullName}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <StandardHeader text="All Speakers" />
+          <div className="">
+            <input
+              className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+              placeholder="Find a speaker..."
+              onChange={(e) => setFilter(e.target.value.toLowerCase())}
+              required
+            />
+            <SpeakerList
+              contributors={contributors.values.filter((c) =>
+                c.fullName.toLowerCase().includes(filter),
+              )}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </SiPage>
   );
 }

@@ -8,8 +8,6 @@ import {
 } from '@remix-run/react';
 
 import './tailwind.css';
-import { Header } from '~/components/header';
-import { Footer } from '~/components/footer';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -36,13 +34,9 @@ export default function App() {
       </head>
       <body>
         <main>
-          <div className="bg-si-light dark:bg-si-slate text-si-slate dark:text-si-light">
-            <section className="container mx-auto border-x-2 border-si-gray dark:border-si-dim">
-              <Header />
-              <Outlet />
-              <Footer />
-            </section>
-          </div>
+          {/* Note: See app/components/si-page.tsx */}
+          {/* We don't want to render components client side! */}
+          <Outlet />
         </main>
         <ScrollRestoration />
         <Scripts />
