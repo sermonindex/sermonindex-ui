@@ -1,5 +1,6 @@
 /// Sanitize that a string has some valid contents
-export function hasContent(str: string): boolean {
+export function hasContent(str: string | undefined): boolean {
+  str = str || '';
   str = str.trim();
   return (
     str !== '' &&
