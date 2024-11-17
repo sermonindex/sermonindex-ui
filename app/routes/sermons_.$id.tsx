@@ -35,7 +35,7 @@ export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
 
   return (
-    <SiPage>
+    <SiPage sermon={sermon}>
       <div className={'p-10'}>
         <StandardHeader text={sermon.title} />
         <div className={'p-2'}>

@@ -2,6 +2,8 @@ import { Link, useLocation } from '@remix-run/react';
 import { SearchBar } from '~/common/search-bar';
 import React, { useState, useEffect } from 'react';
 import { IoMoon, IoSunny } from 'react-icons/io5';
+import Breadcrumbs from '~/components/breadcrumbs';
+import { Sermon } from '~/api/interfaces';
 
 interface PageLink {
   name: string;
@@ -43,7 +45,11 @@ const BibleLinks: { [key: string]: PageLink } = {
   v4: { name: 'Psalm 18:2', linkTo: 'todo' },
 };
 
-export const Header = () => {
+interface HeaderProps {
+  sermon?: Sermon;
+}
+
+export const Header = ({ sermon }: HeaderProps) => {
   const location = useLocation();
   const [dark, setDark] = useState(false);
 
@@ -162,8 +168,8 @@ export const Header = () => {
       </div>
       {/* Third navbar - shortcuts */}
       <div className="border-b-2 border-si-gray dark:border-si-dim"></div>
-      {/* todo: breadcrumbs...I need to think more about how this will work */}
-      <div className="text-sm p-2">{'> Home '}</div>
+      {/* Breadcrumb Navigation */}
+      <Breadcrumbs location={location.pathname} sermon={sermon} />
     </header>
   );
 };
