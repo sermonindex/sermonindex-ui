@@ -43,17 +43,17 @@ export const SermonList = ({ sermons }: SermonListProps) => {
             <div className="pl-2 font-light">
               <div className="flex flex-col">
                 <div className="flex justify-between">
-                  {sermon.topics.length > 0 && (
-                    <span>Topics: {sermon.topics}</span>
-                  )}
-                  {sermon.bibleReferences.length > 0 && (
-                    <div className="flex justify-center">
-                      {' '}
-                      {/* Add mx-auto to center the scriptures */}
-                      Scriptures: {sermon.bibleReferences.join(', ')}
-                    </div>
-                  )}
-                  <div className="flex justify-end">
+                  <div>
+                    {sermon.topics.length > 0 && (
+                      <span>Topics: {sermon.topics}</span>
+                    )}
+                    {sermon.bibleReferences.length > 0 && (
+                      <div className="flex justify-center">
+                        Scriptures: {sermon.bibleReferences.join(', ')}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-end">
                     <span>Downloads: {formatDownloads(sermon.hits)}</span>
                   </div>
                 </div>
