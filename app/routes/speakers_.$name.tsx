@@ -49,7 +49,7 @@ export default function Index() {
             />
             <p className="text-left text-sm">{contributor.description}</p>
           </div>
-          <StandardHeader text="Sermons" />
+          <StandardHeader text={`Sermons (${sermons.values.length})`} />
           <input
             className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
             placeholder="Find a sermon..."
