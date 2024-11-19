@@ -51,7 +51,7 @@ export default function Index() {
           </div>
           <StandardHeader text={`Sermons (${sermons.values.length})`} />
           <input
-            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5"
+            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
             placeholder="Find a sermon..."
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
             required
