@@ -70,7 +70,7 @@ export const Header = ({ sermon }: HeaderProps) => {
     const prefersDarkMode = window.matchMedia(
       '(prefers-color-scheme: dark)',
     ).matches;
-    const storedMode = localStorage.getItem('si-color-mode');
+    const storedMode = localStorage.getItem('si-dark-mode');
 
     if (storedMode) {
       const dark = storedMode === 'dark';
