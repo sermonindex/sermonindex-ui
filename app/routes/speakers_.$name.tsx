@@ -3,16 +3,16 @@ import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { SermonList } from '~/components/sermon-list';
 import { StandardHeader } from '~/common/section';
+import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const fullName = params.name?.replace(/-/g, ' ');
-
   const [contributors, sermons] = await Promise.all([
-    fetchApi<ListResponse<Contributor>>(`/contributors?fullName=${fullName}`),
-    fetchApi<ListResponse<Sermon>>(`/sermons?fullName=${fullName}`),
+    fetchApi<ListResponse<Contributor>>(
+      `/contributors?fullNameSlug=${params.name}`,
+    ),
+    fetchApi<ListResponse<Sermon>>(`/sermons?fullNameSlug=${params.name}`),
   ]);
 
   if (

@@ -3,9 +3,9 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { SpeakerList } from '~/components/speaker-list';
 import { StandardHeader } from '~/common/section';
 import SiPage from '~/components/si-page';
+import { SpeakerList } from '~/components/speaker-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
@@ -33,12 +33,7 @@ export default function Index() {
           <StandardHeader text="Featured Speakers" />
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
             {featured.values.map((contributor, index) => (
-              <Link
-                to={`/speakers/${contributor.fullName
-                  .toLowerCase()
-                  .replace(/ /g, '-')}`}
-                key={index}
-              >
+              <Link to={`/speakers/${contributor.fullNameSlug}`} key={index}>
                 <div
                   key={index}
                   className="flex flex-col items-center m-2 hover:underline"

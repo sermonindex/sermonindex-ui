@@ -31,16 +31,14 @@ export const SpeakerList = ({ contributors }: SpeakerListProps) => {
             >
               <ul>
                 {group.map((contributor) => (
-                  <Link
-                    to={`/speakers/${contributor.fullName
-                      .toLowerCase()
-                      .replace(/ /g, '-')}`}
-                  >
+                  <Link to={`/speakers/${contributor.fullNameSlug}`}>
                     <li
                       className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
                       key={contributor.fullName}
                     >
-                      <span>{contributor.fullName}</span>
+                      <span>
+                        {contributor.fullName} ({contributor.sermonCount})
+                      </span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"

@@ -1,8 +1,7 @@
 import { Link } from '@remix-run/react';
-import { isNumber } from '~/common/sanitize';
-import { Sermon } from '~/api/interfaces';
-import React from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
+import { Sermon } from '~/api/interfaces';
+import { isNumber } from '~/common/sanitize';
 
 interface NavCrumb {
   name: string;
@@ -60,7 +59,7 @@ export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
     <div className="flex p-3 items-center">
       <ul className="flex flex-row items-center space-x-1">
         {nav.map((crumb, index) => (
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row items-center" key={index}>
             <a className="pr-1 text-md">{index > 0 && <IoIosArrowForward />}</a>
             <a>
               <span

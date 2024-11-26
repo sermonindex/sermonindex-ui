@@ -15,15 +15,15 @@ export enum ContributorType {
 
 export interface Contributor {
   id: number;
-  firstName: string;
-  lastName: string;
   fullName: string;
+  fullNameSlug: string;
   description?: string;
   imageUrl?: string;
   featured: boolean;
   type: ContributorType;
   createdAt: string;
   updatedAt: string;
+  sermonCount: number;
 }
 
 export interface Sermon {
@@ -37,7 +37,6 @@ export interface Sermon {
   title: string;
   description?: string;
 
-  // oldAudioUrl: string;
   audioUrl?: string;
   videoUrl?: string;
 
@@ -46,11 +45,11 @@ export interface Sermon {
 
   hits: number;
   featured: boolean;
-  // previouslyFeatured: boolean;
+  previouslyFeatured: boolean;
 
   preachedAt?: string;
   updatedAt: string;
   createdAt: string;
 
-  transcript?: string
+  transcript?: string;
 }

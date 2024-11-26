@@ -63,7 +63,7 @@ export default function Component() {
               />
 
               {/* todo(jdf): make the text wrap the image */}
-              <p className={'p-4'}>{contributor.description}</p>
+              <p className={'px-4'}>{contributor.description}</p>
             </div>
           </div>
           <div className="flex-grow sm:w-1/3">
