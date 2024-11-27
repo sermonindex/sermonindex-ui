@@ -16,7 +16,7 @@ interface PageLink {
 
 const Links: { [key: string]: PageLink } = {
   speakers: { name: 'All Speakers', linkTo: 'speakers' },
-  top100: { name: 'Top 100 Sermons', linkTo: 'todo' },
+  top100: { name: 'Top 100 Sermons', linkTo: 'top100' },
   recommended: { name: 'Recommended Sermons', linkTo: 'todo' },
   // todo: Do we want these, maybe on a large screen display???
   // tozer: { name: 'Tozer', linkTo: '/todo/speaker/id' },
