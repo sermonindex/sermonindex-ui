@@ -59,9 +59,13 @@ export default function Index() {
                         : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
                     }
                     alt={sermon.title}
-                    className="w-14 h-20 rounded-2xl object-cover absolute top-4 left-4"
+                    className="w-15 h-20 rounded-2xl object-cover absolute top-4 left-4"
                   />
-                  <div className="pl-20 items-center">{sermon.title}</div>
+                  <div className="pl-20 items-center text-md">
+                    {sermon.title.length > 50
+                      ? sermon.title.substring(0, 47) + '...'
+                      : sermon.title}
+                  </div>
                   <p className="absolute bottom-4 left-4 text-sm">
                     {sermon.contributorFullName}
                   </p>
