@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react';
 import { Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
-import { FaFileAudio, FaFileVideo } from 'react-icons/fa';
+import { FaVolumeUp, FaVideo } from 'react-icons/fa';
 import { hasContent } from '~/common/sanitize';
 
 function stripQuotes(str: string): string {
@@ -13,9 +13,9 @@ function stripQuotes(str: string): string {
 
 function getMediaIcon(sermon: Sermon) {
   if (hasContent(sermon.videoUrl)) {
-    return <FaFileVideo />;
+    return <FaVideo />;
   } else if (hasContent(sermon.audioUrl)) {
-    return <FaFileAudio />;
+    return <FaVolumeUp />;
   }
   // todo: detect if this is a text message, a book, etc.
   return null;
