@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 import Breadcrumbs from '~/components/breadcrumbs';
 import { Sermon } from '~/api/interfaces';
+import { hasContent } from '~/common/sanitize';
 
 interface PageLink {
   name: string;
+  short?: string;
   linkTo: string;
   // todo: add screen size min to show (like sm, md, lg, xl)
   // todo: add smallText for sm,
@@ -15,9 +17,13 @@ interface PageLink {
 }
 
 const Links: { [key: string]: PageLink } = {
-  speakers: { name: 'All Speakers', linkTo: 'speakers' },
-  top100: { name: 'Top 100 Sermons', linkTo: 'top100' },
-  recommended: { name: 'Recommended Sermons', linkTo: 'todo' },
+  speakers: { name: 'All Speakers', short: 'Speakers', linkTo: 'speakers' },
+  top100: { name: 'Top 100 Sermons', short: 'Top 100', linkTo: 'top100' },
+  recommended: {
+    name: 'Recommended Sermons',
+    short: 'Recommended',
+    linkTo: 'todo',
+  },
   // todo: Do we want these, maybe on a large screen display???
   // tozer: { name: 'Tozer', linkTo: '/todo/speaker/id' },
   // ravenhill: { name: 'Ravenhill', linkTo: '/todo/speaker/id' },
@@ -120,14 +126,10 @@ export const Header = ({ sermon }: HeaderProps) => {
       </div>
       {/* Second navbar - page links */}
       <div className="flex px-8 bg-si-olive items-center justify-center py-2">
-        <ul className="flex space-x-6 text-white text-xl">
+        <ul className="flex space-x-6 text-white text-xl whitespace-nowrap overflow-x-hidden">
           {Object.values(Links).map((link: PageLink) => {
             if (link.linkTo === '') {
-              return (
-                <span className="text-si-olive" key={link.name}>
-                  {link.name}
-                </span>
-              );
+              return <span key={link.name}>{link.name}</span>;
             }
             const active = location.pathname === `/${link.linkTo}`;
             return (
@@ -138,7 +140,10 @@ export const Header = ({ sermon }: HeaderProps) => {
                 key={link.name}
                 to={`/${link.linkTo}`}
               >
-                {link.name}
+                <span className="hidden xl:inline">{link.name}</span>
+                <span className="xl:hidden">
+                  {hasContent(link.short) ? link.short : link.name}
+                </span>
               </Link>
             );
           })}
@@ -146,7 +151,7 @@ export const Header = ({ sermon }: HeaderProps) => {
       </div>
       {/* Bible navbar */}
       <div className="flex px-8 bg-si-light dark:bg-si-dark items-center justify-center py-2">
-        <ul className="flex space-x-6 text-lg items-center">
+        <ul className="flex space-x-6 text-lg items-center whitespace-nowrap overflow-x-hidden">
           {Object.values(BibleLinks).map((link: PageLink) => {
             if (link.linkTo === '') {
               return <span key={link.name}>{link.name}</span>;
