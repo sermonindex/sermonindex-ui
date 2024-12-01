@@ -61,18 +61,26 @@ export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
         {nav.map((crumb, index) => (
           <div className="flex flex-row items-center" key={index}>
             <a className="pr-1 text-md">{index > 0 && <IoIosArrowForward />}</a>
-            <a>
-              <span
-                key={index}
-                className="flex no-underline hover:underline text-sm"
-              >
-                <Link to={crumb.linkTo}>
-                  {crumb.name
-                    .replace('-', ' ')
-                    .replace(/\b\w/g, (l) => l.toUpperCase())}
-                </Link>
+            {index < nav.length - 1 ? ( // Conditionally render the link
+              <a>
+                <span
+                  key={index}
+                  className="flex no-underline hover:underline text-sm"
+                >
+                  <Link to={crumb.linkTo}>
+                    {crumb.name
+                      .replace('-', ' ')
+                      .replace(/\b\w/g, (l) => l.toUpperCase())}
+                  </Link>
+                </span>
+              </a>
+            ) : (
+              <span className="text-sm italic">
+                {crumb.name
+                  .replace('-', ' ')
+                  .replace(/\b\w/g, (l) => l.toUpperCase())}
               </span>
-            </a>
+            )}
           </div>
         ))}
       </ul>
