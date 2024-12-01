@@ -41,9 +41,10 @@ export const Footer = () => {
           </div>
 
           <hr className="my-2 border-si-olive" />
-          {/* About Column */}
+
           <div className="flex flex-row justify-between py-4">
-            <div className="flex flex-col">
+            {/* About Column */}
+            <div className="flex-1 flex flex-col">
               <h3 className="text-si-light text-lg font-bold">About</h3>
               <ul className="text-si-light text-sm">
                 {Object.values(AboutLinks).map((link: FooterAboutLink) => {
@@ -60,9 +61,9 @@ export const Footer = () => {
               </ul>
             </div>
             {/* Follow, Social Media Column */}
-            <div className="flex flex-col">
+            <div className="flex-1 flex flex-col px-4 text-center">
               <h3 className="text-si-light text-lg font-bold">Follow</h3>
-              <ul className="flex flex-row text-si-light text-sm space-x-2 pt-2">
+              <ul className="flex flex-row text-si-light text-sm space-x-2 pt-2 justify-center">
                 <a
                   href="https://www.facebook.com/search/top?q=sermonindex.net"
                   target="_blank"
@@ -105,29 +106,24 @@ export const Footer = () => {
                 </a>
               </ul>
             </div>
-            {/* Subscribe Column */}
-            <div className="flex flex-col">
-              <h3 className="text-si-light text-lg font-bold">
-                Receive Updates
-              </h3>
-              <div className="text-si-light text-sm py-2">
-                {/* input and button to subscribe by email */}
-                <div className="flex flex-col">
-                  <input
-                    className="border-2 border-si-olive bg-si-dark text-si-light text-sm rounded-lg px-4 py-2"
-                    placeholder="Email Address"
-                  />
-                  <div className="py-2 flex">
-                    {/* todo: grab input and submit this somewhere - do we need some backoff to prevent this getting hammered? */}
-                    <button className="flex-grow border-2 border-si-olive text-si-light text-sm px-4 py-2 rounded-lg">
-                      Subscribe
-                    </button>
-                  </div>
-                </div>
+            {/* Quote (Only shown if the screen size is medium or larger */}
+            <div className="flex-1 flex-col relative text-si-light text-center hidden md:block">
+              <img
+                src="/wesley-bg.png"
+                alt="Wesley Quote"
+                className="w-3/4 h-auto ml-auto pb-3"
+              />
+              <div className="bg-si-olive bg-opacity-10 rounded-lg shadow-2xl">
+                <h2 className="text-md font-bold text-balance px-2 pt-2">
+                  “God grant that I may never live to be useless!”
+                </h2>
+                <p className="text-xs font-bold italic text-center px-2 py-2">
+                  John Wesley
+                </p>
               </div>
             </div>
           </div>
-          <p className="text-si-tan text-sm py-4">
+          <p className="text-si-tan text-sm py-4 text-center">
             © {Math.max(new Date().getFullYear(), 2024)} SermonIndex
           </p>
         </div>
