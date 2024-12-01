@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { Contributor, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
@@ -48,6 +48,12 @@ export default function Component() {
           <div className="flex-grow sm:w-2/3">
             {/* ... Speaker bio ... */}
             <SpeakerBio contributor={contributor} />
+            <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
+              <p className="hover:underline px-4 py-2">
+                See all {contributor.sermonCount} sermons by{' '}
+                {contributor.fullName}
+              </p>
+            </Link>
           </div>
           <div className="flex-grow sm:w-1/3">
             {/* ... Scriptures content ... */}

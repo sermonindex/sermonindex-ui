@@ -38,14 +38,15 @@ export default function Index() {
       <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full p-4">
           <SpeakerBio contributor={contributor} />
-          <StandardHeader text={`Sermons (${sermons.values.length})`} />
-          <input
-            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-            placeholder="Find a sermon..."
-            onChange={(e) => setFilter(e.target.value.toLowerCase())}
-            required
-          />
-          <div className="">
+          <div id="sermon-list">
+            <StandardHeader text={`Sermons (${sermons.values.length})`} />
+            <input
+              className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
+              placeholder="Find a sermon..."
+              onChange={(e) => setFilter(e.target.value.toLowerCase())}
+              required
+            />
+
             <SermonList
               sermons={sermons.values.filter((s) =>
                 s.title.toLowerCase().includes(filter),
