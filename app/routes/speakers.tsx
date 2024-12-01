@@ -50,6 +50,9 @@ export default function Index() {
                   <p className="text-center mt-2 text-sm">
                     {contributor.fullName}
                   </p>
+                  <p className="text-center text-sm">
+                    ({contributor.sermonCount})
+                  </p>
                 </div>
               </Link>
             ))}
