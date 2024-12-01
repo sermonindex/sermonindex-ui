@@ -1,10 +1,11 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { Contributor, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
+import { SpeakerBio } from '~/components/speaker-bio';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -46,25 +47,7 @@ export default function Component() {
         <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
           <div className="flex-grow sm:w-2/3">
             {/* ... Speaker bio ... */}
-            <Link
-              to={`/speakers/${contributor.fullName
-                .toLowerCase()
-                .replace(/ /g, '-')}`}
-            >
-              {/* todo(jdf): make a SpeakerLink that just takes a contributor object */}
-              <StandardHeader text={contributor.fullName} />
-            </Link>
-            <div className={'p-4 flex'}>
-              <img
-                className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
-                loading={'lazy'}
-                src={sermon.contributorImageUrl ?? ''}
-                alt={sermon.contributorFullName}
-              />
-
-              {/* todo(jdf): make the text wrap the image */}
-              <p className={'px-4'}>{contributor.description}</p>
-            </div>
+            <SpeakerBio contributor={contributor} />
           </div>
           <div className="flex-grow sm:w-1/3">
             {/* ... Scriptures content ... */}
