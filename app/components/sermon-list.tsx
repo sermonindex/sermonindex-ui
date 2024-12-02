@@ -1,8 +1,9 @@
 import { Link } from '@remix-run/react';
-import { Sermon } from '~/api/interfaces';
+import { getSermonType, Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
 import { FaVolumeUp, FaVideo } from 'react-icons/fa';
 import { hasContent } from '~/common/sanitize';
+import { IoDocumentText } from 'react-icons/io5';
 
 function stripQuotes(str: string): string {
   if (str.startsWith('"') && str.endsWith('"')) {
@@ -12,12 +13,15 @@ function stripQuotes(str: string): string {
 }
 
 function getMediaIcon(sermon: Sermon) {
-  if (hasContent(sermon.videoUrl)) {
+  const sermonType = getSermonType(sermon);
+  if (sermonType === 'Video') {
     return <FaVideo />;
-  } else if (hasContent(sermon.audioUrl)) {
+  } else if (sermonType === 'Audio') {
     return <FaVolumeUp />;
+  } else if (sermonType === 'Text') {
+    return <IoDocumentText />;
   }
-  // todo: detect if this is a text message, a book, etc.
+  // todo: other media types might be added like book, quote, short, etc.
   return null;
 }
 

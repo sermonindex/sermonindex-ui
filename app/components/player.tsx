@@ -72,7 +72,7 @@ export const MessageDescription = ({
       </div>
     );
   }
-  return <div />;
+  return <div className="p-2"></div>;
 };
 
 export const MessageDownloads = ({

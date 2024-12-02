@@ -1,11 +1,12 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { Contributor, Sermon } from '~/api/interfaces';
+import { Contributor, getSermonType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
+import { hasContent } from '~/common/sanitize';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -34,15 +35,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
-
+  const sermonType = getSermonType(sermon);
   return (
     <SiPage sermon={sermon}>
-      <div className={'p-10'}>
-        <StandardHeader text={sermon.title} />
-        <div className={'p-2'}>
-          {/* todo(jdf): handle text only sermons */}
-          <SermonPlayer sermon={sermon} />
-        </div>
+      <div className="p-10">
+        {/* Only show this div if sermonType is Audio or Video */}
+        {['Audio', 'Video'].includes(sermonType) && (
+          <div>
+            <StandardHeader text={sermon.title} />
+            <div className="p-2">
+              <SermonPlayer sermon={sermon} />
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
           <div className="flex-grow sm:w-2/3">
@@ -72,15 +77,21 @@ export default function Component() {
         </div>
         <div>
           {/* ... Sermon summary ... */}
-          <div className={'pt-8'}>
-            <StandardHeader text={'Sermon Summary'} />
-            <div className={'p-4'}>
-              <p>{sermon.description}</p>
+          {hasContent(sermon.description) && (
+            <div className={'pt-8'}>
+              <StandardHeader text={'Sermon Summary'} />
+              <div className={'p-4'}>
+                <p>{sermon.description}</p>
+              </div>
             </div>
-          </div>
+          )}
           {/* ... Sermon transcript ... */}
           <div className={'pt-8'}>
-            <StandardHeader text={'Sermon Transcription'} />
+            <StandardHeader
+              text={
+                sermonType === 'Text' ? sermon.title : 'Sermon Transcription'
+              }
+            />
             <div className={'p-4'}>
               <p className="whitespace-pre-line">{sermon.transcript}</p>
             </div>

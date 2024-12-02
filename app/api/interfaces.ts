@@ -1,3 +1,5 @@
+import { hasContent } from '~/common/sanitize';
+
 export type ListResponse<T> = {
   values: T[];
 };
@@ -52,4 +54,21 @@ export interface Sermon {
   createdAt: string;
 
   transcript?: string;
+}
+
+export enum SermonType {
+  Audio = 'Audio',
+  Video = 'Video',
+  Text = 'Text',
+}
+
+export function getSermonType(sermon: Sermon): SermonType {
+  if (hasContent(sermon.videoUrl)) {
+    return SermonType.Video;
+  } else if (hasContent(sermon.audioUrl)) {
+    return SermonType.Audio;
+  } else if (hasContent(sermon.transcript)) {
+    return SermonType.Text;
+  }
+  return SermonType.Text;
 }
