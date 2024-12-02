@@ -15,7 +15,7 @@ export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
       <div className="p-2">
         <MessagePlayer
           title={sermon.title}
-          url={sermon.audioUrl ?? ''}
+          url={sermon.audioUrl ?? sermon.videoUrl ?? ''}
           iconUrl={sermon.contributorImageUrl}
           speaker={sermon.contributorFullName}
           description={sermon.description ?? ''}
