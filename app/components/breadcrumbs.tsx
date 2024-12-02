@@ -17,6 +17,14 @@ function isSermonCrumb(crumbs: string[]): boolean {
   );
 }
 
+function isSpeakerCrumb(crumbs: string[]): boolean {
+  return (
+    crumbs.length > 1 &&
+    crumbs[0] === 'speakers' &&
+    !isNumber(parseInt(crumbs[1]))
+  );
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
@@ -40,16 +48,36 @@ export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
     });
     nav.push({
       name: speaker,
-      linkTo: `/speakers/${speaker.toLowerCase().replace(/ /g, '-')}`,
+      // todo: the contributor has a slug, but it's not
+      //   available on the sermon type.
+      linkTo: `/speakers/${speaker
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/\./g, '')}`,
     });
     nav.push({
       name: sermonName,
       linkTo: `/sermons/${crumbs[1]}`,
     });
+  } else if (isSpeakerCrumb(crumbs)) {
+    nav.push({
+      name: 'Speakers',
+      linkTo: '/speakers',
+    });
+    nav.push({
+      // todo: There is no way to get back to A.W. Tozer from aw-tozer
+      //  The best we can do right now is display Aw Tozer
+      name: crumbs[1]
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (l) => l.toUpperCase()),
+      linkTo: `/speakers/${crumbs[1]}`,
+    });
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({
-        name: crumbs[i],
+        name: crumbs[i]
+          .replace(/-/g, ' ')
+          .replace(/\b\w/g, (l) => l.toUpperCase()),
         linkTo: `/${crumbs.slice(0, i + 1).join('/')}`,
       });
     }
@@ -67,11 +95,7 @@ export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
                   key={index}
                   className="flex no-underline hover:underline text-sm"
                 >
-                  <Link to={crumb.linkTo}>
-                    {crumb.name
-                      .replace('-', ' ')
-                      .replace(/\b\w/g, (l) => l.toUpperCase())}
-                  </Link>
+                  <Link to={crumb.linkTo}>{crumb.name}</Link>
                 </span>
               </a>
             ) : (
