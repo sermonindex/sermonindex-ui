@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sermon } from '~/api/interfaces';
 import { StandardHeader } from '~/common/section';
-import { MessagePlayer, MessageType } from '~/components/player';
+import { MessagePlayer, MessageType } from './player';
 
 interface FeaturedMessageProps {
   sermon: Sermon;
@@ -10,7 +10,7 @@ interface FeaturedMessageProps {
 export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   /// Theoretically featured would just take a SID (sermon id) and use the API to get the rest of this info
   return (
-    <div className="px-4 pt-4">
+    <div className="px-4 pt-4 w-full">
       <StandardHeader text={'Featured Message'} />
       <div className="p-2">
         <MessagePlayer
@@ -18,6 +18,7 @@ export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
           url={sermon.audioUrl ?? sermon.videoUrl ?? ''}
           iconUrl={sermon.contributorImageUrl}
           speaker={sermon.contributorFullName}
+          speakerSlug={sermon.contributorFullNameSlug}
           description={sermon.description ?? ''}
           media={MessageType.Audio}
           downloads={sermon.hits ?? 0}

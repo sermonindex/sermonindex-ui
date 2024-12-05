@@ -28,7 +28,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col space-y-8 md:pt-3 md:px-8 min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full p-4">
           <StandardHeader text="Featured Speakers" />
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">

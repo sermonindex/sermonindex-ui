@@ -2,9 +2,9 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { formatDownloads } from '~/common/format-downloads';
 import { StandardHeader } from '~/common/section';
 import SiPage from '~/components/si-page';
-import { formatDownloads } from '~/common/format-downloads';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [popular] = await Promise.all([
@@ -25,11 +25,11 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col space-y-8 md:pt-6 md:px-8 min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full p-4">
           <StandardHeader text="Top 100" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-4 pt-4">
             {popular.values.map((sermon, index) => (
               <Link to={`/sermons/${sermon.id}`} key={index}>
                 <div

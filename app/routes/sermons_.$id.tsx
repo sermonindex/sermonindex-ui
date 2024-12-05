@@ -1,12 +1,12 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { Contributor, getSermonType, Sermon } from '~/api/interfaces';
+import { Contributor, Sermon, getSermonType } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { hasContent } from '~/common/sanitize';
 import { StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
-import { hasContent } from '~/common/sanitize';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -37,7 +37,7 @@ export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
   const sermonType = getSermonType(sermon);
   return (
-    <SiPage sermon={sermon}>
+    <SiPage>
       <div className="p-10">
         {/* Only show this div if sermonType is Audio or Video */}
         {['Audio', 'Video'].includes(sermonType) && (

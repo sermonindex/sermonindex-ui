@@ -1,11 +1,9 @@
 import { Link, useLocation } from '@remix-run/react';
-import { SearchBar } from '~/common/search-bar';
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 import { IoMoon, IoSunny } from 'react-icons/io5';
-import Breadcrumbs from '~/components/breadcrumbs';
-import { Sermon } from '~/api/interfaces';
 import { hasContent } from '~/common/sanitize';
-
+import { SermonSearch } from './sermon-search';
 interface PageLink {
   name: string;
   short?: string;
@@ -51,13 +49,12 @@ const BibleLinks: { [key: string]: PageLink } = {
   v4: { name: 'Psalm 18:2', linkTo: 'todo' },
 };
 
-interface HeaderProps {
-  sermon?: Sermon;
-}
+interface HeaderProps {}
 
-export const Header = ({ sermon }: HeaderProps) => {
+export const Header = ({}: HeaderProps) => {
   const location = useLocation();
   const [dark, setDark] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const darkModeHandler = (dark: boolean) => {
     setDark(dark);
@@ -86,95 +83,110 @@ export const Header = ({ sermon }: HeaderProps) => {
     }
   }, []);
 
+  const [isSearchVisible, setIsSearchVisible] = useState(true);
+  const toggleSearch = () => setIsSearchVisible(!isSearchVisible);
+
+  const options = [
+    { value: '1', label: 'Option 1' },
+    { value: '2', label: 'Option 2' },
+    { value: '3', label: 'Option 3' },
+  ];
+
   return (
     <header className="flex flex-col">
       {/* Top navbar - logo, search bar, and site options */}
-      <div className="flex h-28 px-8 bg-si-main items-center justify-between">
+      <div className="relative flex w-full space-x-4 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal">
+        {/* <div className="flex w-full h-20 md:h-28 px-2 md:px-8 bg-si-main items-center justify-between"> */}
         <Link to="/">
-          <div className="flex-shrink-0">
-            <img
-              className="h-24 min-w-full py-3 pr-8 object-contain"
-              src="/sermon-index.svg"
-              alt="sermon-index"
-            />
-          </div>
-        </Link>
-        <div className="flex flex-grow pl-8 pr-20">
-          <SearchBar
-            placeholder="Search Sermons..."
-            inputStyle="border-2 border-si-olive"
+          <img
+            // className="h-10 md:h-16 mr-2 md:mr-8 mb-1"
+            className="w-24 lg:w-48 h-auto"
+            src="/sermon-index.svg"
+            alt="sermon-index"
           />
+        </Link>
+        <div
+          className={`md:hidden ${
+            showMobileSearch ? 'text-si-accent' : 'text-white'
+          }`}
+          onClick={() => setShowMobileSearch(!showMobileSearch)}
+        >
+          <FaSearch />
+        </div>
+        <div className="hidden md:inline flex-1">
+          <SermonSearch />
         </div>
 
-        <div className="flex items-center justify-center text-si-light">
-          <div className="px-3 text-white text-lg">
-            <IoMoon />
+        <div className="hidden md:block items-center justify-center text-si-light hover:cursor-pointer">
+          <div
+            className="px-3 text-white text-lg"
+            onClick={() => darkModeHandler(!dark)}
+          >
+            {dark ? <IoSunny /> : <IoMoon />}
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              checked={!dark}
-              onChange={() => darkModeHandler(!dark)}
-            />
-            <div className="w-11 h-6 bg-white peer-focus:outline-none rounded-full peer after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-si-main after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
-            <div className="px-3 text-white text-lg">
-              <IoSunny />
-            </div>
-          </label>
         </div>
       </div>
-      {/* Second navbar - page links */}
-      <div className="flex px-8 bg-si-olive items-center justify-center py-2">
-        <ul className="flex space-x-6 text-white text-xl whitespace-nowrap overflow-x-hidden">
-          {Object.values(Links).map((link: PageLink) => {
-            if (link.linkTo === '') {
-              return <span key={link.name}>{link.name}</span>;
-            }
-            const active = location.pathname === `/${link.linkTo}`;
-            return (
-              <Link
-                className={`block capitalize ${
-                  active ? 'text-si-accent' : ''
-                } hover:text-si-accent`}
-                key={link.name}
-                to={`/${link.linkTo}`}
-              >
-                <span className="hidden xl:inline">{link.name}</span>
-                <span className="xl:hidden">
-                  {hasContent(link.short) ? link.short : link.name}
-                </span>
-              </Link>
-            );
-          })}
-        </ul>
+      <div
+        className={`${
+          showMobileSearch ? 'visible' : 'hidden'
+        } md:hidden absolute top-[67px] h-10 w-full px-2 bg-si-olive items-center justify-center`}
+      >
+        <SermonSearch />
+      </div>
+      <div className="flex items-center justify-center h-11 px-4 md:px-8 py-2 bg-si-olive">
+        <div className="overflow-x-auto whitespace-nowrap w-full no-scrollbar">
+          <div className="flex md:justify-center space-x-6 text-white text-xl">
+            {Object.values(Links).map((link: PageLink) => {
+              if (link.linkTo === '') {
+                return <span key={link.name}>{link.name}</span>;
+              }
+              const active = location.pathname === `/${link.linkTo}`;
+              return (
+                <Link
+                  className={`block capitalize ${
+                    active ? 'text-si-accent' : ''
+                  } hover:text-si-accent`}
+                  key={link.name}
+                  to={`/${link.linkTo}`}
+                >
+                  <span className="hidden xl:inline">{link.name}</span>
+                  <span className="xl:hidden">
+                    {hasContent(link.short) ? link.short : link.name}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
       {/* Bible navbar */}
-      <div className="flex px-8 bg-si-light dark:bg-si-dark items-center justify-center py-2">
-        <ul className="flex space-x-6 text-lg items-center whitespace-nowrap overflow-x-hidden">
-          {Object.values(BibleLinks).map((link: PageLink) => {
-            if (link.linkTo === '') {
-              return <span key={link.name}>{link.name}</span>;
-            }
-            const active = location.pathname === `/${link.linkTo}`;
-            return (
-              <Link
-                className={`block capitalize ${
-                  active ? 'text-si-accent' : ''
-                } hover:text-si-accent`}
-                key={link.name}
-                to={`/${link.linkTo}`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
-        </ul>
+      <div className="flex items-center justify-center h-11 px-4 md:px-8 py-2 bg-si-light dark:bg-si-dark">
+        <div className="overflow-x-auto whitespace-nowrap w-full no-scrollbar">
+          <div className="flex md:justify-center space-x-6 text-lg">
+            {Object.values(BibleLinks).map((link: PageLink) => {
+              if (link.linkTo === '') {
+                return <span key={link.name}>{link.name}</span>;
+              }
+              const active = location.pathname === `/${link.linkTo}`;
+              return (
+                <Link
+                  className={`block capitalize ${
+                    active ? 'text-si-accent' : ''
+                  } hover:text-si-accent`}
+                  key={link.name}
+                  to={`/${link.linkTo}`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
       {/* Third navbar - shortcuts */}
       <div className="border-b-2 border-si-gray dark:border-si-dim"></div>
       {/* Breadcrumb Navigation */}
-      <Breadcrumbs location={location.pathname} sermon={sermon} />
+      {/* <Breadcrumbs location={location.pathname} sermon={sermon} /> */}
     </header>
   );
 };

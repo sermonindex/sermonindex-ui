@@ -39,7 +39,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col space-y-8 md:pt-6 md:px-8 min-h-[calc(100vh-80px)]">
         <div className="flex">
           <FeaturedMessage sermon={featured} />
         </div>

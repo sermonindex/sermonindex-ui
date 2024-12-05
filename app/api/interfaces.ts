@@ -34,6 +34,7 @@ export interface Sermon {
 
   contributorId: number;
   contributorFullName: string;
+  contributorFullNameSlug: string;
   contributorImageUrl?: string;
 
   title: string;

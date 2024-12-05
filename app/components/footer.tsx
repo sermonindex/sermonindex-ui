@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import {
   RiFacebookLine,
   RiInstagramLine,
@@ -5,7 +6,6 @@ import {
   RiTwitterXLine,
   RiYoutubeLine,
 } from 'react-icons/ri';
-import { Link } from '@remix-run/react';
 
 interface FooterAboutLink {
   name: string;
@@ -27,7 +27,7 @@ export const Footer = () => {
       <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-dim"></div>
       <div className="bg-si-dark p-4">
         <div className="mx-10">
-          <div className="flex flex-row justify-between py-4">
+          <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between py-4">
             <div className="flex flex-col text-wrap text-lg font-bold text-white">
               Everything we make is available for free because of a generous
               community of supporters.
@@ -41,10 +41,9 @@ export const Footer = () => {
           </div>
 
           <hr className="my-2 border-si-olive" />
-
-          <div className="flex flex-row justify-between py-4">
-            {/* About Column */}
-            <div className="flex-1 flex flex-col">
+          {/* About Column */}
+          <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between py-4">
+            <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">About</h3>
               <ul className="text-si-light text-sm">
                 {Object.values(AboutLinks).map((link: FooterAboutLink) => {

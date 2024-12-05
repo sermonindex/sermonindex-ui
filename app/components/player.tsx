@@ -1,15 +1,18 @@
 // Don't re-arrange these imports or else vidstack styling breaks
 import '@vidstack/react/player/styles/default/theme.css';
+
 import '@vidstack/react/player/styles/default/layouts/audio.css';
+
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
 import {
   DefaultAudioLayout,
-  defaultLayoutIcons,
   DefaultVideoLayout,
+  defaultLayoutIcons,
 } from '@vidstack/react/player/layouts/default';
 
+import { Link } from '@remix-run/react';
 import React, { useState } from 'react';
 import { Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
@@ -30,6 +33,7 @@ interface MessageComment {
 interface MessagePlayerProps {
   title: string;
   speaker: string;
+  speakerSlug: string;
   media: MessageType;
   url: string;
   description: string;
@@ -48,6 +52,7 @@ export function sermonIntoMessagePlayerProps(
   return {
     title: sermon.title,
     speaker: sermon.contributorFullName ?? '',
+    speakerSlug: sermon.contributorFullNameSlug,
     media: sermon.audioUrl ? MessageType.Audio : MessageType.Video,
     url: sermon.audioUrl ?? sermon.videoUrl ?? '',
     description: sermon.description ?? '',
@@ -188,34 +193,32 @@ export const AudioPlayer = (
       {message.bodyOnly ? (
         <MessageDescription description={message.description} />
       ) : (
-        <div className={'p-2 flex items-start space-x-4'}>
-          <img
-            src={
-              message.iconUrl
-                ? message.iconUrl
-                : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
-            }
-            alt={message.speaker}
-            className="flex-none rounded-lg bg-slate-100"
-            loading={'lazy'}
-          />
-          <div className="flex-auto space-y-2">
-            <h2 className={'text-lg leading-6 font-semibold truncate'}>
-              {message.title}
-            </h2>
-            <div
-              className={
-                'flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 leading-6 text-sm'
+        <div>
+          <div className={'p-2 flex items-start space-x-4'}>
+            <img
+              src={
+                message.iconUrl
+                  ? message.iconUrl
+                  : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
               }
-            >
-              <p>
-                {/* todo: make speaker link to speaker page */}
-                <abbr title={'Speaker'}>by</abbr> {message.speaker}
-              </p>
-              <p> Topic: {message.topic}</p>
-              <p>Scripture(s): {message.scriptures?.join(', ')}</p>
+              alt={message.speaker}
+              className="h-20 md:h-28 flex-none rounded-lg bg-slate-100"
+              loading={'lazy'}
+            />
+            <div className="flex flex-col">
+              <h2 className={'text-lg leading-6 font-semibold text-wrap'}>
+                {message.title}
+              </h2>
+              <span>
+                by{' '}
+                <span className="underline md:hover:underline">
+                  <Link to={`/speakers/${message.speakerSlug}`}>
+                    {message.speaker}
+                  </Link>
+                </span>
+              </span>
+              <p className="hidden md:inline pt-4">{message.description}</p>
             </div>
-            <MessageDescription description={message.description} />
           </div>
         </div>
       )}
