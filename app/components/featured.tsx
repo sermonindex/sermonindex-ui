@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sermon } from '~/api/interfaces';
 import { StandardHeader } from '~/common/section';
-import { MessagePlayer, MessageType } from './player';
+import { MessagePlayer, MessagePlayerProps, MessageType } from './player';
 
 interface FeaturedMessageProps {
   sermon: Sermon;
@@ -9,24 +9,17 @@ interface FeaturedMessageProps {
 
 export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   /// Theoretically featured would just take a SID (sermon id) and use the API to get the rest of this info
+  const message: MessagePlayerProps = {
+    sermon: sermon,
+    media: MessageType.Audio, // For now, we force all featured messages to be audio
+    bodyOnly: false,
+  };
+
   return (
     <div className="px-4 pt-4 w-full">
       <StandardHeader text={'Featured Message'} />
       <div className="p-2">
-        <MessagePlayer
-          title={sermon.title}
-          url={sermon.audioUrl ?? sermon.videoUrl ?? ''}
-          iconUrl={sermon.contributorImageUrl}
-          speaker={sermon.contributorFullName}
-          speakerSlug={sermon.contributorFullNameSlug}
-          description={sermon.description ?? ''}
-          media={MessageType.Audio}
-          downloads={sermon.hits ?? 0}
-          // TODO: Topics can be a list probably?
-          topic={sermon.topics.join(', ')}
-          scriptures={sermon.bibleReferences}
-          // todo: experiment with comments
-        />
+        <MessagePlayer message={message} />
       </div>
     </div>
   );

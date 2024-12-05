@@ -73,3 +73,7 @@ export function getSermonType(sermon: Sermon): SermonType {
   }
   return SermonType.Text;
 }
+
+export function getSermonUrl(sermon: Sermon): string | undefined {
+  return sermon.videoUrl || sermon.audioUrl;
+}

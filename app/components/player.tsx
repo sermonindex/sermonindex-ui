@@ -1,8 +1,6 @@
 // Don't re-arrange these imports or else vidstack styling breaks
 import '@vidstack/react/player/styles/default/theme.css';
-
 import '@vidstack/react/player/styles/default/layouts/audio.css';
-
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
@@ -14,7 +12,7 @@ import {
 
 import { Link } from '@remix-run/react';
 import React, { useState } from 'react';
-import { Sermon } from '~/api/interfaces';
+import { getSermonUrl, Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
 import { hasContent, isNumber } from '~/common/sanitize';
 
@@ -23,26 +21,9 @@ export enum MessageType {
   Video = 'video',
 }
 
-interface MessageComment {
-  author: string;
-  title: string;
-  comment: string;
-  likes: number;
-}
-
-interface MessagePlayerProps {
-  title: string;
-  speaker: string;
-  speakerSlug: string;
+export interface MessagePlayerProps {
+  sermon: Sermon;
   media: MessageType;
-  url: string;
-  description: string;
-  topic?: string; // todo: convert to array
-  scriptures?: string[];
-  iconUrl?: string;
-  downloads?: number;
-  comments?: MessageComment[];
-  message?: MessagePlayerProps;
   bodyOnly?: boolean; // eeewwww, gross. I want to improve this...
 }
 
@@ -50,16 +31,8 @@ export function sermonIntoMessagePlayerProps(
   sermon: Sermon,
 ): MessagePlayerProps {
   return {
-    title: sermon.title,
-    speaker: sermon.contributorFullName ?? '',
-    speakerSlug: sermon.contributorFullNameSlug,
+    sermon: sermon,
     media: sermon.audioUrl ? MessageType.Audio : MessageType.Video,
-    url: sermon.audioUrl ?? sermon.videoUrl ?? '',
-    description: sermon.description ?? '',
-    topic: sermon.topics.join(', '),
-    scriptures: sermon.bibleReferences,
-    iconUrl: sermon.contributorImageUrl,
-    downloads: sermon.hits,
     bodyOnly: true,
   };
 }
@@ -67,7 +40,7 @@ export function sermonIntoMessagePlayerProps(
 export const MessageDescription = ({
   description,
 }: {
-  description: string;
+  description: string | undefined;
 }) => {
   if (hasContent(description)) {
     return (
@@ -100,13 +73,13 @@ export const MessageDownloads = ({
 export const SermonPlayer = (
   props: React.PropsWithChildren<{ sermon: Sermon }>,
 ) => {
-  return <MessagePlayer {...sermonIntoMessagePlayerProps(props.sermon)} />;
+  return <MessagePlayer message={sermonIntoMessagePlayerProps(props.sermon)} />;
 };
 
 /// Note that VidStack can render video sources as audio,
 /// it also allows for multiple src tage, need to understand
 /// more about the behavior of these.
-export const MessagePlayer = (message: MessagePlayerProps) => {
+export const MessagePlayer = ({ message }: { message: MessagePlayerProps }) => {
   switch (message.media) {
     case MessageType.Video:
       return <VideoPlayer message={message} />;
@@ -137,12 +110,15 @@ export const VideoPlayer = (
 
   return (
     <div className="pt-2">
-      <MessageDescription description={message.description} />
+      <MessageDescription description={message.sermon.description} />
 
       {/* Conditionally render Video or Audio player */}
       {mediaType === 'video' ? (
         <div>
-          <MediaPlayer title={message.title} src={message.url}>
+          <MediaPlayer
+            title={message.sermon.title}
+            src={message.sermon.videoUrl}
+          >
             <MediaProvider />
             <DefaultVideoLayout
               icons={defaultLayoutIcons}
@@ -150,7 +126,7 @@ export const VideoPlayer = (
               slots={{ googleCastButton: true }}
             />
           </MediaPlayer>
-          <MessageDownloads downloads={message.downloads} />
+          <MessageDownloads downloads={message.sermon.hits} />
         </div>
       ) : (
         <AudioPlayer message={message} />
@@ -191,43 +167,53 @@ export const AudioPlayer = (
   return (
     <div>
       {message.bodyOnly ? (
-        <MessageDescription description={message.description} />
+        <MessageDescription description={message.sermon.description} />
       ) : (
         <div>
           <div className={'p-2 flex items-start space-x-4'}>
             <img
               src={
-                message.iconUrl
-                  ? message.iconUrl
+                message.sermon.contributorImageUrl
+                  ? message.sermon.contributorImageUrl
                   : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
               }
-              alt={message.speaker}
+              alt={message.sermon.contributorFullName}
               className="h-20 md:h-28 flex-none rounded-lg bg-slate-100"
               loading={'lazy'}
             />
             <div className="flex flex-col">
-              <h2 className={'text-lg leading-6 font-semibold text-wrap'}>
-                {message.title}
-              </h2>
+              <Link to={'/sermons/' + message.sermon.id}>
+                <h2 className={'text-lg leading-6 font-semibold text-wrap'}>
+                  {message.sermon.title}
+                </h2>
+              </Link>
               <span>
                 by{' '}
                 <span className="underline md:hover:underline">
-                  <Link to={`/speakers/${message.speakerSlug}`}>
-                    {message.speaker}
+                  <Link
+                    to={`/speakers/${message.sermon.contributorFullNameSlug}`}
+                  >
+                    {message.sermon.contributorFullName}
                   </Link>
                 </span>
               </span>
-              <p className="hidden md:inline pt-4">{message.description}</p>
+              <p className="hidden md:inline pt-4">
+                {message.sermon.description}
+              </p>
             </div>
           </div>
         </div>
       )}
       <div>
-        <MediaPlayer title={message.title} src={message.url} viewType="audio">
+        <MediaPlayer
+          title={message.sermon.title}
+          src={getSermonUrl(message.sermon)}
+          viewType="audio"
+        >
           <MediaProvider />
           <DefaultAudioLayout icons={defaultLayoutIcons} colorScheme="light" />
         </MediaPlayer>
-        <MessageDownloads downloads={message.downloads} />
+        <MessageDownloads downloads={message.sermon.hits} />
       </div>
     </div>
   );
