@@ -7,6 +7,7 @@ import { StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
+import { FaChevronRight } from 'react-icons/fa6';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -53,13 +54,19 @@ export default function Component() {
           <div className="flex-grow sm:w-2/3">
             {/* ... Speaker bio ... */}
             <SpeakerBio contributor={contributor} />
-            <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
-              <p className="hover:underline px-4 py-2">
+
+            <Link
+              to={`/speakers/${contributor.fullNameSlug}#sermon-list`}
+              className="shadow-lg inline-flex items-center space-x-2 px-4 py-2 hover:bg-si-gray dark:hover:bg-si-dark rounded"
+            >
+              <p className="text-sm">
                 See all {contributor.sermonCount} sermons by{' '}
                 {contributor.fullName}
               </p>
+              <FaChevronRight />
             </Link>
           </div>
+
           <div className="flex-grow sm:w-1/3">
             {/* ... Scriptures content ... */}
             <StandardHeader text={'Scriptures'} />
@@ -78,7 +85,7 @@ export default function Component() {
         <div>
           {/* ... Sermon summary ... */}
           {hasContent(sermon.description) && (
-            <div className={'pt-8'}>
+            <div className={'pt-8'} id="sermon-summary">
               <StandardHeader text={'Sermon Summary'} />
               <div className={'p-4'}>
                 <p>{sermon.description}</p>
@@ -86,14 +93,18 @@ export default function Component() {
             </div>
           )}
           {/* ... Sermon transcript ... */}
-          <div className={'pt-8'}>
+          <div className={'pt-8'} id="sermon-transcript">
             <StandardHeader
               text={
                 sermonType === 'Text' ? sermon.title : 'Sermon Transcription'
               }
             />
             <div className={'p-4'}>
-              <p className="whitespace-pre-line">{sermon.transcript}</p>
+              {hasContent(sermon.transcript) ? (
+                <p className="whitespace-pre-line">{sermon.transcript}</p>
+              ) : (
+                <p>No sermon transcription available.</p>
+              )}
             </div>
           </div>
         </div>

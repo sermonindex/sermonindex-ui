@@ -15,7 +15,9 @@ import React, { useState } from 'react';
 import { getSermonUrl, Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
 import { hasContent, isNumber } from '~/common/sanitize';
+import { FaChevronDown } from 'react-icons/fa6';
 
+// todo: get rid of this and use the SermonType in the interfaces
 export enum MessageType {
   Audio = 'audio',
   Video = 'video',
@@ -27,26 +29,44 @@ export interface MessagePlayerProps {
   bodyOnly?: boolean; // eeewwww, gross. I want to improve this...
 }
 
-export function sermonIntoMessagePlayerProps(
-  sermon: Sermon,
-): MessagePlayerProps {
-  return {
-    sermon: sermon,
-    media: sermon.audioUrl ? MessageType.Audio : MessageType.Video,
-    bodyOnly: true,
-  };
-}
-
 export const MessageDescription = ({
   description,
 }: {
-  description: string | undefined;
+  description: string;
 }) => {
   if (hasContent(description)) {
+    const teaserLength = 150;
+
+    // Find the last space before the teaserLength
+    const lastSpaceIndex = description
+      .substring(0, teaserLength)
+      .lastIndexOf(' ');
+
+    // Create the teaser, ending at the last space
+    const teaser =
+      lastSpaceIndex !== -1
+        ? description.substring(0, lastSpaceIndex)
+        : description.substring(0, teaserLength);
+
     return (
       <div className="p-2 space-y-2">
-        <p>{description}</p>
-        <div className="flex justify-end"></div>
+        <p>{teaser}... </p>
+        <div className="flex flex-row space-x-7 text-sm justify-center py-3">
+          <a
+            href="#sermon-summary"
+            className="flex flex-col px-2 py-1 hover:bg-si-gray dark:hover:bg-si-dark rounded items-center shadow-lg"
+          >
+            Read Full Summary
+            <FaChevronDown />
+          </a>
+          <a
+            href="#sermon-transcript"
+            className="flex flex-col px-2 py-1 hover:bg-si-gray dark:hover:bg-si-dark rounded items-center shadow-lg"
+          >
+            Sermon Transcription
+            <FaChevronDown />
+          </a>
+        </div>
       </div>
     );
   }
@@ -73,7 +93,12 @@ export const MessageDownloads = ({
 export const SermonPlayer = (
   props: React.PropsWithChildren<{ sermon: Sermon }>,
 ) => {
-  return <MessagePlayer message={sermonIntoMessagePlayerProps(props.sermon)} />;
+  const message: MessagePlayerProps = {
+    sermon: props.sermon,
+    media: props.sermon.audioUrl ? MessageType.Audio : MessageType.Video,
+    bodyOnly: true,
+  };
+  return <MessagePlayer message={message} />;
 };
 
 /// Note that VidStack can render video sources as audio,
@@ -110,11 +135,13 @@ export const VideoPlayer = (
 
   return (
     <div className="pt-2">
-      <MessageDescription description={message.sermon.description} />
-
       {/* Conditionally render Video or Audio player */}
       {mediaType === 'video' ? (
         <div>
+          {hasContent(message.sermon.description) && (
+            // @ts-ignore
+            <MessageDescription description={message.sermon.description} />
+          )}
           <MediaPlayer
             title={message.sermon.title}
             src={message.sermon.videoUrl}
@@ -166,7 +193,8 @@ export const AudioPlayer = (
   const { message } = props;
   return (
     <div>
-      {message.bodyOnly ? (
+      {message.bodyOnly && hasContent(message.sermon.description) ? (
+        // @ts-ignore
         <MessageDescription description={message.sermon.description} />
       ) : (
         <div>
