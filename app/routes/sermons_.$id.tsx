@@ -54,16 +54,11 @@ export default function Component() {
           <div className="flex-grow sm:w-2/3">
             {/* ... Speaker bio ... */}
             <SpeakerBio contributor={contributor} />
-
-            <Link
-              to={`/speakers/${contributor.fullNameSlug}#sermon-list`}
-              className="shadow-lg inline-flex items-center space-x-2 px-4 py-2 hover:bg-si-gray dark:hover:bg-si-dark rounded"
-            >
-              <p className="text-sm">
+            <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
+              <p className="text-si-main dark:text-si-olive hover:underline px-4 py-2">
                 See all {contributor.sermonCount} sermons by{' '}
                 {contributor.fullName}
               </p>
-              <FaChevronRight />
             </Link>
           </div>
 

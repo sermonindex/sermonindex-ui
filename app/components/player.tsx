@@ -31,11 +31,14 @@ export interface MessagePlayerProps {
 
 export const MessageDescription = ({
   description,
+  hasTranscript,
 }: {
-  description: string;
+  description: string | undefined;
+  hasTranscript?: boolean;
 }) => {
   if (hasContent(description)) {
     const teaserLength = 150;
+    description = description as string;
 
     // Find the last space before the teaserLength
     const lastSpaceIndex = description
@@ -49,28 +52,33 @@ export const MessageDescription = ({
         : description.substring(0, teaserLength);
 
     return (
-      <div className="p-2 space-y-2">
-        <p>{teaser}... </p>
-        <div className="flex flex-row space-x-7 text-sm justify-center py-3">
+      <div className="px-2 pt-2 pb-4 space-y-2">
+        <p>
+          {teaser}...{' '}
           <a
             href="#sermon-summary"
-            className="flex flex-col px-2 py-1 hover:bg-si-gray dark:hover:bg-si-dark rounded items-center shadow-lg"
+            className="text-si-main dark:text-si-olive hover:underline"
           >
-            Read Full Summary
-            <FaChevronDown />
+            read full summary
           </a>
-          <a
-            href="#sermon-transcript"
-            className="flex flex-col px-2 py-1 hover:bg-si-gray dark:hover:bg-si-dark rounded items-center shadow-lg"
-          >
-            Sermon Transcription
-            <FaChevronDown />
-          </a>
-        </div>
+          {hasTranscript && (
+            <>
+              {' '}
+              or{' '}
+              <a
+                href="#sermon-transcript"
+                className="text-si-main dark:text-si-olive hover:underline"
+              >
+                see sermon transcript
+              </a>
+            </>
+          )}
+          .
+        </p>
       </div>
     );
   }
-  return <div className="p-2"></div>;
+  return <div className="px-2 pt-2 pb-4"></div>;
 };
 
 export const MessageDownloads = ({
@@ -139,8 +147,10 @@ export const VideoPlayer = (
       {mediaType === 'video' ? (
         <div>
           {hasContent(message.sermon.description) && (
-            // @ts-ignore
-            <MessageDescription description={message.sermon.description} />
+            <MessageDescription
+              description={message.sermon.description}
+              hasTranscript={hasContent(message.sermon.transcript)}
+            />
           )}
           <MediaPlayer
             title={message.sermon.title}
@@ -194,8 +204,10 @@ export const AudioPlayer = (
   return (
     <div>
       {message.bodyOnly ? (
-        // @ts-ignore
-        <MessageDescription description={message.sermon.description} />
+        <MessageDescription
+          description={message.sermon.description}
+          hasTranscript={hasContent(message.sermon.transcript)}
+        />
       ) : (
         <div>
           <div className={'p-2 flex items-start space-x-4'}>
