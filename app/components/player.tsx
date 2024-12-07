@@ -193,7 +193,7 @@ export const AudioPlayer = (
   const { message } = props;
   return (
     <div>
-      {message.bodyOnly && hasContent(message.sermon.description) ? (
+      {message.bodyOnly ? (
         // @ts-ignore
         <MessageDescription description={message.sermon.description} />
       ) : (
