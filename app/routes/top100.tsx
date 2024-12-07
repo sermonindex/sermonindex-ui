@@ -29,7 +29,7 @@ export default function Index() {
         <div className="flex flex-col w-full p-4">
           <StandardHeader text="Top 100" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-4 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 md:gap-4 pt-4">
             {popular.values.map((sermon, index) => (
               <Link to={`/sermons/${sermon.id}`} key={index}>
                 <div
@@ -37,7 +37,7 @@ export default function Index() {
                   className="
                     flex flex-col
                     relative
-                    min-h-40
+                    min-h-44
                     m-2 p-4
                     rounded-lg
                     border-2
@@ -50,8 +50,12 @@ export default function Index() {
                     dark:border-si-dark
                     dark:hover:bg-gray-700
                     dark:hover:border-si-accent
+                    group
                   "
                 >
+                  <span className="absolute top-0 left-0 w-14 h-full flex items-center justify-center text-2xl font-bold bg-si-gray dark:bg-si-dark rounded-l-lg">
+                    {index + 1}
+                  </span>
                   <img
                     src={
                       sermon.contributorImageUrl
@@ -59,14 +63,14 @@ export default function Index() {
                         : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
                     }
                     alt={sermon.title}
-                    className="w-15 h-20 rounded-2xl object-cover absolute top-4 left-4"
+                    className="w-15 h-20 rounded-2xl object-cover absolute top-4 left-20"
                   />
-                  <div className="pl-20 items-center text-md">
+                  <div className="pl-36 items-center text-md">
                     {sermon.title.length > 50
                       ? sermon.title.substring(0, 47) + '...'
                       : sermon.title}
                   </div>
-                  <p className="absolute bottom-4 left-4 text-sm">
+                  <p className="absolute bottom-4 left-20 text-sm">
                     {sermon.contributorFullName}
                   </p>
                   <p className="absolute bottom-4 right-4 text-sm">
