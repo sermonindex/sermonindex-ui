@@ -27,9 +27,15 @@ function getMediaIcon(sermon: Sermon) {
 
 export interface SermonListProps {
   sermons: Sermon[];
+  showTopic?: boolean;
+  showContributor?: boolean;
 }
 
-export const SermonList = ({ sermons }: SermonListProps) => {
+export const SermonList = ({
+  sermons,
+  showTopic,
+  showContributor,
+}: SermonListProps) => {
   return (
     <ul>
       {sermons.map((sermon) => (
@@ -45,12 +51,20 @@ export const SermonList = ({ sermons }: SermonListProps) => {
               </div>
             </span>
             <div className="pl-2 font-light">
-              <div className="flex flex-col">
+              <div className="pt-1 flex flex-col">
+                {showContributor && (
+                  <div className="pb-2">
+                    <span>Speaker: {sermon.contributorFullName}</span>
+                  </div>
+                )}
+                {sermon.topics.length > 0 && showTopic && (
+                  <div className="pb-2">
+                    <span>Topics: {sermon.topics}</span>
+                  </div>
+                )}
+
                 <div className="flex justify-between">
                   <div>
-                    {sermon.topics.length > 0 && (
-                      <span>Topics: {sermon.topics}</span>
-                    )}
                     {sermon.bibleReferences.length > 0 && (
                       <div className="flex justify-center">
                         Scriptures: {sermon.bibleReferences.join(', ')}

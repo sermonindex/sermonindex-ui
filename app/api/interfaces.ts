@@ -77,3 +77,10 @@ export function getSermonType(sermon: Sermon): SermonType {
 export function getSermonUrl(sermon: Sermon): string | undefined {
   return sermon.videoUrl || sermon.audioUrl;
 }
+
+export interface Topic {
+  name: string;
+  sermons: Sermon[];
+  updatedAt: string;
+  createdAt: string;
+}

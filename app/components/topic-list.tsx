@@ -32,12 +32,12 @@ export const TopicList = ({ topics }: TopicListProps) => {
             >
               <ul>
                 {group.map((topic) => (
-                  <Link key={topic} to={`/topics/${topic}`}>
+                  <Link key={topic} to={`/topics/${topic.toLowerCase()}`}>
                     <li
                       className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
                       key={topic}
                     >
-                      <span>{topic} (todo: count)</span>
+                      <span>{topic}</span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"
