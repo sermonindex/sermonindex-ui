@@ -96,11 +96,9 @@ export const Header = ({}: HeaderProps) => {
     <header className="flex flex-col">
       {/* Top navbar - logo, search bar, and site options */}
       <div className="relative flex w-full space-x-4 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal">
-        {/* <div className="flex w-full h-20 md:h-28 px-2 md:px-8 bg-si-main items-center justify-between"> */}
         <Link to="/">
           <img
-            // className="h-10 md:h-16 mr-2 md:mr-8 mb-1"
-            className="w-24 lg:w-48 h-auto"
+            className="w-24 lg:w-48 h-auto p-4"
             src="/sermon-index.svg"
             alt="sermon-index"
           />
