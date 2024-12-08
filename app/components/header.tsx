@@ -32,7 +32,7 @@ const Links: { [key: string]: PageLink } = {
   divide: { name: '|', linkTo: '' },
   about: { name: 'About', linkTo: 'about' },
   podcast: { name: 'Podcast', linkTo: 'todo' },
-  topics: { name: 'Topics', linkTo: 'todo' },
+  topics: { name: 'Topics', linkTo: 'topics' },
   blog: { name: 'Blog', linkTo: 'todo' },
 };
 
