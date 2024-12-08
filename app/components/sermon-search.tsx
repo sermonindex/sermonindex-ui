@@ -42,9 +42,7 @@ export const SermonSearch = () => {
   ) => {
     return (
       <components.DropdownIndicator {...props}>
-        <IconContext.Provider
-          value={{ className: 'text-gray-400 hover:text-gray-400' }}
-        >
+        <IconContext.Provider value={{ className: 'text-gray-400' }}>
           <FaSearch />
         </IconContext.Provider>
       </components.DropdownIndicator>
@@ -55,7 +53,9 @@ export const SermonSearch = () => {
     return (
       <Link to={`/sermons/${props.data.value}`}>
         <div className="px-3 py-2 hover:bg-blue-100">
-          <div className="text-sm font-semibold">{props.data.title}</div>
+          <div className="text-sm font-semibold text-si-slate">
+            {props.data.title}
+          </div>
           <div className="text-xs text-gray-500">by {props.data.speaker}</div>
         </div>
       </Link>
