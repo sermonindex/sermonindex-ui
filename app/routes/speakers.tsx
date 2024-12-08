@@ -36,7 +36,7 @@ export default function Index() {
               <Link to={`/speakers/${contributor.fullNameSlug}`} key={index}>
                 <div
                   key={index}
-                  className="flex flex-col items-center m-2 hover:underline"
+                  className="flex flex-col items-center m-2 hover:underline group"
                 >
                   <img
                     src={
@@ -45,7 +45,7 @@ export default function Index() {
                         : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
                     }
                     alt={contributor.fullName}
-                    className="w-14 h-14 rounded-full object-cover"
+                    className="w-14 h-14 rounded-full object-cover group-hover:scale-110 transition-transform duration-200"
                   />
                   <p className="text-center mt-2 text-sm">
                     {contributor.fullName}
