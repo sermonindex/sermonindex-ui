@@ -8,8 +8,9 @@ import { useState } from 'react';
 import { TopicList } from '~/components/topic-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const [topics] = await Promise.all([
+  const [topics, popular] = await Promise.all([
     fetchApi<ListResponse<Topic>>('/topics'),
+    fetchApi<ListResponse<Topic>>('/topics/popular'),
   ]);
 
   if ('statusCode' in topics) {
@@ -18,11 +19,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { topics };
+  return { topics, popular };
 }
 
 export default function Index() {
-  const { topics } = useLoaderData<typeof loader>();
+  const { topics, popular } = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
 
   return (
@@ -41,7 +42,7 @@ export default function Index() {
             />
             <TopicList
               topics={topics.values.filter((t) =>
-                t.toString().toLowerCase().includes(filter),
+                t.name.toLowerCase().includes(filter),
               )}
             />
           </div>

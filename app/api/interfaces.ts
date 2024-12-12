@@ -80,6 +80,11 @@ export function getSermonUrl(sermon: Sermon): string | undefined {
 
 export interface Topic {
   name: string;
+  sermonCount: number;
+}
+
+export interface SermonTopic {
+  name: string;
   sermons: Sermon[];
   updatedAt: string;
   createdAt: string;

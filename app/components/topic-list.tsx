@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
+import { Topic } from '~/api/interfaces';
 
 export interface TopicListProps {
-  topics: string[];
+  topics: Topic[];
 }
 
 // Note that the styling of the topic list is identical to that of the speaker list.
 // these should probably use a single shared component or at least share the list styles.
 export const TopicList = ({ topics }: TopicListProps) => {
-  const group: { [key: string]: string[] } = {};
+  const group: { [key: string]: Topic[] } = {};
 
   const contributorsGrouped = topics.reduce((grouped, topic) => {
-    const letter = topic[0].toLowerCase();
+    const letter = topic.name[0].toLowerCase();
     if (!grouped[letter]) {
       grouped[letter] = [];
     }
@@ -32,12 +33,17 @@ export const TopicList = ({ topics }: TopicListProps) => {
             >
               <ul>
                 {group.map((topic) => (
-                  <Link key={topic} to={`/topics/${topic.toLowerCase()}`}>
+                  <Link
+                    key={topic.name}
+                    to={`/topics/${topic.name.toLowerCase()}`}
+                  >
                     <li
                       className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
-                      key={topic}
+                      key={topic.name}
                     >
-                      <span>{topic}</span>
+                      <span>
+                        {topic.name} ({topic.sermonCount})
+                      </span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"
