@@ -6,6 +6,7 @@ import { StandardHeader } from '~/common/section';
 import SiPage from '~/components/si-page';
 import { useState } from 'react';
 import { TopicList } from '~/components/topic-list';
+import { TopicBubbles } from '~/components/topic-bubbles';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topics, popular] = await Promise.all([
@@ -13,7 +14,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     fetchApi<ListResponse<Topic>>('/topics/popular'),
   ]);
 
-  if ('statusCode' in topics) {
+  if ('statusCode' in topics || 'statusCode' in popular) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
@@ -30,8 +31,12 @@ export default function Index() {
     <SiPage>
       <div className="flex flex-col space-y-8 md:pt-3 md:px-8 min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full p-4">
-          <StandardHeader text="Topics Map" />
-          <div className="p-4">Bubble chart for most popular topics here</div>
+          <StandardHeader text="Popular Topics" />
+          <TopicBubbles
+            topics={popular.values.filter((t) =>
+              t.name.toLowerCase().includes(filter),
+            )}
+          />
           <StandardHeader text="All Topics" />
           <div className="">
             <input
