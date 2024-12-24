@@ -7,6 +7,12 @@ import { ClickableText, StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
+import {
+  FaRegFileAudio,
+  FaRegFileLines,
+  FaRegFilePdf,
+  FaRegClosedCaptioning,
+} from 'react-icons/fa6';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -64,18 +70,54 @@ export default function Component() {
           </div>
 
           <div className="flex-grow sm:w-1/3">
-            {/* ... Scriptures content ... */}
-            <StandardHeader text={'Scriptures'} />
-            <div className="p-4">
-              {Array.isArray(sermon.bibleReferences) &&
-              sermon.bibleReferences.length > 0 ? (
-                sermon.bibleReferences.map((reference, index) => (
-                  <div key={index}>{reference}</div>
-                ))
-              ) : (
-                <div>No references available.</div>
-              )}
+            {/* ... Download content ... */}
+            <div>
+              <StandardHeader text="Download" />
+              <ul className="p-4 list-none space-y-2">
+                {/* Use a list and remove bullet points */}
+                <li>
+                  <ClickableText>
+                    <div className="flex items-center">
+                      <FaRegFileAudio className="text-xl" />
+                      <p className="pl-1">Download as MP3</p>
+                    </div>
+                  </ClickableText>
+                </li>
+                <li>
+                  <ClickableText>
+                    <div className="flex items-center">
+                      <FaRegFilePdf className="text-xl" />
+                      <p className="pl-1">Download as PDF</p>
+                    </div>
+                  </ClickableText>
+                </li>
+                <li>
+                  <ClickableText>
+                    <div className="flex items-center">
+                      <FaRegFileLines className="text-xl" />
+                      <p className="pl-1">Download as TXT</p>
+                    </div>
+                  </ClickableText>
+                </li>
+                <li>
+                  <ClickableText>
+                    <div className="flex items-center">
+                      <FaRegClosedCaptioning className="text-xl" />
+                      <p className="pl-1">Download as SRT</p>
+                    </div>
+                  </ClickableText>
+                </li>
+                <li>
+                  <ClickableText>
+                    <div className="flex items-center">
+                      <FaRegClosedCaptioning className="text-xl" />
+                      <p className="pl-1">Download as VTT</p>
+                    </div>
+                  </ClickableText>
+                </li>
+              </ul>
             </div>
+
             {/* ... Topics content ... */}
             <StandardHeader
               text={sermon.topics.length > 1 ? 'Topics' : 'Topic'}
@@ -95,30 +137,44 @@ export default function Component() {
             </div>
           </div>
         </div>
-        <div>
-          {/* ... Sermon summary ... */}
-          {hasContent(sermon.description) && (
-            <div className={'pt-8'} id="sermon-summary">
-              <StandardHeader text={'Sermon Summary'} />
-              <div className={'p-4'}>
-                <p>{sermon.description}</p>
+        <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
+          <div className="flex-grow sm:w-2/3">
+            {/* ... Sermon summary ... */}
+            {hasContent(sermon.description) && (
+              <div id="sermon-summary">
+                <StandardHeader text={'Sermon Summary'} />
+                <div className={'p-4'}>
+                  <p>{sermon.description}</p>
+                </div>
               </div>
-            </div>
-          )}
-          {/* ... Sermon transcript ... */}
-          <div className={'pt-8'} id="sermon-transcript">
-            <StandardHeader
-              text={
-                sermonType === 'Text' ? sermon.title : 'Sermon Transcription'
-              }
-            />
-            <div className={'p-4'}>
-              {hasContent(sermon.transcript) ? (
-                <p className="whitespace-pre-line">{sermon.transcript}</p>
+            )}
+          </div>
+          <div className="flex-grow sm:w-1/3">
+            {/* ... Scriptures content ... */}
+            <StandardHeader text={'Scriptures'} />
+            <div className="p-4">
+              {Array.isArray(sermon.bibleReferences) &&
+              sermon.bibleReferences.length > 0 ? (
+                sermon.bibleReferences.map((reference, index) => (
+                  <div key={index}>{reference}</div>
+                ))
               ) : (
-                <p>No sermon transcription available.</p>
+                <div>No references available.</div>
               )}
             </div>
+          </div>
+        </div>
+        {/* ... Sermon transcript ... */}
+        <div className={'pt-8'} id="sermon-transcript">
+          <StandardHeader
+            text={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
+          />
+          <div className={'p-4'}>
+            {hasContent(sermon.transcript) ? (
+              <p className="whitespace-pre-line">{sermon.transcript}</p>
+            ) : (
+              <p>No sermon transcription available.</p>
+            )}
           </div>
         </div>
       </div>
