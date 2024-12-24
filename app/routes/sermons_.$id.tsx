@@ -3,11 +3,10 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { Contributor, Sermon, getSermonType } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
-import { StandardHeader } from '~/common/section';
+import { ClickableText, StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
-import { FaChevronRight } from 'react-icons/fa6';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -54,12 +53,14 @@ export default function Component() {
           <div className="flex-grow sm:w-2/3">
             {/* ... Speaker bio ... */}
             <SpeakerBio contributor={contributor} />
-            <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
-              <p className="text-si-main dark:text-si-olive hover:underline px-4 py-2">
-                See all {contributor.sermonCount} sermons by{' '}
-                {contributor.fullName}
-              </p>
-            </Link>
+            <div className="px-4 py-2">
+              <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
+                <ClickableText>
+                  See all {contributor.sermonCount} sermons by{' '}
+                  {contributor.fullName}
+                </ClickableText>
+              </Link>
+            </div>
           </div>
 
           <div className="flex-grow sm:w-1/3">
@@ -73,6 +74,23 @@ export default function Component() {
                 ))
               ) : (
                 <div>No references available.</div>
+              )}
+            </div>
+            {/* ... Topics content ... */}
+            <StandardHeader
+              text={sermon.topics.length > 1 ? 'Topics' : 'Topic'}
+            />
+            <div className="p-4">
+              {Array.isArray(sermon.topics) && sermon.topics.length > 0 ? (
+                sermon.topics.map((topic, index) => (
+                  <div key={index}>
+                    <Link to={`/topics/${topic.toLowerCase()}`}>
+                      <ClickableText>{topic}</ClickableText>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <div>No topics available.</div>
               )}
             </div>
           </div>

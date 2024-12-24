@@ -16,3 +16,15 @@ export const StandardHeader: React.FC<Props> = ({ text, className }) => {
     </h1>
   );
 };
+
+interface ClickableTextProps {
+  children: React.ReactNode;
+}
+
+export function ClickableText({ children }: ClickableTextProps) {
+  return (
+    <span className="cursor-pointer hover:underline text-si-main dark:text-si-olive">
+      {children}
+    </span>
+  );
+}
