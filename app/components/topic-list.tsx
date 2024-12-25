@@ -23,7 +23,7 @@ export const TopicList = ({ topics }: TopicListProps) => {
     <div className="p-2">
       {Object.entries(contributorsGrouped).map(([letter, group]) => {
         return (
-          <div>
+          <div key={letter}>
             <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
               {letter}
             </h2>

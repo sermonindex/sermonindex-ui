@@ -39,7 +39,7 @@ export const SermonList = ({
   return (
     <ul>
       {sermons.map((sermon) => (
-        <Link to={`/sermons/${sermon.id}`}>
+        <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
           <li
             className="flex flex-col p-2 border-b-2 group hover:cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700"
             key={sermon.id}

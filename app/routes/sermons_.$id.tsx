@@ -7,12 +7,8 @@ import { ClickableText, StandardHeader } from '~/common/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
-import {
-  FaRegFileAudio,
-  FaRegFileLines,
-  FaRegFilePdf,
-  FaRegClosedCaptioning,
-} from 'react-icons/fa6';
+
+import { SermonDownload } from '~/components/sermon-download';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -73,49 +69,7 @@ export default function Component() {
             {/* ... Download content ... */}
             <div>
               <StandardHeader text="Download" />
-              <ul className="p-4 list-none space-y-2">
-                {/* Use a list and remove bullet points */}
-                <li>
-                  <ClickableText>
-                    <div className="flex items-center">
-                      <FaRegFileAudio className="text-xl" />
-                      <p className="pl-1">Download as MP3</p>
-                    </div>
-                  </ClickableText>
-                </li>
-                <li>
-                  <ClickableText>
-                    <div className="flex items-center">
-                      <FaRegFilePdf className="text-xl" />
-                      <p className="pl-1">Download as PDF</p>
-                    </div>
-                  </ClickableText>
-                </li>
-                <li>
-                  <ClickableText>
-                    <div className="flex items-center">
-                      <FaRegFileLines className="text-xl" />
-                      <p className="pl-1">Download as TXT</p>
-                    </div>
-                  </ClickableText>
-                </li>
-                <li>
-                  <ClickableText>
-                    <div className="flex items-center">
-                      <FaRegClosedCaptioning className="text-xl" />
-                      <p className="pl-1">Download as SRT</p>
-                    </div>
-                  </ClickableText>
-                </li>
-                <li>
-                  <ClickableText>
-                    <div className="flex items-center">
-                      <FaRegClosedCaptioning className="text-xl" />
-                      <p className="pl-1">Download as VTT</p>
-                    </div>
-                  </ClickableText>
-                </li>
-              </ul>
+              <SermonDownload sermon={sermon} />
             </div>
 
             {/* ... Topics content ... */}
