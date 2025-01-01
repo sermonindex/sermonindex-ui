@@ -34,7 +34,7 @@ export default function Index() {
   const [filter, setFilter] = useState<string>('');
 
   return (
-    <SiPage>
+    <SiPage contributor={contributor}>
       <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
         <div className="flex flex-col w-full p-4">
           <SpeakerBio contributor={contributor} />

@@ -5,16 +5,21 @@
 import React from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
+import { Contributor, Sermon } from '~/api/interfaces';
 
 interface SiPageProps {
   children: React.ReactNode;
+  // Passing the sermon from the sermons_.$id route prevents having
+  // to re-fetch it from the API for the SermonIndex Page breadcrumbs
+  sermon?: Sermon;
+  contributor?: Contributor;
 }
 
-export default function SiPage({ children }: SiPageProps) {
+export default function SiPage({ children, sermon, contributor }: SiPageProps) {
   return (
     <div className="bg-si-light dark:bg-si-slate text-si-slate dark:text-si-light">
       <div className="container mx-auto md:border-x-2 md:border-si-gray md:dark:border-si-dim">
-        <Header />
+        <Header sermon={sermon} contributor={contributor} />
         {children}
         <Footer />
       </div>

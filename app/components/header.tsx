@@ -4,6 +4,8 @@ import { FaSearch } from 'react-icons/fa';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 import { hasContent } from '~/common/sanitize';
 import { SermonSearch } from './sermon-search';
+import Breadcrumbs from '~/components/breadcrumbs';
+import { Contributor, Sermon } from '~/api/interfaces';
 interface PageLink {
   name: string;
   short?: string;
@@ -49,9 +51,12 @@ const BibleLinks: { [key: string]: PageLink } = {
   v4: { name: 'Psalm 18:2', linkTo: 'todo' },
 };
 
-interface HeaderProps {}
+interface HeaderProps {
+  sermon?: Sermon;
+  contributor?: Contributor;
+}
 
-export const Header = ({}: HeaderProps) => {
+export const Header = ({ sermon, contributor }: HeaderProps) => {
   const location = useLocation();
   const [dark, setDark] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
@@ -82,15 +87,6 @@ export const Header = ({}: HeaderProps) => {
       darkModeHandler(prefersDarkMode); // Use system preference
     }
   }, []);
-
-  const [isSearchVisible, setIsSearchVisible] = useState(true);
-  const toggleSearch = () => setIsSearchVisible(!isSearchVisible);
-
-  const options = [
-    { value: '1', label: 'Option 1' },
-    { value: '2', label: 'Option 2' },
-    { value: '3', label: 'Option 3' },
-  ];
 
   return (
     <header className="flex flex-col">
@@ -184,7 +180,11 @@ export const Header = ({}: HeaderProps) => {
       {/* Third navbar - shortcuts */}
       <div className="border-b-2 border-si-gray dark:border-si-dim"></div>
       {/* Breadcrumb Navigation */}
-      {/* <Breadcrumbs location={location.pathname} sermon={sermon} /> */}
+      <Breadcrumbs
+        location={location.pathname}
+        sermon={sermon}
+        contributor={contributor}
+      />
     </header>
   );
 };

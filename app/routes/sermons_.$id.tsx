@@ -39,7 +39,7 @@ export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
   const sermonType = getSermonType(sermon);
   return (
-    <SiPage>
+    <SiPage sermon={sermon}>
       <div className="p-10">
         {/* Only show this div if sermonType is Audio or Video */}
         {['Audio', 'Video'].includes(sermonType) && (

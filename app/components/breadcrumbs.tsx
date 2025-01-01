@@ -1,6 +1,6 @@
 import { Link } from '@remix-run/react';
 import { IoIosArrowForward } from 'react-icons/io';
-import { Sermon } from '~/api/interfaces';
+import { Contributor, Sermon } from '~/api/interfaces';
 import { isNumber } from '~/common/sanitize';
 
 interface NavCrumb {
@@ -25,53 +25,74 @@ function isSpeakerCrumb(crumbs: string[]): boolean {
   );
 }
 
+function buildSermonCrumbs(
+  crumbs: string[],
+  sermon: Sermon,
+  nav: NavCrumb[],
+): NavCrumb[] {
+  const speaker = sermon.contributorFullName;
+  const sermonName = sermon.title;
+  nav.push({
+    name: 'Speakers',
+    linkTo: '/speakers',
+  });
+  nav.push({
+    name: speaker,
+    // todo: the contributor has a slug, but it's not
+    //   available on the sermon type.
+    linkTo: `/speakers/${speaker
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/\./g, '')}`,
+  });
+  nav.push({
+    name: sermonName,
+    linkTo: `/sermons/${crumbs[1]}`,
+  });
+
+  return nav;
+}
+
+function buildSpeakerCrumbs(
+  crumbs: string[],
+  contributor: Contributor,
+  nav: NavCrumb[],
+): NavCrumb[] {
+  nav.push({
+    name: 'Speakers',
+    linkTo: '/speakers',
+  });
+  nav.push({
+    name: contributor.fullName,
+    linkTo: `/speakers/${crumbs[1]}`,
+  });
+
+  return nav;
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
+  contributor?: Contributor;
 }
 
 /// Note that some breadcrumbs can be inferred directly from the url path (location)
-/// while others need to be passed in as props (sermon) because se don't want the
+/// while others need to be passed in as props (sermon) because we don't want the
 /// breadcrumb navigation to be Home > Sermons > 12345, but rather we want to provide
 /// more context like Home > Speakers > Speaker Name > Sermon Title. We will likely
 /// need to do some similar hacking for bible routes as well.
-export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
+export default function Breadcrumbs({
+  location,
+  sermon,
+  contributor,
+}: BreadcrumbProps) {
   const crumbs = location.substring(1).split('/');
   let nav: NavCrumb[] = [{ name: 'Home', linkTo: '/' }];
 
   if (isSermonCrumb(crumbs) && sermon !== undefined) {
-    const speaker = sermon.contributorFullName;
-    const sermonName = sermon.title;
-    nav.push({
-      name: 'Speakers',
-      linkTo: '/speakers',
-    });
-    nav.push({
-      name: speaker,
-      // todo: the contributor has a slug, but it's not
-      //   available on the sermon type.
-      linkTo: `/speakers/${speaker
-        .toLowerCase()
-        .replace(/ /g, '-')
-        .replace(/\./g, '')}`,
-    });
-    nav.push({
-      name: sermonName,
-      linkTo: `/sermons/${crumbs[1]}`,
-    });
-  } else if (isSpeakerCrumb(crumbs)) {
-    nav.push({
-      name: 'Speakers',
-      linkTo: '/speakers',
-    });
-    nav.push({
-      // todo: There is no way to get back to A.W. Tozer from aw-tozer
-      //  The best we can do right now is display Aw Tozer
-      name: crumbs[1]
-        .replace(/-/g, ' ')
-        .replace(/\b\w/g, (l) => l.toUpperCase()),
-      linkTo: `/speakers/${crumbs[1]}`,
-    });
+    nav = buildSermonCrumbs(crumbs, sermon, nav);
+  } else if (isSpeakerCrumb(crumbs) && contributor !== undefined) {
+    nav = buildSpeakerCrumbs(crumbs, contributor, nav);
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({
@@ -84,28 +105,28 @@ export default function Breadcrumbs({ location, sermon }: BreadcrumbProps) {
   }
 
   return (
-    <div className="flex p-3 items-center">
-      <ul className="flex flex-row items-center space-x-1">
+    <div className="p-3 flex items-center">
+      <ul className="flex items-center space-x-1">
         {nav.map((crumb, index) => (
-          <div className="flex flex-row items-center" key={index}>
-            <a className="pr-1 text-md">{index > 0 && <IoIosArrowForward />}</a>
-            {index < nav.length - 1 ? ( // Conditionally render the link
-              <a>
-                <span
-                  key={index}
-                  className="flex no-underline hover:underline text-sm"
-                >
-                  <Link to={crumb.linkTo}>{crumb.name}</Link>
-                </span>
-              </a>
+          <li className="flex items-center" key={`breadcrumb-${index}`}>
+            {index > 0 && (
+              <span className="pr-1 text-md">
+                <IoIosArrowForward />
+              </span>
+            )}
+            {index < nav.length - 1 ? (
+              <Link to={crumb.linkTo} className="text-sm hover:underline">
+                {crumb.name}
+              </Link>
             ) : (
               <span className="text-sm italic">
                 {crumb.name
                   .replace('-', ' ')
+                  .replace('%20', ' ')
                   .replace(/\b\w/g, (l) => l.toUpperCase())}
               </span>
             )}
-          </div>
+          </li>
         ))}
       </ul>
     </div>
