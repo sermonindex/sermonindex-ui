@@ -76,58 +76,73 @@ export const DownloadItem = ({
 };
 
 export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
+  // Check if any download options are available
+  const hasDownloads =
+    hasContent(sermon.audioUrl) ||
+    hasContent(sermon.videoDownloadUrl) ||
+    hasContent(sermon.transcript) ||
+    hasContent(sermon.srtUrl) ||
+    hasContent(sermon.vttUrl);
+
   return (
     <div>
-      <ul className="p-4 list-none space-y-2">
-        {/* Download MP3 */}
-        <DownloadItem
-          displayText={'Download as MP3'}
-          downloadCallback={downloadMP3}
-          data={sermon.audioUrl}
-          filename={'S' + sermon.id + '.mp3'}
-          icon={<FaRegFileAudio />}
-        />
-        {/* Download MP4 */}
-        <DownloadItem
-          displayText={'Download as MP4'}
-          downloadCallback={downloadMP4}
-          data={sermon.videoUrl}
-          filename={'S' + sermon.id + '.mp4'}
-          icon={<FaRegFileVideo />}
-        />
-        {/* Download PDF */}
-        <DownloadItem
-          displayText={'Download as PDF'}
-          downloadCallback={downloadPDF}
-          data={sermon.transcript}
-          filename={'S' + sermon.id + '.pdf'}
-          icon={<FaRegFilePdf />}
-        />
-        {/* Download TXT */}
-        <DownloadItem
-          displayText={'Download as TXT'}
-          downloadCallback={downloadPlainText}
-          data={sermon.transcript}
-          filename={'S' + sermon.id + '.txt'}
-          icon={<FaRegFileLines />}
-        />
-        {/* Download SRT */}
-        <DownloadItem
-          displayText={'Download as SRT'}
-          downloadCallback={downloadUrl}
-          data={'todo - convert audio link to srt'}
-          filename={'S' + sermon.id + '.srt'}
-          icon={<FaRegClosedCaptioning />}
-        />
-        {/* Download VTT */}
-        <DownloadItem
-          displayText={'Download as VTT'}
-          downloadCallback={downloadUrl}
-          data={'todo - convert audio link to vtt'}
-          filename={'S' + sermon.id + '.vtt'}
-          icon={<FaRegClosedCaptioning />}
-        />
-      </ul>
+      {hasDownloads ? (
+        <ul className="p-4 list-none space-y-2">
+          {/* Download MP3 */}
+          <DownloadItem
+            displayText={'Download as MP3'}
+            downloadCallback={downloadMP3}
+            data={sermon.audioUrl}
+            filename={'S' + sermon.id + '.mp3'}
+            icon={<FaRegFileAudio />}
+          />
+          {/* Download MP4 */}
+          <DownloadItem
+            displayText={'Download as MP4'}
+            downloadCallback={downloadMP4}
+            data={sermon.videoDownloadUrl}
+            filename={'S' + sermon.id + '.mp4'}
+            icon={<FaRegFileVideo />}
+          />
+          {/* Download PDF */}
+          <DownloadItem
+            displayText={'Download as PDF'}
+            downloadCallback={downloadPDF}
+            data={sermon.transcript}
+            filename={'S' + sermon.id + '.pdf'}
+            icon={<FaRegFilePdf />}
+          />
+          {/* Download TXT */}
+          <DownloadItem
+            displayText={'Download as TXT'}
+            downloadCallback={downloadPlainText}
+            data={sermon.transcript}
+            filename={'S' + sermon.id + '.txt'}
+            icon={<FaRegFileLines />}
+          />
+          {/* Download SRT */}
+          <DownloadItem
+            displayText={'Download as SRT'}
+            downloadCallback={downloadUrl}
+            data={sermon.srtUrl}
+            filename={'S' + sermon.id + '.srt'}
+            icon={<FaRegClosedCaptioning />}
+          />
+          {/* Download VTT */}
+          <DownloadItem
+            displayText={'Download as VTT'}
+            downloadCallback={downloadUrl}
+            data={sermon.vttUrl}
+            filename={'S' + sermon.id + '.vtt'}
+            icon={<FaRegClosedCaptioning />}
+          />
+        </ul>
+      ) : (
+        <p className="p-4">
+          This sermon is currently unavailable for download. We are working on
+          making it available soon.
+        </p>
+      )}
     </div>
   );
 };
