@@ -18,7 +18,7 @@ interface PageLink {
 
 const Links: { [key: string]: PageLink } = {
   speakers: { name: 'All Speakers', short: 'Speakers', linkTo: 'speakers' },
-  top100: { name: 'Top 100 Sermons', short: 'Top 100', linkTo: 'top100' },
+  top100: { name: 'Top 100 Sermons', short: 'Top 100', linkTo: 'top-100' },
   recommended: {
     name: 'Recommended Sermons',
     short: 'Recommended',
