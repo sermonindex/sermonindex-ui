@@ -9,6 +9,7 @@ import {
   downloadUrl,
 } from '~/common/download';
 import {
+  FaCheck,
   FaRegClosedCaptioning,
   FaRegFileAudio,
   FaRegFileLines,
@@ -16,6 +17,7 @@ import {
   FaRegFileVideo,
 } from 'react-icons/fa6';
 import { hasContent } from '~/common/sanitize';
+import { TbFaceIdError } from 'react-icons/tb';
 
 interface SermonDownloadProps {
   sermon: Sermon;
@@ -36,16 +38,15 @@ export const DownloadItem = ({
   filename,
   icon,
 }: DownloadItemProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState('');
 
   const handleDownload = async () => {
-    setIsLoading(true);
+    setLoading('loading');
     try {
       await downloadCallback(data, filename);
+      setLoading('success');
     } catch (error) {
-      // ... todo error handling
-    } finally {
-      setIsLoading(false);
+      setLoading('failed');
     }
   };
 
@@ -57,14 +58,22 @@ export const DownloadItem = ({
             <button
               className="flex items-center"
               onClick={handleDownload}
-              disabled={isLoading}
+              disabled={loading !== ''}
             >
-              {isLoading ? (
+              {loading === 'loading' ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-si-accent"></div>
+              ) : loading === 'failed' ? (
+                <>
+                  <TbFaceIdError className="text-xl" />
+                  <p className="no-underline pl-1">{displayText} Failed</p>
+                </>
               ) : (
                 <>
                   {React.cloneElement(icon, { className: 'text-xl' })}
-                  <p className="pl-1">{displayText}</p>
+                  <p className="pl-1">{displayText} </p>
+                  {loading === 'success' && (
+                    <FaCheck className="text-xl pl-2" />
+                  )}
                 </>
               )}
             </button>

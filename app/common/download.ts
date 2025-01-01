@@ -15,8 +15,7 @@ export async function downloadUrl(
     const data = await response.blob(); // Get the file content as a Blob
     download(data, filename, type);
   } catch (error) {
-    console.error('Error downloading MP3:', error);
-    // Handle the error appropriately (e.g., show an error message to the user)
+    throw new Error(`Failed to download url: '${url}' because '${error}'`);
   }
 }
 
@@ -30,8 +29,7 @@ export async function downloadMP4(url: string | undefined, filename: string) {
 
 export function downloadPlainText(text: string | undefined, filename: string) {
   if (text === undefined) {
-    // Handle the error appropriately (e.g., show an error message to the user)
-    return;
+    throw new Error('Failed to download text because it is undefined');
   }
   download(text, filename, 'text/plain');
 }
@@ -40,8 +38,7 @@ export function downloadPlainText(text: string | undefined, filename: string) {
 //   in title, author, url, and some other data to style into it. Also, line wrap, etc.
 export async function downloadPDF(text: string | undefined, filename: string) {
   if (text === undefined) {
-    console.error('Error: Text is undefined.');
-    return;
+    throw new Error('Failed to download pdf because it is undefined');
   }
 
   try {
