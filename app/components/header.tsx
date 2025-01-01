@@ -2,10 +2,11 @@ import { Link, useLocation } from '@remix-run/react';
 import { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { IoMoon, IoSunny } from 'react-icons/io5';
-import { hasContent } from '~/common/sanitize';
-import { SermonSearch } from './sermon-search';
-import Breadcrumbs from '~/components/breadcrumbs';
 import { Contributor, Sermon } from '~/api/interfaces';
+import { getBibleBookId } from '~/common/get-bible-book-id.fn';
+import { hasContent } from '~/common/sanitize';
+import Breadcrumbs from '~/components/breadcrumbs';
+import { SermonSearch } from './sermon-search';
 interface PageLink {
   name: string;
   short?: string;
@@ -38,28 +39,51 @@ const Links: { [key: string]: PageLink } = {
   blog: { name: 'Blog', linkTo: 'todo' },
 };
 
-const BibleLinks: { [key: string]: PageLink } = {
-  bible: { name: 'All Bibles', linkTo: 'todo' },
-  bsb: { name: 'BSB', linkTo: 'todo' },
-  kjv: { name: 'KJV', linkTo: 'todo' },
-  web: { name: 'WEB', linkTo: 'todo' },
-  ylt: { name: 'YLT', linkTo: 'todo' },
-  divide: { name: '|', linkTo: '' },
-  v1: { name: 'John 1:1', linkTo: 'todo' },
-  v2: { name: 'John 3:16', linkTo: 'todo' },
-  v3: { name: 'Proverbs 3:5', linkTo: 'todo' },
-  v4: { name: 'Psalm 18:2', linkTo: 'todo' },
-};
-
 interface HeaderProps {
   sermon?: Sermon;
   contributor?: Contributor;
+}
+
+function getBibleLinks(pathname: string): { [key: string]: PageLink } {
+  let book = 'GEN';
+  let chapter = 1;
+
+  // If they are on a bible page already, then they should go to the same book/chapter
+  if (pathname.includes('bible')) {
+    const parts = pathname.split('/');
+
+    if (parts.length >= 5) {
+      book = getBibleBookId(parts[3]);
+
+      let number = parseInt(parts[4]);
+      if (!isNaN(number)) {
+        chapter = number;
+      }
+    }
+  }
+
+  return {
+    bsb: { name: 'BSB', linkTo: `bible/BSB/${book}/${chapter}` },
+    kjv: { name: 'KJV', linkTo: `bible/KJV/${book}/${chapter}` },
+    web: { name: 'WEB', linkTo: `bible/WEBP/${book}/${chapter}` },
+    ylt: { name: 'YLT', linkTo: `bible/YLT/${book}/${chapter}` },
+    asv: { name: 'ASV', linkTo: `bible/ASV/${book}/${chapter}` },
+    bbe: { name: 'BBE', linkTo: `bible/BBE/${book}/${chapter}` },
+    gnv: { name: 'GNV', linkTo: `bible/GNV/${book}/${chapter}` },
+    t4t: { name: 'T4T', linkTo: `bible/T4T/${book}/${chapter}` },
+    our: { name: 'OUR', linkTo: `bible/OUR/${book}/${chapter}` },
+    fbv: { name: 'FBV', linkTo: `bible/FBV/${book}/${chapter}` },
+    ulb: { name: 'ULB', linkTo: `bible/ULB/${book}/${chapter}` },
+    wbs: { name: 'WBS', linkTo: `bible/WBS/${book}/${chapter}` },
+    lst: { name: 'LSV', linkTo: `bible/LSV/${book}/${chapter}` },
+  };
 }
 
 export const Header = ({ sermon, contributor }: HeaderProps) => {
   const location = useLocation();
   const [dark, setDark] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const bibleLinks = getBibleLinks(location.pathname);
 
   const darkModeHandler = (dark: boolean) => {
     setDark(dark);
@@ -157,11 +181,12 @@ export const Header = ({ sermon, contributor }: HeaderProps) => {
       <div className="flex items-center justify-center h-11 px-4 md:px-8 py-2 bg-si-light dark:bg-si-dark">
         <div className="overflow-x-auto whitespace-nowrap w-full no-scrollbar">
           <div className="flex md:justify-center space-x-6 text-lg">
-            {Object.values(BibleLinks).map((link: PageLink) => {
+            {Object.values(bibleLinks).map((link: PageLink) => {
               if (link.linkTo === '') {
                 return <span key={link.name}>{link.name}</span>;
               }
               const active = location.pathname === `/${link.linkTo}`;
+              // TODO: Tooltip translation with full name
               return (
                 <Link
                   className={`block capitalize ${

@@ -43,6 +43,7 @@ export default {
       },
     },
   },
+  safelist: ['indent-4', 'indent-8', 'indent-12', 'indent-16'],
   darkMode: 'class',
   exports: {
     plugins: [require('@vidstack/react/tailwind.cjs')],

@@ -1,9 +1,9 @@
 import { Link } from '@remix-run/react';
-import { getSermonType, Sermon } from '~/api/interfaces';
-import { formatDownloads } from '~/common/format-downloads';
-import { FaVolumeUp, FaVideo } from 'react-icons/fa';
-import { hasContent } from '~/common/sanitize';
+import { FaVideo, FaVolumeUp } from 'react-icons/fa';
 import { IoDocumentText } from 'react-icons/io5';
+import { Sermon, getSermonType } from '~/api/interfaces';
+import { formatDownloads } from '~/common/format-downloads';
+import { hasContent } from '~/common/sanitize';
 
 function stripQuotes(str: string): string {
   if (str.startsWith('"') && str.endsWith('"')) {
@@ -67,7 +67,10 @@ export const SermonList = ({
                   <div>
                     {sermon.bibleReferences.length > 0 && (
                       <div className="flex justify-center">
-                        Scriptures: {sermon.bibleReferences.join(', ')}
+                        Scriptures:{' '}
+                        {sermon.bibleReferences
+                          .map((reference) => reference.text)
+                          .join(', ')}
                       </div>
                     )}
                   </div>

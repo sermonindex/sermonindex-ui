@@ -110,7 +110,16 @@ export default function Component() {
               {Array.isArray(sermon.bibleReferences) &&
               sermon.bibleReferences.length > 0 ? (
                 sermon.bibleReferences.map((reference, index) => (
-                  <div key={index}>{reference}</div>
+                  <div
+                    key={index}
+                    className="hover:cursor-pointer hover:underline"
+                  >
+                    <Link
+                      to={`/bible/parallel/${reference.book}/${reference.startChapter}/${reference.startVerse}`}
+                    >
+                      <ClickableText>{reference.text}</ClickableText>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <div>No references available.</div>

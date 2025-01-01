@@ -1,3 +1,4 @@
+import { OsisToBookName } from '~/common/bible-constants';
 import { hasContent } from '~/common/sanitize';
 
 export type ListResponse<T> = {
@@ -28,6 +29,15 @@ export interface Contributor {
   sermonCount: number;
 }
 
+export interface BiblePassage {
+  text: string;
+  book: string;
+  startChapter: number | null;
+  startVerse: number | null;
+  endChapter: number | null;
+  endVerse: number | null;
+}
+
 export interface Sermon {
   id: number;
   mysqlId?: number;
@@ -49,7 +59,7 @@ export interface Sermon {
   srtUrl?: string;
   vttUrl?: string;
 
-  bibleReferences: string[];
+  bibleReferences: BiblePassage[];
   topics: string[];
 
   hits: number;
@@ -94,4 +104,55 @@ export interface SermonTopic {
   sermons: Sermon[];
   updatedAt: string;
   createdAt: string;
+}
+
+// The following bible entities are subject to change
+export interface BibleVerse {
+  book: string;
+  chapter: number;
+  verse: number;
+
+  translationId: string;
+  translationName: string;
+
+  text: string;
+  contentJson: string;
+}
+
+export interface BibleParallel {
+  book: string;
+  chapter: number;
+  verse: number;
+
+  verses: BibleVerse[];
+
+  contextJson: string;
+}
+
+export interface CommentaryVerse {
+  book: string;
+  chapter: number;
+  verse: number;
+
+  commentaryId: string;
+  commentaryName: string;
+  commentaryAuthor?: string;
+
+  text: string;
+  contentJson: string;
+}
+
+export interface BibleChapter {
+  number: number;
+  bookId: keyof OsisToBookName;
+  translationId: string;
+  translationName: string;
+  json: string;
+  // verses: Verse[];
+  // book: Book;
+  // footnotes: Footnote[];
+  nextChapterNumber?: number;
+  nextBookId?: keyof OsisToBookName;
+  previousChapterNumber?: number;
+  previousBookId?: keyof OsisToBookName;
 }
