@@ -42,6 +42,12 @@ export interface Sermon {
 
   audioUrl?: string;
   videoUrl?: string;
+  // This is different from videoUrl in that it will always point to
+  // a mp4 opposed to a youtube or other streaming service endpoint
+  videoDownloadUrl?: string;
+  // Captions
+  srtUrl?: string;
+  vttUrl?: string;
 
   bibleReferences: string[];
   topics: string[];
