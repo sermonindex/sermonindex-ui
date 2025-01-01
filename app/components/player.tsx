@@ -218,7 +218,7 @@ export const AudioPlayer = (
                   : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
               }
               alt={message.sermon.contributorFullName}
-              className="h-20 md:h-28 flex-none rounded-lg bg-slate-100"
+              className="md:w-36 md:h-48 w-24 h-32 object-cover flex-none md:rounded-lg rounded-md bg-slate-100"
               loading={'lazy'}
             />
             <div className="flex flex-col">

@@ -13,7 +13,10 @@ export const SpeakerBio = ({ contributor }: SpeakerProps) => {
         <img
           className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
           loading={'lazy'}
-          src={contributor.imageUrl ?? ''}
+          src={
+            contributor.imageUrl ??
+            'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+          }
           alt={contributor.fullName}
         />
         <p className={'px-4'}>{contributor.description}</p>
