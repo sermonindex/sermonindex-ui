@@ -26,9 +26,16 @@ interface SermonDownloadProps {
 interface DownloadItemProps {
   displayText: string;
   downloadCallback: CallableFunction;
-  data: string | undefined;
+  data: any;
   filename: string;
   icon: React.ReactNode;
+}
+
+function shouldRenderContent(data: any): boolean {
+  return (
+    (typeof data === 'string' && hasContent(data)) ||
+    (typeof data === 'object' && data !== null)
+  );
 }
 
 export const DownloadItem = ({
@@ -52,7 +59,7 @@ export const DownloadItem = ({
 
   return (
     <>
-      {hasContent(data) && (
+      {shouldRenderContent(data) && (
         <li>
           <ClickableText>
             <button
@@ -117,7 +124,7 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
           <DownloadItem
             displayText={'Download as PDF'}
             downloadCallback={downloadPDF}
-            data={sermon.transcript}
+            data={sermon}
             filename={'S' + sermon.id + '.pdf'}
             icon={<FaRegFilePdf />}
           />

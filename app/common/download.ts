@@ -1,5 +1,9 @@
 import download from 'downloadjs';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { Sermon } from '~/api/interfaces';
+import { hasContent } from '~/common/sanitize';
 
 export async function downloadUrl(
   url: string | undefined,
@@ -34,63 +38,149 @@ export function downloadPlainText(text: string | undefined, filename: string) {
   download(text, filename, 'text/plain');
 }
 
-// todo: the create pdf part has some styling work needed. We probably want to pass
-//   in title, author, url, and some other data to style into it. Also, line wrap, etc.
-export async function downloadPDF(text: string | undefined, filename: string) {
-  if (text === undefined) {
+export async function downloadPDF(
+  sermon: Sermon | undefined,
+  filename: string,
+) {
+  if (sermon === undefined || !hasContent(sermon.transcript)) {
     throw new Error('Failed to download pdf because it is undefined');
   }
 
-  try {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
-    const pageWidth = page.getWidth();
+  await createSermonPDF(
+    sermon.title,
+    sermon.contributorFullName,
+    sermon.contributorImageUrl,
+    sermon.transcript,
+    filename,
+  );
+}
 
-    // Add the text content
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const fontSize = 12;
-    const lines = text.split('\n');
-    let y = page.getHeight() - 50; // Start at the top with some margin
-    const leftMargin = 50;
+// todo: styling work needed (ex. Add SI icon, verses, topic, etc)
+async function createSermonPDF(
+  title: string,
+  author: string,
+  icon: string | undefined,
+  text: string | undefined,
+  filename: string,
+) {
+  const doc = new jsPDF();
+  const PAGE_MARGIN = 20; // Margin in millimeters (adjust as needed)
+  const PAGE_HEIGHT = doc.internal.pageSize.getHeight(); // Total page height
+  const USABLE_PAGE_HEIGHT = PAGE_HEIGHT - 2 * PAGE_MARGIN + 10; // Height minus top and bottom margin
 
-    for (const line of lines) {
-      const textWidth = font.widthOfTextAtSize(line, fontSize);
+  // Add title
+  doc.setFontSize(22);
+  doc.text(title, PAGE_MARGIN, PAGE_MARGIN);
 
-      // If the line is too wide, split it into multiple lines
-      if (textWidth > pageWidth - 2 * leftMargin) {
-        const words = line.split(' ');
-        let currentLine = '';
-        for (const word of words) {
-          const potentialLine = currentLine ? `${currentLine} ${word}` : word;
-          const potentialLineWidth = font.widthOfTextAtSize(
-            potentialLine,
-            fontSize,
-          );
-          if (potentialLineWidth > pageWidth - 2 * leftMargin) {
-            page.drawText(currentLine, {
-              x: leftMargin,
-              y,
-              font,
-              size: fontSize,
-            });
-            y -= fontSize + 5;
-            currentLine = word;
-          } else {
-            currentLine = potentialLine;
-          }
+  // Add author
+  doc.setFontSize(16);
+  doc.text(`By ${author}`, PAGE_MARGIN, PAGE_MARGIN + 10);
+
+  if (icon !== undefined) {
+    try {
+      const response = await fetch(icon);
+      const data = await response.blob();
+      const jpeg = await data.text();
+      doc.addImage(jpeg, 'JPEG', 15, 40, 25, 25);
+    } catch (error) {
+      throw new Error('Failed to fetch speaker image');
+    }
+  }
+
+  // Add hyperlink to each page
+  const addFooterContent = (pageNum: number, totalPages: number) => {
+    const url = 'https://www.sermonindex.net';
+    const linkText = 'sermonindex.net';
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    const originalFontSize = doc.getFontSize();
+    doc.setFontSize(10);
+
+    // Page number
+    const pageNumberText = `Page ${pageNum} of ${totalPages}`;
+    const pageNumberTextWidth = doc.getTextWidth(pageNumberText);
+    doc.text(
+      pageNumberText,
+      pageWidth - PAGE_MARGIN - pageNumberTextWidth,
+      PAGE_HEIGHT - 10,
+    );
+
+    // Hyperlink
+    doc.setTextColor('#4A4A23');
+    // Calculate the x-coordinate to center the link
+    const textWidth = doc.getTextWidth(linkText);
+    const xCoordinate = (pageWidth - textWidth) / 2;
+    // Add the hyperlink
+    doc.textWithLink(linkText, xCoordinate, PAGE_HEIGHT - 10, { url });
+
+    // Reset text color to black for subsequent text
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(originalFontSize);
+  };
+
+  // Format and add the main text content with paragraph handling
+  doc.setFontSize(12);
+  const lineHeight = doc.getLineHeight() * 0.35;
+  const paragraphs = text.split('\n\n');
+  let y = 75;
+  let pageNum = 1;
+
+  function addParagraph(paragraph: string, y: number) {
+    const lines = doc.splitTextToSize(paragraph, 170);
+    let remainingLines = [...lines]; // Create a copy to work with
+
+    while (remainingLines.length > 0) {
+      let linesToPrint = [];
+      let currentY = y;
+
+      // Determine how many lines fit on the current page
+      for (let i = 0; i < remainingLines.length; i++) {
+        if (currentY + lineHeight > USABLE_PAGE_HEIGHT) {
+          break; // Page full
         }
-        // Draw the last line
-        page.drawText(currentLine, { x: leftMargin, y, font, size: fontSize });
-        y -= fontSize + 5;
-      } else {
-        page.drawText(line, { x: leftMargin, y, font, size: fontSize });
-        y -= fontSize + 5;
+        linesToPrint.push(remainingLines[i]);
+        currentY += lineHeight;
+      }
+
+      doc.text(linesToPrint, PAGE_MARGIN, y);
+      y += linesToPrint.length * lineHeight + 5;
+
+      remainingLines = remainingLines.slice(linesToPrint.length); // Remove printed lines
+
+      if (remainingLines.length > 0) {
+        // More lines to print, add a new page
+        doc.addPage();
+        y = PAGE_MARGIN;
+        pageNum++;
       }
     }
-
-    const pdfBytes = await pdfDoc.save();
-    download(pdfBytes, filename, 'application/pdf');
-  } catch (error) {
-    console.error('Error generating PDF:', error);
+    return y; // Return the updated y value
   }
+
+  for (let i = 0; i < paragraphs.length; i++) {
+    // Use a for loop instead of forEach
+    const paragraph = paragraphs[i];
+    y = addParagraph(paragraph, y);
+
+    // Check for a new page *only if there's another paragraph after this one*
+    if (i < paragraphs.length - 1) {
+      // Crucial change!
+      const nextParagraphLines = doc.splitTextToSize(paragraphs[i + 1], 170);
+      if (y + nextParagraphLines.length * lineHeight > USABLE_PAGE_HEIGHT) {
+        doc.addPage();
+        y = PAGE_MARGIN;
+        pageNum++;
+      }
+    }
+  }
+
+  // Now that we know the total number of pages, go back and update the page numbers
+  const totalPages = pageNum;
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    addFooterContent(i, totalPages);
+  }
+
+  // Save the PDF
+  doc.save(filename);
 }
