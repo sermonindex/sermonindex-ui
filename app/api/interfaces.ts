@@ -38,6 +38,27 @@ export interface BiblePassage {
   endVerse: number | null;
 }
 
+export type BibleLanguages = ListResponse<string>;
+
+export interface BibleBook {
+  id: string;
+  name: string;
+  order: number;
+  numberOfChapters: number;
+}
+
+export interface BibleTranslation {
+  id: string;
+  name: string;
+  shortName: string;
+  website: string;
+  licenseUrl: string;
+  language: string;
+  textDirection: string;
+  isComplete: boolean;
+  books: BibleBook[];
+}
+
 export interface Sermon {
   id: number;
   mysqlId?: number;

@@ -63,6 +63,7 @@ function getBibleLinks(pathname: string): { [key: string]: PageLink } {
   }
 
   return {
+    all: { name: 'All Bibles', linkTo: `bible` },
     bsb: { name: 'BSB', linkTo: `bible/BSB/${book}/${chapter}` },
     kjv: { name: 'KJV', linkTo: `bible/KJV/${book}/${chapter}` },
     web: { name: 'WEB', linkTo: `bible/WEBP/${book}/${chapter}` },

@@ -33,3 +33,41 @@ export function getBibleBookId(value: string | undefined): string {
   // Default to Genesis if we can't find the book
   return BookNameToOsis.Genesis;
 }
+
+const newTestamentBooks = new Set<string>([
+  'Matthew',
+  'Mark',
+  'Luke',
+  'John',
+  'Acts',
+  'Romans',
+  '1 Corinthians',
+  '2 Corinthians',
+  'Galatians',
+  'Ephesians',
+  'Philippians',
+  'Colossians',
+  '1 Thessalonians',
+  '2 Thessalonians',
+  '1 Timothy',
+  '2 Timothy',
+  'Titus',
+  'Philemon',
+  'Hebrews',
+  'James',
+  '1 Peter',
+  '2 Peter',
+  '1 John',
+  '2 John',
+  '3 John',
+  'Jude',
+  'Revelation',
+]);
+
+export function isNewTestament(book: string): boolean {
+  return newTestamentBooks.has(book);
+}
+
+export function isOldTestament(book: string): boolean {
+  return !isNewTestament(book);
+}

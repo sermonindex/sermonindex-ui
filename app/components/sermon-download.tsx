@@ -28,7 +28,7 @@ interface DownloadItemProps {
   downloadCallback: CallableFunction;
   data: any;
   filename: string;
-  icon: React.ReactNode;
+  icon: React.ReactElement;
 }
 
 function shouldRenderContent(data: any): boolean {

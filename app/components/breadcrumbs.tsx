@@ -3,6 +3,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { Contributor, Sermon } from '~/api/interfaces';
 import { hasContent, isNumber } from '~/common/sanitize';
 import { OsisToBookName } from '~/common/bible-constants';
+import { isValidLanguage } from '~/common/languages';
 
 interface NavCrumb {
   name: string;
@@ -80,16 +81,25 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
     name: 'Bible',
     linkTo: '/bible',
   });
+
   // todo: cache last used bible translation
-  // translation or "parallel"
+  // translation, language, or "parallel"
   let translation: string = 'BSB';
+  let language: string = 'eng';
   if (crumbs.length > 1) {
     if (crumbs[1] !== 'parallel') {
+      if (isValidLanguage(crumbs[1])) {
+        // This feels dirty. The only other way around this would be to pass some object, like BibleTranslation
+        // to the SiPage/Header/Breadcrumbs. The tricky part is that there are various bible routes...
+        language = crumbs[1];
+        crumbs.splice(1, 1);
+      }
+      // This index exists because we don't route to /bible/${language}, we
+      // always route to the full /bible/${language}/${translation} or deeper
       translation = crumbs[1];
       nav.push({
         name: translation,
-        // todo: this link does not route currently
-        linkTo: `/bible/${crumbs[1]}`,
+        linkTo: `/bible/${language}/${crumbs[1]}`,
       });
     }
     // book
@@ -97,7 +107,8 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
       nav.push({
         name: OsisToBookName[crumbs[2] as keyof typeof OsisToBookName],
         // todo: this link does not route currently
-        linkTo: `/bible/${translation}/${crumbs[2]}`,
+        // linkTo: `/bible/${translation}/${crumbs[2]}`,
+        linkTo: '',
       });
       // chapter
       if (crumbs.length > 3) {

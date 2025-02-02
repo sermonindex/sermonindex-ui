@@ -1,49 +1,48 @@
 import { Link } from 'react-router-dom';
-import { Topic } from '~/api/interfaces';
+import { BibleTranslation } from '~/api/interfaces';
+import { getLanguageName } from '~/common/languages';
 
-export interface TopicListProps {
-  topics: Topic[];
+export interface BibleListProps {
+  bibles: BibleTranslation[];
 }
 
 // Note that the styling of the topic list is identical to that of the speaker list.
 // these should probably use a single shared component or at least share the list styles.
-export const TopicList = ({ topics }: TopicListProps) => {
-  const group: { [key: string]: Topic[] } = {};
+export const BibleList = ({ bibles }: BibleListProps) => {
+  const group: { [key: string]: BibleTranslation[] } = {};
 
-  const topicsGrouped = topics.reduce((grouped, topic) => {
-    const letter = topic.name[0].toLowerCase();
-    if (!grouped[letter]) {
-      grouped[letter] = [];
+  const biblesGrouped = bibles.reduce((grouped, bible) => {
+    const language = bible.language.toLowerCase();
+    if (!grouped[language]) {
+      grouped[language] = [];
     }
-    grouped[letter].push(topic);
+    grouped[language].push(bible);
     return grouped;
   }, group);
 
   return (
     <div className="p-2">
-      {Object.entries(topicsGrouped).map(([letter, group]) => {
+      {Object.entries(biblesGrouped).map(([language, group]) => {
         return (
-          <div key={letter}>
+          <div key={language}>
             <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
-              {letter}
+              {getLanguageName(language)}
             </h2>
             <div
-              key={letter}
-              className="w-full pt-2 columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5"
+              key={language}
+              className="w-full pt-2 columns-1 md:columns-2 xl:columns-3"
             >
               <ul>
-                {group.map((topic) => (
+                {group.map((bible) => (
                   <Link
-                    key={topic.name}
-                    to={`/topics/${topic.name.toLowerCase()}`}
+                    key={bible.id}
+                    to={`/bible/${bible.language}/${bible.shortName}`}
                   >
                     <li
-                      className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
-                      key={topic.name}
+                      className="group flex items-center h-10 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
+                      key={bible.name}
                     >
-                      <span>
-                        {topic.name} ({topic.sermonCount})
-                      </span>
+                      <span>{bible.name}</span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"

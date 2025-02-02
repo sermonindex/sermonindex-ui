@@ -1,49 +1,47 @@
 import { Link } from 'react-router-dom';
-import { Topic } from '~/api/interfaces';
+import { isOldTestament } from '~/common/get-bible-book-id.fn';
+import { BibleBook } from '~/api/interfaces';
 
-export interface TopicListProps {
-  topics: Topic[];
+export interface BookListProps {
+  books: BibleBook[];
+  translation: string;
 }
 
 // Note that the styling of the topic list is identical to that of the speaker list.
 // these should probably use a single shared component or at least share the list styles.
-export const TopicList = ({ topics }: TopicListProps) => {
-  const group: { [key: string]: Topic[] } = {};
+export const BookList = ({ books, translation }: BookListProps) => {
+  const group: { [key: string]: BibleBook[] } = {};
 
-  const topicsGrouped = topics.reduce((grouped, topic) => {
-    const letter = topic.name[0].toLowerCase();
-    if (!grouped[letter]) {
-      grouped[letter] = [];
+  const booksGrouped = books.reduce((grouped, book) => {
+    // todo
+    const canon = isOldTestament(book.name) ? 'Old Testament' : 'New Testament';
+    if (!grouped[canon]) {
+      grouped[canon] = [];
     }
-    grouped[letter].push(topic);
+    grouped[canon].push(book);
     return grouped;
   }, group);
 
   return (
     <div className="p-2">
-      {Object.entries(topicsGrouped).map(([letter, group]) => {
+      {Object.entries(booksGrouped).map(([canon, group]) => {
         return (
-          <div key={letter}>
+          <div key={canon}>
             <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
-              {letter}
+              {canon}
             </h2>
             <div
-              key={letter}
-              className="w-full pt-2 columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5"
+              key={`${canon}-columns`}
+              className="w-full pt-2 columns-1 sm:columns-1 md:columns-2 lg:columns-3 xl:columns-4"
             >
               <ul>
-                {group.map((topic) => (
-                  <Link
-                    key={topic.name}
-                    to={`/topics/${topic.name.toLowerCase()}`}
-                  >
+                {group.map((book) => (
+                  <Link key={book.id} to={`/bible/${translation}/${book.id}/1`}>
                     <li
                       className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
-                      key={topic.name}
+                      key={book.name}
                     >
-                      <span>
-                        {topic.name} ({topic.sermonCount})
-                      </span>
+                      <span>{book.name}</span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"
