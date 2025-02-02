@@ -1,7 +1,8 @@
 import { Link } from '@remix-run/react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { Contributor, Sermon } from '~/api/interfaces';
-import { isNumber } from '~/common/sanitize';
+import { hasContent, isNumber } from '~/common/sanitize';
+import { OsisToBookName } from '~/common/bible-constants';
 
 interface NavCrumb {
   name: string;
@@ -23,6 +24,10 @@ function isSpeakerCrumb(crumbs: string[]): boolean {
     crumbs[0] === 'speakers' &&
     !isNumber(parseInt(crumbs[1]))
   );
+}
+
+function isBibleCrumb(crumbs: string[]): boolean {
+  return crumbs.length > 1 && crumbs[0].toLowerCase() === 'bible';
 }
 
 function buildSermonCrumbs(
@@ -70,6 +75,50 @@ function buildSpeakerCrumbs(
   return nav;
 }
 
+function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
+  nav.push({
+    name: 'Bible',
+    linkTo: '/bible',
+  });
+  // todo: cache last used bible translation
+  // translation or "parallel"
+  let translation: string = 'BSB';
+  if (crumbs.length > 1) {
+    if (crumbs[1] !== 'parallel') {
+      translation = crumbs[1];
+      nav.push({
+        name: translation,
+        // todo: this link does not route currently
+        linkTo: `/bible/${crumbs[1]}`,
+      });
+    }
+    // book
+    if (crumbs.length > 2) {
+      nav.push({
+        name: OsisToBookName[crumbs[2] as keyof typeof OsisToBookName],
+        // todo: this link does not route currently
+        linkTo: `/bible/${translation}/${crumbs[2]}`,
+      });
+      // chapter
+      if (crumbs.length > 3) {
+        nav.push({
+          name: `Chapter ${crumbs[3]}`,
+          linkTo: `/bible/${translation}/${crumbs[2]}/${crumbs[3]}`,
+        });
+        // verse
+        if (crumbs.length > 4) {
+          nav.push({
+            name: `Verse ${crumbs[3]}`,
+            linkTo: `/bible/${translation}/${crumbs[2]}/${crumbs[3]}/${crumbs[4]}`,
+          });
+        }
+      }
+    }
+  }
+
+  return nav;
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
@@ -93,6 +142,8 @@ export default function Breadcrumbs({
     nav = buildSermonCrumbs(crumbs, sermon, nav);
   } else if (isSpeakerCrumb(crumbs) && contributor !== undefined) {
     nav = buildSpeakerCrumbs(crumbs, contributor, nav);
+  } else if (isBibleCrumb(crumbs)) {
+    nav = buildBibleCrumbs(crumbs, nav);
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({
@@ -114,7 +165,7 @@ export default function Breadcrumbs({
                 <IoIosArrowForward />
               </span>
             )}
-            {index < nav.length - 1 ? (
+            {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
               <Link to={crumb.linkTo} className="text-sm hover:underline">
                 {crumb.name}
               </Link>
