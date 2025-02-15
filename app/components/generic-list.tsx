@@ -1,48 +1,44 @@
 import { Link } from 'react-router-dom';
-import { BibleTranslation } from '~/api/interfaces';
-import { getLanguageName } from '~/common/languages';
 
-export interface BibleListProps {
-  bibles: BibleTranslation[];
+export interface GenericListProps<T> {
+  items: T[];
+  getGroupedItems: (items: T[]) => { [key: string]: T[] };
+  getGroupKeyName: (key: string) => string;
+  getItemId: (item: T) => string;
+  getItemName: (item: T) => string;
+  getItemLink: (item: T) => string;
+  columnClasses?: string;
 }
 
-// Note that the styling of the topic list is identical to that of the speaker list.
-// these should probably use a single shared component or at least share the list styles.
-export const BibleList = ({ bibles }: BibleListProps) => {
-  const group: { [key: string]: BibleTranslation[] } = {};
-
-  const biblesGrouped = bibles.reduce((grouped, bible) => {
-    const language = bible.language.toLowerCase();
-    if (!grouped[language]) {
-      grouped[language] = [];
-    }
-    grouped[language].push(bible);
-    return grouped;
-  }, group);
+// A generic list component that groups items into some hierarchy
+export const GenericList = <T,>({
+  items,
+  getGroupedItems,
+  getGroupKeyName,
+  getItemId,
+  getItemName,
+  getItemLink,
+  columnClasses = 'w-full pt-2 columns-1 md:columns-2 xl:columns-3',
+}: GenericListProps<T>) => {
+  const itemsGrouped = getGroupedItems(items);
 
   return (
     <div className="p-2">
-      {Object.entries(biblesGrouped).map(([language, group]) => {
+      {Object.entries(itemsGrouped).map(([key, group]) => {
         return (
-          <div key={language}>
+          <div key={key}>
             <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
-              {getLanguageName(language)}
+              {getGroupKeyName(key)}
             </h2>
-            <div
-              key={language}
-              className="w-full pt-2 columns-1 md:columns-2 xl:columns-3"
-            >
+            <div key={key} className={columnClasses}>
               <ul>
-                {group.map((bible) => (
-                  <Link
-                    key={bible.id}
-                    to={`/bible/${bible.language}/${bible.shortName}`}
-                  >
+                {group.map((item) => (
+                  <Link key={getItemId(item)} to={getItemLink(item)}>
                     <li
                       className="group flex items-center h-10 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
-                      key={bible.name}
+                      key={getItemName(item)}
                     >
-                      <span>{bible.name}</span>
+                      <span>{getItemName(item)}</span>
                       <span className="hidden group-hover:block transition-opacity duration-300">
                         <svg
                           className="h-6 w-6 text-slate-500 mr-2"

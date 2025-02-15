@@ -5,7 +5,8 @@ import { fetchApi } from '~/api/sdk';
 import { BibleTranslation, ListResponse } from '~/api/interfaces';
 import { SiSection } from '~/common/section';
 import { useState } from 'react';
-import { BibleList } from '~/components/bible-list';
+import { getLanguageName } from '~/common/languages';
+import { GenericList } from '~/components/generic-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const translations = await fetchApi<ListResponse<BibleTranslation>>(
@@ -21,6 +22,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return translations;
 }
 
+const getBibleGroupedItems = (bibles: BibleTranslation[]) => {
+  return bibles.reduce((grouped, bible) => {
+    const language = bible.language.toLowerCase();
+    if (!grouped[language]) {
+      grouped[language] = [];
+    }
+    grouped[language].push(bible);
+    return grouped;
+  }, {} as { [key: string]: BibleTranslation[] }); // Type assertion is important here
+};
+
 export default function Index() {
   const translations = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
@@ -35,13 +47,20 @@ export default function Index() {
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
             required
           />
-          <BibleList
-            bibles={translations.values.filter((b) => {
+          <GenericList<BibleTranslation>
+            items={translations.values.filter((b) => {
               return (
                 b.name.toLowerCase().includes(filter) ||
                 b.id.toLowerCase().includes(filter)
               );
             })}
+            getGroupedItems={getBibleGroupedItems}
+            getGroupKeyName={(key: string) => getLanguageName(key)}
+            getItemId={(bible: BibleTranslation) => bible.id}
+            getItemName={(bible: BibleTranslation) => bible.name}
+            getItemLink={(bible: BibleTranslation) =>
+              `/bible/${bible.language}/${bible.shortName}`
+            }
           />
         </div>
       </SiSection>
