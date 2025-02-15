@@ -20,11 +20,13 @@ interface PageLink {
 const Links: { [key: string]: PageLink } = {
   speakers: { name: 'All Speakers', short: 'Speakers', linkTo: 'speakers' },
   top100: { name: 'Top 100 Sermons', short: 'Top 100', linkTo: 'top-100' },
-  recommended: {
-    name: 'Recommended Sermons',
-    short: 'Recommended',
-    linkTo: 'todo',
-  },
+  // recommended: {
+  //   name: 'Recommended Sermons',
+  //   short: 'Recommended',
+  //   linkTo: 'todo',
+  // },
+  bibles: { name: 'Bibles', linkTo: `bible` },
+  commentaries: { name: 'Commentaries', linkTo: `commentary` },
   // todo: Do we want these, maybe on a large screen display???
   // tozer: { name: 'Tozer', linkTo: '/todo/speaker/id' },
   // ravenhill: { name: 'Ravenhill', linkTo: '/todo/speaker/id' },
@@ -63,7 +65,6 @@ function getBibleLinks(pathname: string): { [key: string]: PageLink } {
   }
 
   return {
-    all: { name: 'All Bibles', linkTo: `bible` },
     bsb: { name: 'BSB', linkTo: `bible/BSB/${book}/${chapter}` },
     kjv: { name: 'KJV', linkTo: `bible/KJV/${book}/${chapter}` },
     web: { name: 'WEB', linkTo: `bible/WEBP/${book}/${chapter}` },

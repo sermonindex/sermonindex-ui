@@ -59,6 +59,17 @@ export interface BibleTranslation {
   books: BibleBook[];
 }
 
+export interface BibleCommentary {
+  id: string;
+  name: string;
+  website: string;
+  licenseUrl: string;
+  englishName: string;
+  language: string;
+  textDirection: string;
+  sha256: string;
+}
+
 export interface Sermon {
   id: number;
   mysqlId?: number;

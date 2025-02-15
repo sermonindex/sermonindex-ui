@@ -30,7 +30,7 @@ const getBibleGroupedItems = (bibles: BibleTranslation[]) => {
     }
     grouped[language].push(bible);
     return grouped;
-  }, {} as { [key: string]: BibleTranslation[] }); // Type assertion is important here
+  }, {} as { [key: string]: BibleTranslation[] });
 };
 
 export default function Index() {
@@ -40,7 +40,7 @@ export default function Index() {
   return (
     <SiPage>
       <SiSection title={'Bibles'}>
-        <div className="">
+        <>
           <input
             className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
             placeholder="Find a bible..."
@@ -62,7 +62,7 @@ export default function Index() {
               `/bible/${bible.language}/${bible.shortName}`
             }
           />
-        </div>
+        </>
       </SiSection>
     </SiPage>
   );
