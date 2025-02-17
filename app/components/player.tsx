@@ -103,7 +103,7 @@ export const SermonPlayer = (
 ) => {
   const message: MessagePlayerProps = {
     sermon: props.sermon,
-    media: props.sermon.audioUrl ? MessageType.Audio : MessageType.Video,
+    media: props.sermon.videoUrl ? MessageType.Video : MessageType.Audio,
     bodyOnly: true,
   };
   return <MessagePlayer message={message} />;
