@@ -35,7 +35,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       `/sermons?book=${bookId}&chapter=${chapter}&verse=${verse}&take=25`,
     ),
     fetchApi<ListResponse<CommentaryVerse>>(
-      `/commentary/eng/${bookId}/${chapter}/${verse}`,
+      `/commentary/eng/parallel/${bookId}/${chapter}/${verse}`,
     ),
   ]);
 

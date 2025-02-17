@@ -16,6 +16,12 @@ export enum ContributorType {
   CONFERENCE = 'CONFERENCE',
 }
 
+export interface ContributorImage {
+  url: string;
+  title: string | null;
+  description: string | null;
+}
+
 export interface Contributor {
   id: number;
   fullName: string;
@@ -27,6 +33,7 @@ export interface Contributor {
   createdAt: string;
   updatedAt: string;
   sermonCount: number;
+  images: ContributorImage[];
 }
 
 export interface BiblePassage {
