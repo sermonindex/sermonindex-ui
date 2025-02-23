@@ -5,6 +5,19 @@ export type ListResponse<T> = {
   values: T[];
 };
 
+export type ListBible<T> = {
+  values: T[];
+  book: string;
+  chapter: number;
+  verse?: number;
+  nextBook?: string;
+  nextChapter?: number;
+  nextVerse?: number;
+  previousBook?: string;
+  previousChapter?: number;
+  previousVerse?: number;
+};
+
 export interface IErrorResponse {
   error: string;
   message: string;
@@ -173,9 +186,9 @@ export interface CommentaryVerse {
   chapter: number;
   verse: number;
 
-  commentaryId: string;
-  commentaryName: string;
-  commentaryAuthor?: string;
+  id: string;
+  name: string;
+  author?: string;
 
   text: string;
   contentJson: string;

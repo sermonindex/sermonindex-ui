@@ -56,9 +56,7 @@ export default function Index() {
   const { parallels, sermons, commentaries } = useLoaderData<typeof loader>();
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
-  const [activeTab, setActiveTab] = React.useState(
-    commentaries.values[0].commentaryId,
-  );
+  const [activeTab, setActiveTab] = React.useState(commentaries.values[0].id);
 
   return (
     <SiPage>
@@ -133,24 +131,17 @@ export default function Index() {
             <TabList>
               {commentaries.values.map((commentary, index) => (
                 <TabListItem
-                  title={
-                    commentary.commentaryAuthor ?? commentary.commentaryName
-                  }
+                  title={commentary.author ?? commentary.name}
                   key={index}
-                  active={commentary.commentaryId === activeTab}
-                  onClick={() => setActiveTab(commentary.commentaryId)}
+                  active={commentary.id === activeTab}
+                  onClick={() => setActiveTab(commentary.id)}
                 />
               ))}
             </TabList>
 
             {commentaries.values.map((commentary, index) => (
-              <TabContent
-                key={index}
-                active={commentary.commentaryId === activeTab}
-              >
-                <h1 className="px-2 pt-2 font-semibold">
-                  {commentary.commentaryName}
-                </h1>
+              <TabContent key={index} active={commentary.id === activeTab}>
+                <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
                 <p className="px-6 pt-2 whitespace-pre-line">
                   {commentary.text}
                 </p>

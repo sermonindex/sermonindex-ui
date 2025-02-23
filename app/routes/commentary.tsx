@@ -1,15 +1,17 @@
-import SiPage from '~/components/si-page';
-import { useLoaderData } from '@remix-run/react';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { fetchApi } from '~/api/sdk';
-import { BibleCommentary, ListResponse } from '~/api/interfaces';
-import { SiSection } from '~/common/section';
+import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
+import { BibleCommentary, ListResponse } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
 import { getLanguageName } from '~/common/languages';
+import { SiSection } from '~/common/section';
 import { GenericList } from '~/components/generic-list';
+import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const commentaries = await fetchApi<BibleCommentary[]>(`/commentary`);
+  const commentaries = await fetchApi<ListResponse<BibleCommentary>>(
+    `/commentary`,
+  );
 
   if ('statusCode' in commentaries) {
     throw new Response('Oh no! Something went wrong!', {
@@ -47,7 +49,7 @@ export default function Index() {
             required
           />
           <GenericList<BibleCommentary>
-            items={commentaries.filter((c) => {
+            items={commentaries.values.filter((c) => {
               return (
                 c.name.toLowerCase().includes(filter) ||
                 c.id.toLowerCase().includes(filter) ||
