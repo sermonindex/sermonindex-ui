@@ -9,6 +9,8 @@ import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
 
 import { SermonDownload } from '~/components/sermon-download';
+import { linkifyScripture } from '~/components/linkify-scripture';
+import React from 'react';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -134,7 +136,11 @@ export default function Component() {
           />
           <div className={'p-4'}>
             {hasContent(sermon.transcript) ? (
-              <p className="whitespace-pre-line">{sermon.transcript}</p>
+              <p className="whitespace-pre-line">
+                {linkifyScripture(sermon.transcript).map((part, index) => (
+                  <React.Fragment key={index}>{part}</React.Fragment>
+                ))}
+              </p>
             ) : (
               <p>No sermon transcription available.</p>
             )}
