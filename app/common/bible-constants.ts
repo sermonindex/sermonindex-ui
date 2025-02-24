@@ -144,7 +144,7 @@ export const COMMON_NAME_OSIS_MAP: Map<string, string> = new Map([
   ['exodus', 'EXO'],
   ['lev', 'LEV'],
   ['lev', 'LEV'],
-  ['laviticus', 'LEV'],
+  ['leviticus', 'LEV'],
   ['num', 'NUM'],
   ['numbers', 'NUM'],
   ['deu', 'DEU'],
