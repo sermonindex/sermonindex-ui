@@ -18,7 +18,8 @@ interface ScriptureReference {
 }
 
 function osis_to_link(osis: string): string {
-  const parts = osis.split('.');
+  const span = osis.split('-');
+  const parts = span[0].split('.');
   // todo: use state for user preferred translation?
   let book = COMMON_NAME_OSIS_MAP.get(parts[0].toLowerCase());
   // todo: chapter validation - does this number exist in the canon
