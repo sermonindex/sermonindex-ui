@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Contributor, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { StandardHeader } from '~/common/section';
-import { AccordianSection } from '~/components/accordion-section';
+import { AccordionSection } from '~/components/accordion-section';
 import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
@@ -40,7 +40,7 @@ export default function Index() {
         <div className="flex flex-col w-full p-4">
           <SpeakerBio contributor={contributor} />
           {contributor.images.length > 0 && (
-            <AccordianSection text={`Images (${contributor.images.length})`}>
+            <AccordionSection text={`Images (${contributor.images.length})`}>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4 space-y-4">
                 {contributor.images.map((image, index) => (
                   <div key={`image-${index}`} className="py-2">
@@ -53,7 +53,7 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-            </AccordianSection>
+            </AccordionSection>
           )}
           <div id="sermon-list">
             <StandardHeader text={`Sermons (${sermons.values.length})`} />

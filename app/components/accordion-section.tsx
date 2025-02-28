@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-interface AccordianSectionProps {
+interface AccordionSectionProps {
   text: string;
   className?: string;
   children?: React.ReactNode;
 }
 
-export const AccordianSection: React.FC<AccordianSectionProps> = ({
+/// @deprecated Prefer SiSection moving forward - putting all section styling in a single place
+export const AccordionSection: React.FC<AccordionSectionProps> = ({
   text,
   className,
   children,
