@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sermon } from '~/api/interfaces';
-import { StandardHeader } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { MessagePlayer, MessagePlayerProps, MessageType } from './player';
 
 interface FeaturedMessageProps {
@@ -16,11 +16,8 @@ export const FeaturedMessage: React.FC<FeaturedMessageProps> = ({ sermon }) => {
   };
 
   return (
-    <div className="px-4 pt-4 w-full">
-      <StandardHeader text={'Featured Message'} />
-      <div className="p-2">
-        <MessagePlayer message={message} />
-      </div>
-    </div>
+    <SiSection title={'Featured Message'}>
+      <MessagePlayer message={message} />
+    </SiSection>
   );
 };

@@ -4,7 +4,7 @@ import { BibleChapter } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
-import { StandardHeader } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { formatBibleChapter } from '~/components/bible-chapter';
 import SiPage from '~/components/si-page';
 
@@ -67,14 +67,13 @@ export default function Index() {
           </span>
         </div>
         <div key="chapter-content" className="">
-          <StandardHeader text={chapter.translationName} />
-          <div className="pt-4">
+          <SiSection title={chapter.translationName}>
             {formatBibleChapter(
               translation as string,
               chapter.bookId as string,
               chapterText,
             )}
-          </div>
+          </SiSection>
         </div>
       </div>
     </SiPage>

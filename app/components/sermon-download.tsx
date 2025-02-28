@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sermon } from '~/api/interfaces';
-import { ClickableText } from '~/common/section';
+import { ClickableText } from '~/components/section';
 import {
   downloadMP3,
   downloadMP4,
@@ -103,7 +103,7 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
   return (
     <div>
       {hasDownloads ? (
-        <ul className="p-4 list-none space-y-2">
+        <ul className="list-none space-y-2">
           {/* Download MP3 */}
           <DownloadItem
             displayText={'Download as MP3'}
@@ -154,7 +154,7 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
           />
         </ul>
       ) : (
-        <p className="p-4">
+        <p>
           This sermon is currently unavailable for download. We are working on
           making it available soon.
         </p>

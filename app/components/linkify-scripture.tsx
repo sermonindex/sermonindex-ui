@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@remix-run/react';
 import { bcv_parser } from 'bible-passage-reference-parser/esm/bcv_parser.js';
 import * as lang from 'bible-passage-reference-parser/esm/lang/en.js';
-import { ClickableText } from '~/common/section';
+import { ClickableText } from '~/components/section';
 import { COMMON_NAME_OSIS_MAP } from '~/common/bible-constants';
 
 const parseScripture = (text: string) => {

@@ -3,8 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { StandardHeader } from '~/common/section';
-import { AccordionSection } from '~/components/accordion-section';
+import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
@@ -36,42 +35,44 @@ export default function Index() {
 
   return (
     <SiPage contributor={contributor}>
-      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-        <div className="flex flex-col w-full p-4">
-          <SpeakerBio contributor={contributor} />
-          {contributor.images.length > 0 && (
-            <AccordionSection text={`Images (${contributor.images.length})`}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4 space-y-4">
-                {contributor.images.map((image, index) => (
-                  <div key={`image-${index}`} className="py-2">
-                    <a href={image.url} target="_blank">
-                      <img
-                        src={image.url}
-                        className="rounded-lg bg-slate-100 w-full"
-                      />
-                    </a>
-                  </div>
-                ))}
+      <SpeakerBio contributor={contributor} />
+      {contributor.images.length > 0 && (
+        <SiSection
+          title={`Images (${contributor.images.length})`}
+          expandable={true}
+          defaultExpanded={false}
+        >
+          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4">
+            {contributor.images.map((image, index) => (
+              <div key={`image-${index}`} className="py-4">
+                <a href={image.url} target="_blank">
+                  <img
+                    src={image.url}
+                    className="rounded-lg bg-slate-100 w-full"
+                    alt={image.title || ''}
+                  />
+                </a>
               </div>
-            </AccordionSection>
-          )}
-          <div id="sermon-list">
-            <StandardHeader text={`Sermons (${sermons.values.length})`} />
-            <input
-              className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-              placeholder="Find a sermon..."
-              onChange={(e) => setFilter(e.target.value.toLowerCase())}
-              required
-            />
-            <SermonList
-              sermons={sermons.values.filter((s) =>
-                s.title.toLowerCase().includes(filter),
-              )}
-              showTopic={true}
-              showContributor={false}
-            />
+            ))}
           </div>
-        </div>
+        </SiSection>
+      )}
+      <div id="sermon-list">
+        <SiSection title={`Sermons (${sermons.values.length})`}>
+          <input
+            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
+            placeholder="Find a sermon..."
+            onChange={(e) => setFilter(e.target.value.toLowerCase())}
+            required
+          />
+          <SermonList
+            sermons={sermons.values.filter((s) =>
+              s.title.toLowerCase().includes(filter),
+            )}
+            showTopic={true}
+            showContributor={false}
+          />
+        </SiSection>
       </div>
     </SiPage>
   );

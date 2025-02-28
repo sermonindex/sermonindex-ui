@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react';
 import React, { useEffect, useState } from 'react';
 import { Sermon } from '~/api/interfaces';
-import { StandardHeader } from '~/common/section';
+import { SiSection } from '~/components/section';
 
 interface SermonCarouselProps {
   title: string;
@@ -52,8 +52,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
 
   return (
     // TODO: Style for mobile
-    <div className="px-4">
-      <StandardHeader text={title} />
+    <SiSection title={title}>
       <div className="flex w-full">
         <span className="flex items-center">
           <button
@@ -116,7 +115,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
           </button>
         </span>
       </div>
-    </div>
+    </SiSection>
   );
 };
 

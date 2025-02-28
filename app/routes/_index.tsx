@@ -39,37 +39,32 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 md:pt-6 md:px-8 min-h-[calc(100vh-80px)]">
-        <div className="flex">
-          <FeaturedMessage sermon={featured} />
-        </div>
+      <FeaturedMessage sermon={featured} />
+      <SermonCarousel
+        title={'Recent Uploads'}
+        sermons={recent.values}
+        customizer={(sermon) => {
+          // TODO: Use a better date library (moment or dayjs)
+          const date = new Date(sermon.createdAt as string);
+          const prettyDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
 
-        <SermonCarousel
-          title={'Recent Uploads'}
-          sermons={recent.values}
-          customizer={(sermon) => {
-            // TODO: Use a better date library (moment or dayjs)
-            const date = new Date(sermon.createdAt as string);
-            const prettyDate = date.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            });
+          return <span className="font-thin">{`${prettyDate} `}</span>;
+        }}
+      />
 
-            return <span className="font-thin">{`${prettyDate} `}</span>;
-          }}
-        />
-
-        <SermonCarousel
-          title={'Popular Sermons'}
-          sermons={popular.values}
-          customizer={(sermon) => (
-            <span className="font-thin">{`${formatDownloads(
-              sermon.hits,
-            )} Downloads`}</span>
-          )}
-        />
-      </div>
+      <SermonCarousel
+        title={'Popular Sermons'}
+        sermons={popular.values}
+        customizer={(sermon) => (
+          <span className="font-thin">{`${formatDownloads(
+            sermon.hits,
+          )} Downloads`}</span>
+        )}
+      />
     </SiPage>
   );
 }

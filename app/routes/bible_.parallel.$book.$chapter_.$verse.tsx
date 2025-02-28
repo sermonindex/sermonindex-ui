@@ -12,7 +12,7 @@ import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { formatDownloads } from '~/common/format-downloads';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
-import { StandardHeader } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { VerseContext } from '~/components/bible-verse-context';
 import SiPage from '~/components/si-page';
 import {
@@ -67,7 +67,7 @@ export default function Index() {
           {/* <span className="text-si-brown hover:underline hover:cursor-pointer">
             Genesis 1:1 {'>'}
           </span> */}
-          <span className="text-4xl">
+          <span className="text-4xl justify-center items-center w-full flex">
             {OsisToBookName[parallels.book as keyof typeof OsisToBookName]}{' '}
             {parallels.chapter}:{parallels.verse}
           </span>
@@ -76,32 +76,31 @@ export default function Index() {
             Genesis 1:3 {'>'}
           </span> */}
         </div>
-        <div className="grid grid-cols-3 space-x-4">
+        <div className="grid grid-cols-3">
           <div className="col-span-2">
-            <StandardHeader text="Verse" />
-            {parallels.verses.map((verse, index) => {
-              return (
-                <div key={index} className="py-1 px-2">
-                  {/* TODO: LINK TRANSLATION NAME TO CHAPTER PAGE */}
-                  <Link
-                    to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
-                  >
-                    <span className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer">
-                      {verse.translationName}
-                    </span>
-                  </Link>
-                  <div>{verse.text}</div>
-                </div>
-              );
-            })}
+            <SiSection title="Verse">
+              {parallels.verses.map((verse, index) => {
+                return (
+                  <div key={index} className="py-1 px-2">
+                    {/* TODO: LINK TRANSLATION NAME TO CHAPTER PAGE */}
+                    <Link
+                      to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
+                    >
+                      <span className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer">
+                        {verse.translationName}
+                      </span>
+                    </Link>
+                    <div>{verse.text}</div>
+                  </div>
+                );
+              })}
+            </SiSection>
           </div>
           <div>
-            <StandardHeader text="Context" />
-            <div className="py-4 px-2">
+            <SiSection title="Context">
               <VerseContext context={verseContext} book={parallels.book} />
-            </div>
-            <StandardHeader text="Sermons" />
-            <div>
+            </SiSection>
+            <SiSection title="Sermons">
               {sermons.values.slice(0, 10).map((sermon, index) => {
                 return (
                   <div key={index} className="flex  justify-between py-1 px-2">
@@ -122,11 +121,11 @@ export default function Index() {
                   </div>
                 );
               })}
-            </div>
+            </SiSection>
           </div>
         </div>
-        <div>
-          <StandardHeader text={'Commentaries'} />
+
+        <SiSection title={'Commentaries'}>
           <TabContainer>
             <TabList>
               {commentaries.values.map((commentary, index) => (
@@ -148,7 +147,7 @@ export default function Index() {
               </TabContent>
             ))}
           </TabContainer>
-        </div>
+        </SiSection>
       </div>
     </SiPage>
   );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { BibleCommentary, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { getLanguageName } from '~/common/languages';
-import { SiSection } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { GenericList } from '~/components/generic-list';
 import SiPage from '~/components/si-page';
 

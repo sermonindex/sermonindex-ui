@@ -1,27 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
-
-interface Props {
-  text: string;
-  className?: string; // Allow for custom classes
-}
-
-/// @deprecated Prefer SiSection moving forward
-/// This is a common section heading for page content
-export const StandardHeader: React.FC<Props> = ({ text, className }) => {
-  return (
-    <h1
-      className={`md:text-xl pl-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
-    >
-      {text}
-    </h1>
-  );
-};
 
 interface SiSectionProps {
   title: string;
   expandable?: boolean;
   defaultExpanded?: boolean;
+  tag?: string;
   className?: string;
   children?: React.ReactNode;
 }
@@ -30,13 +14,24 @@ export function SiSection({
   title,
   expandable = false,
   defaultExpanded = false,
+  tag = title,
   className,
   children,
 }: SiSectionProps) {
   const [open, setOpen] = useState(defaultExpanded);
+  const [contentHeight, setContentHeight] = useState<number | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open && contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    } else {
+      setContentHeight(null); // Set to null when closed to avoid a flash of content
+    }
+  }, [open, children]);
 
   return (
-    <div className="flex flex-col space-y-8 md:pt-3 md:px-8 min-h-[calc(100vh-80px)]">
+    <div className="flex flex-col md:pt-3 md:px-8" id={tag}>
       <div className="flex flex-col w-full p-4">
         {expandable ? (
           <>
@@ -45,7 +40,7 @@ export function SiSection({
               onClick={() => setOpen(!open)}
             >
               <div className="flex">
-                <span className="text-left text-xl font-light">
+                <span className="text-left text-lg md:text-xl font-light">
                   <h1>{title}</h1>
                 </span>
               </div>
@@ -53,24 +48,26 @@ export function SiSection({
                 <FaChevronDown
                   className={`${
                     open ? '' : 'rotate-180'
-                  } shrink-0 transition-transform duration-300`}
+                  } shrink-0 transition-transform duration-500`}
                   aria-hidden="true"
                 />
               </div>
             </button>
 
             <div
-              className={`p-4 overflow-hidden transition-max-height duration-300 ${
-                open ? 'max-h-[500px]' : 'max-h-0'
-              }`}
+              ref={contentRef}
+              className="overflow-hidden transition-max-height duration-500"
+              style={{
+                maxHeight: contentHeight ? `${contentHeight}px` : '0px',
+              }}
             >
-              {children}
+              <div className="p-4">{children}</div>
             </div>
           </>
         ) : (
           <>
             <h1
-              className={`flex items-center text-xl justify-between px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
+              className={`flex items-center text-lg md:text-xl justify-between px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
             >
               {title}
             </h1>

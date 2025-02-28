@@ -3,7 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { fetchApi } from '~/api/sdk';
 import { BibleTranslation, ListResponse } from '~/api/interfaces';
-import { SiSection } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { useState } from 'react';
 import { getLanguageName } from '~/common/languages';
 import { GenericList } from '~/components/generic-list';

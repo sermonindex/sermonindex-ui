@@ -1,5 +1,5 @@
 import SiPage from '~/components/si-page';
-import { SiSection } from '~/common/section';
+import { SiSection } from '~/components/section';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { fetchApi } from '~/api/sdk';
 import { useLoaderData } from '@remix-run/react';

@@ -3,7 +3,7 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { Contributor, Sermon, getSermonType } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
-import { ClickableText, StandardHeader } from '~/common/section';
+import { ClickableText, SiSection } from '~/components/section';
 import { SermonPlayer } from '~/components/player';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
@@ -42,110 +42,90 @@ export default function Component() {
   const sermonType = getSermonType(sermon);
   return (
     <SiPage sermon={sermon}>
-      <div className="p-10">
-        {/* Only show this div if sermonType is Audio or Video */}
-        {['Audio', 'Video'].includes(sermonType) && (
-          <div>
-            <StandardHeader text={sermon.title} />
-            <div className="p-2">
-              <SermonPlayer sermon={sermon} />
-            </div>
-          </div>
-        )}
+      {/* Only show this div if sermonType is Audio or Video */}
+      {['Audio', 'Video'].includes(sermonType) && (
+        <SiSection title={sermon.title}>
+          <SermonPlayer sermon={sermon} />
+        </SiSection>
+      )}
 
-        <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
-          <div className="flex-grow sm:w-2/3">
-            {/* ... Speaker bio ... */}
-            <SpeakerBio contributor={contributor} />
-            <div className="px-4 py-2">
-              <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
-                <ClickableText>
-                  See all {contributor.sermonCount} sermons by{' '}
-                  {contributor.fullName}
-                </ClickableText>
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex-grow sm:w-1/3">
-            {/* ... Download content ... */}
-            <div>
-              <StandardHeader text="Download" />
-              <SermonDownload sermon={sermon} />
-            </div>
-
-            {/* ... Topics content ... */}
-            <StandardHeader
-              text={sermon.topics.length > 1 ? 'Topics' : 'Topic'}
-            />
-            <div className="p-4">
-              {Array.isArray(sermon.topics) && sermon.topics.length > 0 ? (
-                sermon.topics.map((topic, index) => (
-                  <div key={index}>
-                    <Link to={`/topics/${topic.toLowerCase()}`}>
-                      <ClickableText>{topic}</ClickableText>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <div>No topics available.</div>
-              )}
-            </div>
-          </div>
+      <div className="flex flex-col sm:flex-row items-start justify-center">
+        <div className="flex-grow sm:w-2/3">
+          {/* ... Speaker bio ... */}
+          <SpeakerBio contributor={contributor} seeAllLinkVisible={true} />
         </div>
-        <div className="flex flex-col sm:flex-row items-start justify-center pt-8 space-x-0 sm:space-x-8">
-          <div className="flex-grow sm:w-2/3">
-            {/* ... Sermon summary ... */}
-            {hasContent(sermon.description) && (
-              <div id="sermon-summary">
-                <StandardHeader text={'Sermon Summary'} />
-                <div className={'p-4'}>
-                  <p>{sermon.description}</p>
+
+        <div className="flex-grow sm:w-1/3">
+          {/* ... Download content ... */}
+          <SiSection title="Download">
+            <SermonDownload sermon={sermon} />
+          </SiSection>
+
+          {/* ... Topics content ... */}
+          <SiSection title={sermon.topics.length > 1 ? 'Topics' : 'Topic'}>
+            {Array.isArray(sermon.topics) && sermon.topics.length > 0 ? (
+              sermon.topics.map((topic, index) => (
+                <div key={index}>
+                  <Link to={`/topics/${topic.toLowerCase()}`}>
+                    <ClickableText>{topic}</ClickableText>
+                  </Link>
                 </div>
-              </div>
-            )}
-          </div>
-          <div className="flex-grow sm:w-1/3">
-            {/* ... Scriptures content ... */}
-            <StandardHeader text={'Scriptures'} />
-            <div className="p-4">
-              {Array.isArray(sermon.bibleReferences) &&
-              sermon.bibleReferences.length > 0 ? (
-                sermon.bibleReferences.map((reference, index) => (
-                  <div
-                    key={index}
-                    className="hover:cursor-pointer hover:underline"
-                  >
-                    <Link
-                      to={`/bible/parallel/${reference.book}/${reference.startChapter}/${reference.startVerse}`}
-                    >
-                      <ClickableText>{reference.text}</ClickableText>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <div>No references available.</div>
-              )}
-            </div>
-          </div>
-        </div>
-        {/* ... Sermon transcript ... */}
-        <div className={'pt-8'} id="sermon-transcript">
-          <StandardHeader
-            text={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
-          />
-          <div className={'p-4'}>
-            {hasContent(sermon.transcript) ? (
-              <p className="whitespace-pre-line">
-                {linkifyScripture(sermon.transcript).map((part, index) => (
-                  <React.Fragment key={index}>{part}</React.Fragment>
-                ))}
-              </p>
+              ))
             ) : (
-              <p>No sermon transcription available.</p>
+              <div>No topics available.</div>
             )}
-          </div>
+          </SiSection>
         </div>
+      </div>
+      <div className="flex flex-col sm:flex-row items-start justify-center">
+        <div className="flex-grow sm:w-2/3">
+          {/* ... Sermon summary ... */}
+          {hasContent(sermon.description) && (
+            <div id="sermon-summary">
+              <SiSection title="Sermon Summary">
+                <p>{sermon.description}</p>
+              </SiSection>
+            </div>
+          )}
+        </div>
+        <div className="flex-grow sm:w-1/3">
+          {/* ... Scriptures content ... */}
+          <SiSection title="Scriptures">
+            {Array.isArray(sermon.bibleReferences) &&
+            sermon.bibleReferences.length > 0 ? (
+              sermon.bibleReferences.map((reference, index) => (
+                <div
+                  key={index}
+                  className="hover:cursor-pointer hover:underline"
+                >
+                  <Link
+                    to={`/bible/parallel/${reference.book}/${reference.startChapter}/${reference.startVerse}`}
+                  >
+                    <ClickableText>{reference.text}</ClickableText>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <div>No references available.</div>
+            )}
+          </SiSection>
+        </div>
+      </div>
+      {/* ... Sermon transcript ... */}
+      <div id="sermon-transcript">
+        <SiSection
+          title={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
+        >
+          {hasContent(sermon.transcript) ? (
+            <p className="whitespace-pre-line">
+              {linkifyScripture(sermon.transcript).map((part, index) => (
+                <React.Fragment key={index}>{part}</React.Fragment>
+              ))}
+            </p>
+          ) : (
+            <p>No sermon transcription available.</p>
+          )}
+        </SiSection>
       </div>
     </SiPage>
   );
