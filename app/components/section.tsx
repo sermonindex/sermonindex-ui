@@ -7,6 +7,8 @@ interface SiSectionProps {
   tag?: string;
   expandable?: boolean;
   defaultExpanded?: boolean;
+  sharesLeftPadding?: boolean;
+  sharesRightPadding?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
@@ -16,6 +18,8 @@ export function SiSection({
   tag = title,
   expandable = false,
   defaultExpanded = false,
+  sharesLeftPadding = false,
+  sharesRightPadding = false,
   className,
   children,
 }: SiSectionProps) {
@@ -31,13 +35,19 @@ export function SiSection({
     }
   }, [open, children]);
 
+  // This allows sections to be in columns beside each other without
+  // double padding that looks like a big hold between the sections.
+  let paddingLeft = sharesLeftPadding ? 'pl-2 md:pl-4' : 'pl-4 md:pl-8';
+  let paddingRight = sharesRightPadding ? 'pr-2 md:pr-4' : 'pr-4 md:pr-8';
+  let padding = `pt-4 md:pt-8 pb-4 md:pb-8 ${paddingLeft} ${paddingRight}`;
+
   return (
-    <div className="flex flex-col md:pt-3 md:px-8" id={tag}>
-      <div className="flex flex-col w-full p-4">
+    <div className="flex flex-col" id={tag}>
+      <div className={`flex flex-col w-full ${padding}`}>
         {expandable ? (
           <>
             <button
-              className={`flex items-center justify-between px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
+              className={`flex items-center justify-between rounded-lg w-full px-4 py-1 text-lg md:text-xl md:py-2 bg-si-gray text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
               onClick={() => setOpen(!open)}
             >
               <div className="flex">
@@ -68,7 +78,7 @@ export function SiSection({
         ) : (
           <>
             <h1
-              className={`flex items-center text-lg md:text-xl justify-between px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
+              className={`flex items-center text-lg md:text-xl px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
             >
               {title}
             </h1>
