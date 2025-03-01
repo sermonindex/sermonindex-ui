@@ -13,7 +13,7 @@ export const SpeakerBio = ({
   seeAllLinkVisible,
 }: SpeakerProps) => {
   return (
-    <SiSection title={contributor.fullName}>
+    <>
       <div className={'flex'}>
         <img
           className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
@@ -38,6 +38,6 @@ export const SpeakerBio = ({
           </Link>
         </div>
       )}
-    </SiSection>
+    </>
   );
 };

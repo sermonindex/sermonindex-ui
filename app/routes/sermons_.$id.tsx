@@ -52,17 +52,22 @@ export default function Component() {
       <div className="flex flex-col sm:flex-row items-start justify-center">
         <div className="flex-grow sm:w-2/3">
           {/* ... Speaker bio ... */}
-          <SpeakerBio contributor={contributor} seeAllLinkVisible={true} />
+          <SiSection title={contributor.fullName} sharesRightPadding={true}>
+            <SpeakerBio contributor={contributor} seeAllLinkVisible={true} />
+          </SiSection>
         </div>
 
         <div className="flex-grow sm:w-1/3">
           {/* ... Download content ... */}
-          <SiSection title="Download">
+          <SiSection title="Download" sharesLeftPadding={true}>
             <SermonDownload sermon={sermon} />
           </SiSection>
 
           {/* ... Topics content ... */}
-          <SiSection title={sermon.topics.length > 1 ? 'Topics' : 'Topic'}>
+          <SiSection
+            title={sermon.topics.length > 1 ? 'Topics' : 'Topic'}
+            sharesLeftPadding={true}
+          >
             {Array.isArray(sermon.topics) && sermon.topics.length > 0 ? (
               sermon.topics.map((topic, index) => (
                 <div key={index}>
@@ -81,14 +86,18 @@ export default function Component() {
         <div className="flex-grow sm:w-2/3">
           {/* ... Sermon summary ... */}
           {hasContent(sermon.description) && (
-            <SiSection title="Sermon Summary" tag="sermon-summary">
+            <SiSection
+              title="Sermon Summary"
+              tag="sermon-summary"
+              sharesRightPadding={true}
+            >
               <p>{sermon.description}</p>
             </SiSection>
           )}
         </div>
         <div className="flex-grow sm:w-1/3">
           {/* ... Scriptures content ... */}
-          <SiSection title="Scriptures">
+          <SiSection title="Scriptures" sharesLeftPadding={true}>
             {Array.isArray(sermon.bibleReferences) &&
             sermon.bibleReferences.length > 0 ? (
               sermon.bibleReferences.map((reference, index) => (

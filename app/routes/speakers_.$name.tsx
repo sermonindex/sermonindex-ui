@@ -35,7 +35,9 @@ export default function Index() {
 
   return (
     <SiPage contributor={contributor}>
-      <SpeakerBio contributor={contributor} />
+      <SiSection title={contributor.fullName}>
+        <SpeakerBio contributor={contributor} />
+      </SiSection>
       {contributor.images.length > 0 && (
         <SiSection
           title={`Images (${contributor.images.length})`}
