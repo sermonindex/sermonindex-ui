@@ -63,7 +63,7 @@ export default function Index() {
         </SiSection>
       )}
 
-      <SiSection title={`Sermons (${sermons.values.length})`} tag="sermon-list">
+      <SiSection title={`Sermons (${sermons.length})`} tag="sermon-list">
         <div className="flex items-center space-x-4">
           <input
             className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
