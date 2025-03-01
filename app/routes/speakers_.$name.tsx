@@ -7,6 +7,7 @@ import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
+import DropdownCheckbox from '~/components/dropdown-checkbox';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [contributors, sermons] = await Promise.all([
@@ -30,7 +31,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { contributor, sermons } = useLoaderData<typeof loader>();
+  const { contributor, sermons: initialSermons } =
+    useLoaderData<typeof loader>();
+  const [sermons, setSermons] = useState<Sermon[]>(initialSermons.values);
   const [filter, setFilter] = useState<string>('');
 
   return (
@@ -61,14 +64,48 @@ export default function Index() {
       )}
 
       <SiSection title={`Sermons (${sermons.values.length})`} tag="sermon-list">
-        <input
-          className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-          placeholder="Find a sermon..."
-          onChange={(e) => setFilter(e.target.value.toLowerCase())}
-          required
-        />
+        <div className="flex items-center space-x-4">
+          <input
+            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
+            placeholder="Find a sermon..."
+            onChange={(e) => setFilter(e.target.value.toLowerCase())}
+            required
+          />
+          <DropdownCheckbox
+            title="Filter Media"
+            options={['Video', 'Audio', 'Text']}
+            onFilterChange={(options: string[]) => {
+              if (options.length === 0) {
+                setSermons([]);
+                return;
+              }
+
+              const mediaTypes = options
+                .map((option) => option.toUpperCase())
+                .join(',');
+
+              fetchApi<ListResponse<Sermon>>(
+                `/sermons?fullNameSlug=${contributor.fullNameSlug}&mediaType=${mediaTypes}`,
+              ).then((fetchedSermons) => {
+                if ('statusCode' in fetchedSermons) {
+                  console.error(
+                    'Failed to search for sermons:',
+                    fetchedSermons,
+                  );
+                  setSermons([]);
+                  return;
+                }
+                if (fetchedSermons.values.length === 0) {
+                  setSermons([]);
+                  return;
+                }
+                setSermons(fetchedSermons.values);
+              });
+            }}
+          />
+        </div>
         <SermonList
-          sermons={sermons.values.filter((s) =>
+          sermons={sermons.filter((s) =>
             s.title.toLowerCase().includes(filter),
           )}
           showTopic={true}
