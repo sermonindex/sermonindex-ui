@@ -44,6 +44,7 @@ export default function Index() {
       {contributor.images.length > 0 && (
         <SiSection
           title={`Images (${contributor.images.length})`}
+          tag="images"
           expandable={true}
           defaultExpanded={false}
         >

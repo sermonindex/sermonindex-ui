@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
+import { Link, useLocation } from '@remix-run/react';
 
 interface SiSectionProps {
   title: string;
-  // todo: make this non-optional in the future when it is implemented everywhere
   tag?: string;
   expandable?: boolean;
   defaultExpanded?: boolean;
@@ -41,6 +41,9 @@ export function SiSection({
   let paddingRight = sharesRightPadding ? 'pr-2 md:pr-4' : 'pr-4 md:pr-8';
   let padding = `pt-4 md:pt-8 pb-4 md:pb-8 ${paddingLeft} ${paddingRight}`;
 
+  const location = useLocation();
+  const linkTo = `${location.pathname}#${tag}`;
+
   return (
     <div className="flex flex-col" id={tag}>
       <div className={`flex flex-col w-full ${padding}`}>
@@ -52,7 +55,9 @@ export function SiSection({
             >
               <div className="flex">
                 <span className="text-left text-lg md:text-xl font-light">
-                  <h1>{title}</h1>
+                  <Link to={linkTo}>
+                    <h1>{title}</h1>
+                  </Link>
                 </span>
               </div>
               <div className="flex text-sm items-center justify-center">
@@ -77,11 +82,13 @@ export function SiSection({
           </>
         ) : (
           <>
-            <h1
-              className={`flex items-center text-lg md:text-xl px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
-            >
-              {title}
-            </h1>
+            <Link to={linkTo}>
+              <h1
+                className={`flex items-center text-lg md:text-xl px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
+              >
+                {title}
+              </h1>
+            </Link>
             <div className="p-4">{children}</div>
           </>
         )}
