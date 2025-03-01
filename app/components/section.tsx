@@ -3,18 +3,19 @@ import { FaChevronDown } from 'react-icons/fa6';
 
 interface SiSectionProps {
   title: string;
+  // todo: make this non-optional in the future when it is implemented everywhere
+  tag?: string;
   expandable?: boolean;
   defaultExpanded?: boolean;
-  tag?: string;
   className?: string;
   children?: React.ReactNode;
 }
 
 export function SiSection({
   title,
+  tag = title,
   expandable = false,
   defaultExpanded = false,
-  tag = title,
   className,
   children,
 }: SiSectionProps) {

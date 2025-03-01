@@ -31,24 +31,25 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div id="sermon-list">
-        <SiSection title={formatTopicTitle(topic.name, topic.sermons.length)}>
-          <input
-            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-            placeholder={`Search sermons with topic "${topic.name}"...`}
-            onChange={(e) => setFilter(e.target.value.toLowerCase())}
-            required
-          />
+      <SiSection
+        title={formatTopicTitle(topic.name, topic.sermons.length)}
+        tag="sermon-list"
+      >
+        <input
+          className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
+          placeholder={`Search sermons with topic "${topic.name}"...`}
+          onChange={(e) => setFilter(e.target.value.toLowerCase())}
+          required
+        />
 
-          <SermonList
-            sermons={topic.sermons.filter((s) =>
-              s.title.toLowerCase().includes(filter),
-            )}
-            showTopic={false}
-            showContributor={true}
-          />
-        </SiSection>
-      </div>
+        <SermonList
+          sermons={topic.sermons.filter((s) =>
+            s.title.toLowerCase().includes(filter),
+          )}
+          showTopic={false}
+          showContributor={true}
+        />
+      </SiSection>
     </SiPage>
   );
 }

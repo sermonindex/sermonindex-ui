@@ -81,11 +81,9 @@ export default function Component() {
         <div className="flex-grow sm:w-2/3">
           {/* ... Sermon summary ... */}
           {hasContent(sermon.description) && (
-            <div id="sermon-summary">
-              <SiSection title="Sermon Summary">
-                <p>{sermon.description}</p>
-              </SiSection>
-            </div>
+            <SiSection title="Sermon Summary" tag="sermon-summary">
+              <p>{sermon.description}</p>
+            </SiSection>
           )}
         </div>
         <div className="flex-grow sm:w-1/3">
@@ -112,21 +110,20 @@ export default function Component() {
         </div>
       </div>
       {/* ... Sermon transcript ... */}
-      <div id="sermon-transcript">
-        <SiSection
-          title={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
-        >
-          {hasContent(sermon.transcript) ? (
-            <p className="whitespace-pre-line">
-              {linkifyScripture(sermon.transcript).map((part, index) => (
-                <React.Fragment key={index}>{part}</React.Fragment>
-              ))}
-            </p>
-          ) : (
-            <p>No sermon transcription available.</p>
-          )}
-        </SiSection>
-      </div>
+      <SiSection
+        title={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
+        tag="sermon-transcript"
+      >
+        {hasContent(sermon.transcript) ? (
+          <p className="whitespace-pre-line">
+            {linkifyScripture(sermon.transcript).map((part, index) => (
+              <React.Fragment key={index}>{part}</React.Fragment>
+            ))}
+          </p>
+        ) : (
+          <p>No sermon transcription available.</p>
+        )}
+      </SiSection>
     </SiPage>
   );
 }
