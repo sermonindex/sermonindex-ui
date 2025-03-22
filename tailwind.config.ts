@@ -2,6 +2,9 @@ import type { Config } from 'tailwindcss';
 
 export default {
   content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}'],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   // If we want to define custom breakpoints for screen sizes, we need to
   // define the `smallAudioLayoutQuery` hook for the vid stack media player
   // screens: {
@@ -40,12 +43,27 @@ export default {
         'si-dark': '#4A4A23',
         'si-rock': '#333333',
         'si-slate': '#242424',
+        'media-brand': 'rgb(var(--media-brand) / <alpha-value>)',
+        'media-focus': 'rgb(var(--media-focus) / <alpha-value>)',
       },
     },
   },
   safelist: ['indent-4', 'indent-8', 'indent-12', 'indent-16'],
   darkMode: 'class',
-  exports: {
-    plugins: [require('@vidstack/react/tailwind.cjs')],
-  },
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@vidstack/react/tailwind.cjs')({
+      prefix: 'media',
+    }),
+    customVariants,
+  ],
 } satisfies Config;
+
+// @ts-ignore
+function customVariants({ addVariant, matchVariant }) {
+  // Strict version of `.group` to help with nesting.
+  matchVariant('parent-data', (value: any) => `.parent[data-${value}] > &`);
+
+  addVariant('hocus', ['&:hover', '&:focus-visible']);
+  addVariant('group-hocus', ['.group:hover &', '.group:focus-visible &']);
+}
