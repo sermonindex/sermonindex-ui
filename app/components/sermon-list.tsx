@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react';
 import { FaVideo, FaVolumeUp } from 'react-icons/fa';
 import { IoDocumentText } from 'react-icons/io5';
-import { Sermon, getSermonType } from '~/api/interfaces';
+import { MediaType, SermonInfo } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
 import { hasContent } from '~/common/sanitize';
 
@@ -12,13 +12,12 @@ function stripQuotes(str: string): string {
   return str;
 }
 
-function getMediaIcon(sermon: Sermon) {
-  const sermonType = getSermonType(sermon);
-  if (sermonType === 'Video') {
+function getMediaIcon(sermon: SermonInfo) {
+  if (sermon.mediaType === MediaType.Video) {
     return <FaVideo />;
-  } else if (sermonType === 'Audio') {
+  } else if (sermon.mediaType === MediaType.Audio) {
     return <FaVolumeUp />;
-  } else if (sermonType === 'Text') {
+  } else if (sermon.mediaType === MediaType.Text) {
     return <IoDocumentText />;
   }
   // todo: other media types might be added like book, quote, short, etc.
@@ -26,7 +25,7 @@ function getMediaIcon(sermon: Sermon) {
 }
 
 export interface SermonListProps {
-  sermons: Sermon[];
+  sermons: SermonInfo[];
   showTopic?: boolean;
   showContributor?: boolean;
 }
@@ -36,6 +35,10 @@ export const SermonList = ({
   showTopic,
   showContributor,
 }: SermonListProps) => {
+  if (sermons.length === 0) {
+    return <div>No sermons found</div>;
+  }
+
   return (
     <ul>
       {sermons.map((sermon) => (

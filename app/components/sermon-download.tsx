@@ -1,13 +1,4 @@
 import React, { useState } from 'react';
-import { Sermon } from '~/api/interfaces';
-import { ClickableText } from '~/components/section';
-import {
-  downloadMP3,
-  downloadMP4,
-  downloadPDF,
-  downloadPlainText,
-  downloadUrl,
-} from '~/common/download';
 import {
   FaCheck,
   FaRegClosedCaptioning,
@@ -16,8 +7,17 @@ import {
   FaRegFilePdf,
   FaRegFileVideo,
 } from 'react-icons/fa6';
-import { hasContent } from '~/common/sanitize';
 import { TbFaceIdError } from 'react-icons/tb';
+import { MediaType, Sermon } from '~/api/interfaces';
+import {
+  downloadMP3,
+  downloadMP4,
+  downloadPDF,
+  downloadPlainText,
+  downloadUrl,
+} from '~/common/download';
+import { hasContent } from '~/common/sanitize';
+import { ClickableText } from '~/components/section';
 
 interface SermonDownloadProps {
   sermon: Sermon;
@@ -94,8 +94,7 @@ export const DownloadItem = ({
 export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
   // Check if any download options are available
   const hasDownloads =
-    hasContent(sermon.audioUrl) ||
-    hasContent(sermon.videoDownloadUrl) ||
+    hasContent(sermon.downloadUrl) ||
     hasContent(sermon.transcript) ||
     hasContent(sermon.srtUrl) ||
     hasContent(sermon.vttUrl);
@@ -105,21 +104,25 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
       {hasDownloads ? (
         <ul className="list-none space-y-2">
           {/* Download MP3 */}
-          <DownloadItem
-            displayText={'Download as MP3'}
-            downloadCallback={downloadMP3}
-            data={sermon.audioUrl}
-            filename={'S' + sermon.id + '.mp3'}
-            icon={<FaRegFileAudio />}
-          />
+          {sermon.mediaType === MediaType.Audio && sermon.downloadUrl && (
+            <DownloadItem
+              displayText={'Download as MP3'}
+              downloadCallback={downloadMP3}
+              data={sermon.downloadUrl}
+              filename={'S' + sermon.id + '.mp3'}
+              icon={<FaRegFileAudio />}
+            />
+          )}
           {/* Download MP4 */}
-          <DownloadItem
-            displayText={'Download as MP4'}
-            downloadCallback={downloadMP4}
-            data={sermon.videoDownloadUrl}
-            filename={'S' + sermon.id + '.mp4'}
-            icon={<FaRegFileVideo />}
-          />
+          {sermon.mediaType === MediaType.Video && sermon.downloadUrl && (
+            <DownloadItem
+              displayText={'Download as MP4'}
+              downloadCallback={downloadMP4}
+              data={sermon.downloadUrl}
+              filename={'S' + sermon.id + '.mp4'}
+              icon={<FaRegFileVideo />}
+            />
+          )}
           {/* Download PDF */}
           <DownloadItem
             displayText={'Download as PDF'}
@@ -137,21 +140,25 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
             icon={<FaRegFileLines />}
           />
           {/* Download SRT */}
-          <DownloadItem
-            displayText={'Download as SRT'}
-            downloadCallback={downloadUrl}
-            data={sermon.srtUrl}
-            filename={'S' + sermon.id + '.srt'}
-            icon={<FaRegClosedCaptioning />}
-          />
+          {sermon.mediaType != MediaType.Text && sermon.srtUrl && (
+            <DownloadItem
+              displayText={'Download as SRT'}
+              downloadCallback={downloadUrl}
+              data={sermon.srtUrl}
+              filename={'S' + sermon.id + '.srt'}
+              icon={<FaRegClosedCaptioning />}
+            />
+          )}
           {/* Download VTT */}
-          <DownloadItem
-            displayText={'Download as VTT'}
-            downloadCallback={downloadUrl}
-            data={sermon.vttUrl}
-            filename={'S' + sermon.id + '.vtt'}
-            icon={<FaRegClosedCaptioning />}
-          />
+          {sermon.mediaType != MediaType.Text && sermon.vttUrl && (
+            <DownloadItem
+              displayText={'Download as VTT'}
+              downloadCallback={downloadUrl}
+              data={sermon.vttUrl}
+              filename={'S' + sermon.id + '.vtt'}
+              icon={<FaRegClosedCaptioning />}
+            />
+          )}
         </ul>
       ) : (
         <p>

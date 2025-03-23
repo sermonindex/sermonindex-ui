@@ -12,20 +12,12 @@ import {
 
 import { Link } from '@remix-run/react';
 import React, { useState } from 'react';
-import { getSermonUrl, Sermon } from '~/api/interfaces';
+import { MediaType, Sermon } from '~/api/interfaces';
 import { formatDownloads } from '~/common/format-downloads';
 import { hasContent, isNumber } from '~/common/sanitize';
-import { FaChevronDown } from 'react-icons/fa6';
-
-// todo: get rid of this and use the SermonType in the interfaces
-export enum MessageType {
-  Audio = 'audio',
-  Video = 'video',
-}
 
 export interface MessagePlayerProps {
   sermon: Sermon;
-  media: MessageType;
   bodyOnly?: boolean; // eeewwww, gross. I want to improve this...
 }
 
@@ -103,7 +95,6 @@ export const SermonPlayer = (
 ) => {
   const message: MessagePlayerProps = {
     sermon: props.sermon,
-    media: props.sermon.videoUrl ? MessageType.Video : MessageType.Audio,
     bodyOnly: true,
   };
   return <MessagePlayer message={message} />;
@@ -113,10 +104,10 @@ export const SermonPlayer = (
 /// it also allows for multiple src tage, need to understand
 /// more about the behavior of these.
 export const MessagePlayer = ({ message }: { message: MessagePlayerProps }) => {
-  switch (message.media) {
-    case MessageType.Video:
+  switch (message.sermon.mediaType) {
+    case MediaType.Video:
       return <VideoPlayer message={message} />;
-    case MessageType.Audio:
+    case MediaType.Audio:
       return <AudioPlayer message={message} />;
     default:
       /// We will assume this is a text message; right now, this does nothing
@@ -154,7 +145,7 @@ export const VideoPlayer = (
           )}
           <MediaPlayer
             title={message.sermon.title}
-            src={message.sermon.videoUrl}
+            src={message.sermon.streamUrl}
           >
             <MediaProvider />
             <DefaultVideoLayout
@@ -247,7 +238,7 @@ export const AudioPlayer = (
       <div>
         <MediaPlayer
           title={message.sermon.title}
-          src={getSermonUrl(message.sermon)}
+          src={message.sermon.streamUrl}
           viewType="audio"
         >
           <MediaProvider />

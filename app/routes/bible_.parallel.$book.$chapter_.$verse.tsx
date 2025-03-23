@@ -12,8 +12,8 @@ import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { formatDownloads } from '~/common/format-downloads';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
-import { SiSection } from '~/components/section';
 import { VerseContext } from '~/components/bible-verse-context';
+import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 import {
   TabContainer,
@@ -60,8 +60,8 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 pt-6 px-8 min-h-[calc(100vh-80px)]">
-        <div className="flex w-full items-center justify-between">
+      <div className="flex flex-col pt-6 px-8 min-h-[calc(100vh-80px)]">
+        <div className="flex w-full py-2 items-center justify-between">
           {/* TODO: NEED TO RETURN NEXT AND PREVIOUS VERSES FROM THE API */}
           <span></span>
           {/* <span className="text-si-brown hover:underline hover:cursor-pointer">
@@ -100,31 +100,40 @@ export default function Index() {
             <SiSection title="Context">
               <VerseContext context={verseContext} book={parallels.book} />
             </SiSection>
-            <SiSection title="Sermons">
-              {sermons.values.slice(0, 10).map((sermon, index) => {
-                return (
-                  <div key={index} className="flex  justify-between py-1 px-2">
-                    <div className="flex flex-col ">
-                      <Link
-                        to={`/sermons/${sermon.id}`}
-                        className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer"
-                      >
-                        {sermon.title}
-                      </Link>
-                      <span className="pl-2">
-                        by {sermon.contributorFullName}
+            {sermons.values.length > 0 && (
+              <SiSection title="Sermons">
+                {sermons.values.slice(0, 10).map((sermon, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex  justify-between py-1 px-2"
+                    >
+                      <div className="flex flex-col ">
+                        <Link
+                          to={`/sermons/${sermon.id}`}
+                          className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer"
+                        >
+                          {sermon.title}
+                        </Link>
+                        <span className="pl-2">
+                          by {sermon.contributorFullName}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-400 pl-2">
+                        {formatDownloads(sermon.hits)}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-400 pl-2">
-                      {formatDownloads(sermon.hits)}
-                    </span>
-                  </div>
-                );
-              })}
-            </SiSection>
+                  );
+                })}
+              </SiSection>
+            )}
           </div>
         </div>
-
+        {parallels.summary && (
+          <SiSection title="Summary">
+            <p>{parallels.summary}</p>
+          </SiSection>
+        )}
         <SiSection title={'Commentaries'}>
           <TabContainer>
             <TabList>

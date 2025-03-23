@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 // @ts-ignore
 import * as d3 from 'd3';
@@ -49,7 +49,7 @@ export const TopicBubbles = ({ topics }: TopicListProps) => {
       const bubblesEnter = bubbles
         .enter()
         .append('a') // Append <a> directly
-        .attr('href', (d: any) => `/topics/${d.data.name.toLowerCase()}`)
+        .attr('href', (d: any) => `/topics/${d.data.slug}`)
         .attr('key', (d: any) => d.data.name)
         .attr('class', 'topic-bubble')
         .append('g'); // Append <g> to the <a>

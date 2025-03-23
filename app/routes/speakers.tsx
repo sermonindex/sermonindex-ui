@@ -10,7 +10,7 @@ import { SpeakerList } from '~/components/speaker-list';
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
     fetchApi<ListResponse<Contributor>>('/contributors/featured'),
-    fetchApi<ListResponse<Contributor>>('/contributors'),
+    fetchApi<ListResponse<Contributor>>('/contributors?contentType=SERMONS'),
   ]);
 
   if ('statusCode' in featured || 'statusCode' in contributors) {

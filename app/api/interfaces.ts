@@ -1,8 +1,15 @@
 import { OsisToBookName } from '~/common/bible-constants';
-import { hasContent } from '~/common/sanitize';
 
 export type ListResponse<T> = {
   values: T[];
+};
+
+export type ListPaginatedResponse<T> = {
+  values: T[];
+  total: number;
+  limit: number;
+  offset: number;
+  nextPage: number | null;
 };
 
 export type ListBible<T> = {
@@ -101,18 +108,16 @@ export interface Sermon {
 
   title: string;
   description?: string;
+  mediaType: MediaType;
 
-  audioUrl?: string;
-  videoUrl?: string;
-  // This is different from videoUrl in that it will always point to
-  // a mp4 opposed to a youtube or other streaming service endpoint
-  videoDownloadUrl?: string;
-  // Captions
+  streamUrl?: string;
+  downloadUrl?: string;
+  thumbnailUrl?: string;
   srtUrl?: string;
   vttUrl?: string;
 
   bibleReferences: BiblePassage[];
-  topics: string[];
+  topics: { name: string; slug: string }[];
 
   hits: number;
   featured: boolean;
@@ -125,35 +130,42 @@ export interface Sermon {
   transcript?: string;
 }
 
-export enum SermonType {
-  Audio = 'Audio',
-  Video = 'Video',
-  Text = 'Text',
+export interface SermonInfo {
+  id: number;
+
+  contributorFullName: string;
+  contributorFullNameSlug: string;
+  contributorImageUrl?: string;
+
+  title: string;
+  description?: string;
+  mediaType: MediaType;
+
+  bibleReferences: BiblePassage[];
+  topics: string[];
+
+  hits: number;
+  featured: boolean;
+
+  createdAt: string;
 }
 
-export function getSermonType(sermon: Sermon): SermonType {
-  if (hasContent(sermon.videoUrl)) {
-    return SermonType.Video;
-  } else if (hasContent(sermon.audioUrl)) {
-    return SermonType.Audio;
-  } else if (hasContent(sermon.transcript)) {
-    return SermonType.Text;
-  }
-  return SermonType.Text;
-}
-
-export function getSermonUrl(sermon: Sermon): string | undefined {
-  return sermon.videoUrl || sermon.audioUrl;
+export enum MediaType {
+  Audio = 'AUDIO',
+  Video = 'VIDEO',
+  Text = 'TEXT',
 }
 
 export interface Topic {
   name: string;
+  slug: string;
   sermonCount: number;
 }
 
 export interface SermonTopic {
   name: string;
-  sermons: Sermon[];
+  summary: string;
+  sermons: SermonInfo[];
   updatedAt: string;
   createdAt: string;
 }
@@ -179,6 +191,7 @@ export interface BibleParallel {
   verses: BibleVerse[];
 
   contextJson: string;
+  summary?: string;
 }
 
 export interface CommentaryVerse {

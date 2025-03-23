@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6'; // Use fa6 for consistency
 
 interface DropdownCheckboxProps {
@@ -52,11 +52,10 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
   }, [isOpen]);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        // my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate
-        className="inline-flex items-center justify-between rounded-lg w-full px-4 py-1 md:py-2 bg-si-gray text-black dark:text-white dark:bg-si-dark"
+        className="relative inline-flex items-center justify-between min-w-[135px] p-3 rounded-lg bg-si-gray text-black dark:text-white dark:bg-si-dark"
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
@@ -65,14 +64,14 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
         <div className="flex text-sm items-center justify-center">
           <FaChevronDown
             className={`${
-              isOpen ? '' : 'rotate-180'
-            } shrink-0 transition-transform duration-300`}
+              isOpen ? 'rotate-180' : ''
+            } shrink-0 transition-transform duration-100`}
             aria-hidden="true"
           />
         </div>
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
+        <div className="absolute right-0 z-10 min-w-[135px] mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
           <div className="py-1" role="none">
             {options.map((option) => (
               <label

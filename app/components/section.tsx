@@ -1,6 +1,6 @@
+import { Link, useLocation } from '@remix-run/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
-import { Link, useLocation } from '@remix-run/react';
 
 interface SiSectionProps {
   title: string;
@@ -39,7 +39,7 @@ export function SiSection({
   // double padding that looks like a big hold between the sections.
   let paddingLeft = sharesLeftPadding ? 'pl-2 md:pl-4' : 'pl-4 md:pl-8';
   let paddingRight = sharesRightPadding ? 'pr-2 md:pr-4' : 'pr-4 md:pr-8';
-  let padding = `pt-4 md:pt-8 pb-4 md:pb-8 ${paddingLeft} ${paddingRight}`;
+  let padding = `py-4 ${paddingLeft} ${paddingRight}`;
 
   const location = useLocation();
   const linkTo = `${location.pathname}#${tag}`;
@@ -63,7 +63,7 @@ export function SiSection({
               <div className="flex text-sm items-center justify-center">
                 <FaChevronDown
                   className={`${
-                    open ? '' : 'rotate-180'
+                    open ? 'rotate-180' : ''
                   } shrink-0 transition-transform duration-500`}
                   aria-hidden="true"
                 />

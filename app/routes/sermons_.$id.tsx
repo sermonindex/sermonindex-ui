@@ -1,16 +1,16 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { Contributor, Sermon, getSermonType } from '~/api/interfaces';
+import { Contributor, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
-import { ClickableText, SiSection } from '~/components/section';
 import { SermonPlayer } from '~/components/player';
+import { ClickableText, SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
 
-import { SermonDownload } from '~/components/sermon-download';
-import { linkifyScripture } from '~/components/linkify-scripture';
 import React from 'react';
+import { linkifyScripture } from '~/components/linkify-scripture';
+import { SermonDownload } from '~/components/sermon-download';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -39,11 +39,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
-  const sermonType = getSermonType(sermon);
   return (
     <SiPage sermon={sermon}>
-      {/* Only show this div if sermonType is Audio or Video */}
-      {['Audio', 'Video'].includes(sermonType) && (
+      {/* Only show this div if MediaType is Audio or Video */}
+      {sermon.mediaType != MediaType.Text && (
         <SiSection title={sermon.title}>
           <SermonPlayer sermon={sermon} />
         </SiSection>
@@ -71,8 +70,8 @@ export default function Component() {
             {Array.isArray(sermon.topics) && sermon.topics.length > 0 ? (
               sermon.topics.map((topic, index) => (
                 <div key={index}>
-                  <Link to={`/topics/${topic.toLowerCase()}`}>
-                    <ClickableText>{topic}</ClickableText>
+                  <Link to={`/topics/${topic.slug}`}>
+                    <ClickableText>{topic.name}</ClickableText>
                   </Link>
                 </div>
               ))
@@ -120,7 +119,11 @@ export default function Component() {
       </div>
       {/* ... Sermon transcript ... */}
       <SiSection
-        title={sermonType === 'Text' ? sermon.title : 'Sermon Transcription'}
+        title={
+          sermon.mediaType === MediaType.Text
+            ? sermon.title
+            : 'Sermon Transcription'
+        }
         tag="sermon-transcript"
       >
         {hasContent(sermon.transcript) ? (

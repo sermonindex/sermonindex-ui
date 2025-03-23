@@ -33,10 +33,7 @@ export const TopicList = ({ topics }: TopicListProps) => {
             >
               <ul>
                 {group.map((topic) => (
-                  <Link
-                    key={topic.name}
-                    to={`/topics/${topic.name.toLowerCase()}`}
-                  >
+                  <Link key={topic.name} to={`/topics/${topic.slug}`}>
                     <li
                       className="group flex items-center h-8 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
                       key={topic.name}

@@ -9,7 +9,7 @@ import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topic] = await Promise.all([
-    fetchApi<SermonTopic>(`/topics/topicName/${params.name}`),
+    fetchApi<SermonTopic>(`/topics/slug/${params.name}`),
   ]);
 
   if ('statusCode' in topic) {
@@ -31,6 +31,9 @@ export default function Index() {
 
   return (
     <SiPage>
+      <SiSection title={topic.name} tag="topic">
+        <p>{topic.summary}</p>
+      </SiSection>
       <SiSection
         title={formatTopicTitle(topic.name, topic.sermons.length)}
         tag="sermon-list"
