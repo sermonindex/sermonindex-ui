@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { formatDownloads } from '~/common/format-downloads';
+import { formatNumber } from '~/common/format-number';
 import { FeaturedMessage } from '~/components/featured';
 import SermonCarousel from '~/components/sermon-carosel';
 import SiPage from '~/components/si-page';
@@ -60,7 +60,7 @@ export default function Index() {
         title={'Popular Sermons'}
         sermons={popular.values}
         customizer={(sermon) => (
-          <span className="font-thin">{`${formatDownloads(
+          <span className="font-thin">{`${formatNumber(
             sermon.hits,
           )} Downloads`}</span>
         )}

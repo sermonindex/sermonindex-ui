@@ -3,6 +3,7 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { formatNumber } from '~/common/format-number';
 import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 import { SpeakerList } from '~/components/speaker-list';
@@ -36,20 +37,22 @@ export default function Index() {
                 key={index}
                 className="flex flex-col items-center m-2 hover:underline group"
               >
-                <img
-                  src={
-                    contributor.imageUrl
-                      ? contributor.imageUrl
-                      : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
-                  }
-                  alt={contributor.fullName}
-                  className="w-16 h-16 rounded-full object-cover group-hover:scale-110 transition-transform duration-200"
-                />
+                <div className="relative">
+                  <img
+                    className="w-16 h-16 rounded-full object-cover group-hover:scale-110 transition-transform duration-200"
+                    src={
+                      contributor.imageUrl
+                        ? contributor.imageUrl
+                        : 'https://sermonindex1.b-cdn.net/default-si-speaker.png'
+                    }
+                    alt={contributor.fullName}
+                  />
+                  <span className="flex items-center justify-center bottom-0 left-12 absolute w-7 h-7 text-[10px] text-si-slate dark:text-si-light bg-si-gray border-2 border-white dark:bg-si-dark dark:border-si-slate  rounded-full">
+                    {formatNumber(contributor.sermonCount)}
+                  </span>
+                </div>
                 <p className="text-center mt-2 text-sm">
                   {contributor.fullName}
-                </p>
-                <p className="text-center text-sm">
-                  ({contributor.sermonCount})
                 </p>
               </div>
             </Link>

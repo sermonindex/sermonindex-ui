@@ -10,7 +10,7 @@ import {
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
-import { formatDownloads } from '~/common/format-downloads';
+import { formatNumber } from '~/common/format-number';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { VerseContext } from '~/components/bible-verse-context';
 import { SiSection } from '~/components/section';
@@ -120,7 +120,7 @@ export default function Index() {
                         </span>
                       </div>
                       <span className="text-sm text-gray-400 pl-2">
-                        {formatDownloads(sermon.hits)}
+                        {formatNumber(sermon.hits)}
                       </span>
                     </div>
                   );

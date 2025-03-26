@@ -2,7 +2,7 @@ import { Link } from '@remix-run/react';
 import { FaVideo, FaVolumeUp } from 'react-icons/fa';
 import { IoDocumentText } from 'react-icons/io5';
 import { MediaType, SermonInfo } from '~/api/interfaces';
-import { formatDownloads } from '~/common/format-downloads';
+import { formatNumber } from '~/common/format-number';
 import { hasContent } from '~/common/sanitize';
 
 function stripQuotes(str: string): string {
@@ -78,7 +78,7 @@ export const SermonList = ({
                     )}
                   </div>
                   <div className="flex flex-col justify-end">
-                    <span>Downloads: {formatDownloads(sermon.hits)}</span>
+                    <span>Downloads: {formatNumber(sermon.hits)}</span>
                   </div>
                 </div>
               </div>

@@ -13,7 +13,7 @@ import {
 import { Link } from '@remix-run/react';
 import React, { useState } from 'react';
 import { MediaType, Sermon } from '~/api/interfaces';
-import { formatDownloads } from '~/common/format-downloads';
+import { formatNumber } from '~/common/format-number';
 import { hasContent, isNumber } from '~/common/sanitize';
 
 export interface MessagePlayerProps {
@@ -82,7 +82,7 @@ export const MessageDownloads = ({
     return (
       <div className="flex justify-end pt-2">
         <p className={'text-sm justify-right'}>
-          {formatDownloads(downloads)} downloads
+          {formatNumber(downloads)} downloads
         </p>
       </div>
     );

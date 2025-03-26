@@ -2,7 +2,7 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { formatDownloads } from '~/common/format-downloads';
+import { formatNumber } from '~/common/format-number';
 import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 
@@ -71,7 +71,7 @@ export default function Index() {
                   {sermon.contributorFullName}
                 </p>
                 <p className="absolute bottom-4 right-4 text-sm">
-                  {formatDownloads(sermon.hits)}
+                  {formatNumber(sermon.hits)}
                 </p>
               </div>
             </Link>
