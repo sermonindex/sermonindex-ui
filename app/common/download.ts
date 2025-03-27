@@ -1,7 +1,5 @@
 import download from 'downloadjs';
 import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
 import { Sermon } from '~/api/interfaces';
 import { hasContent } from '~/common/sanitize';
 
