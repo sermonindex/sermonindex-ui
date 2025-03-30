@@ -1,9 +1,10 @@
 import { Link, useLocation } from '@remix-run/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
+import { hasContent } from '~/common/sanitize';
 
 interface SiSectionProps {
-  title: string;
+  title?: string;
   tag?: string;
   expandable?: boolean;
   defaultExpanded?: boolean;
@@ -14,7 +15,7 @@ interface SiSectionProps {
 }
 
 export function SiSection({
-  title,
+  title = '',
   tag = title,
   expandable = false,
   defaultExpanded = false,
@@ -43,6 +44,10 @@ export function SiSection({
 
   const location = useLocation();
   const linkTo = `${location.pathname}#${tag}`;
+
+  if (!hasContent(title)) {
+    return <div className={`flex flex-col w-full ${padding}`}>{children}</div>;
+  }
 
   return (
     <div className="flex flex-col" id={tag}>
