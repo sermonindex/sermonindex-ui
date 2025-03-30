@@ -39,6 +39,7 @@ const Links: { [key: string]: PageLink } = {
   podcast: { name: 'Podcast', linkTo: 'todo' },
   topics: { name: 'Topics', linkTo: 'topics' },
   blog: { name: 'Blog', linkTo: 'todo' },
+  samples: { name: 'Samples', linkTo: 'samples' },
 };
 
 interface HeaderProps {
