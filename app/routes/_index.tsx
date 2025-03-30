@@ -3,9 +3,10 @@ import { useLoaderData } from '@remix-run/react';
 import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
-import { FeaturedMessage } from '~/components/featured';
 import SermonCarousel from '~/components/sermon-carosel';
 import SiPage from '~/components/si-page';
+import { SiSection } from '~/components/section';
+import { Player } from '~/components/media/player';
 
 export const meta: MetaFunction = () => {
   return [
@@ -39,7 +40,9 @@ export default function Index() {
 
   return (
     <SiPage>
-      <FeaturedMessage sermon={featured} />
+      <SiSection>
+        <Player sermons={[featured]} />
+      </SiSection>
       <SermonCarousel
         title={'Recent Uploads'}
         sermons={recent.values}

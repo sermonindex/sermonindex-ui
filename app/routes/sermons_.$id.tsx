@@ -3,7 +3,6 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { Contributor, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
-import { SermonPlayer } from '~/components/player';
 import { ClickableText, SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
@@ -11,6 +10,7 @@ import { SpeakerBio } from '~/components/speaker-bio';
 import React from 'react';
 import { linkifyScripture } from '~/components/linkify-scripture';
 import { SermonDownload } from '~/components/sermon-download';
+import { Player } from '~/components/media/player';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -43,8 +43,8 @@ export default function Component() {
     <SiPage sermon={sermon}>
       {/* Only show this div if MediaType is Audio or Video */}
       {sermon.mediaType != MediaType.Text && (
-        <SiSection title={sermon.title}>
-          <SermonPlayer sermon={sermon} />
+        <SiSection>
+          <Player sermons={[sermon]} />
         </SiSection>
       )}
 
