@@ -30,8 +30,6 @@ export const Player = ({ sermons }: PlayerProps) => {
     currentSermon.mediaType.toLowerCase() === 'video' ? 'video' : 'audio',
   );
 
-  console.log(currentSermon.vttUrl);
-
   return (
     <>
       <div
@@ -49,6 +47,7 @@ export const Player = ({ sermons }: PlayerProps) => {
           // TODO: scrub this and make sure if the file does not end in .mp3 and does not have youtube like origin, than add .mp4
           src={currentSermon.streamUrl}
           playsInline
+          crossOrigin
           viewType={viewType}
           ref={player}
         >
@@ -60,18 +59,18 @@ export const Player = ({ sermons }: PlayerProps) => {
                 alt={currentSermon.description}
               />
             )}
-            {hasContent(currentSermon.vttUrl) && (
-              <Track
-                kind="subtitles"
-                src={currentSermon.vttUrl}
-                key={currentSermon.vttUrl}
-                language="en-US"
-                label="English"
-                type="vtt"
-                encoding="us-ascii"
-                default
-              />
-            )}
+            {hasContent(currentSermon.vttUrl) &&
+              hasContent(currentSermon.vttContent) && (
+                <Track
+                  kind="subtitles"
+                  content={currentSermon.vttContent}
+                  key={currentSermon.vttUrl}
+                  language="en-US"
+                  label="English"
+                  type="vtt"
+                  default
+                />
+              )}
           </MediaProvider>
           <CustomLayout
             title={currentSermon.title}

@@ -81,7 +81,6 @@ export function Mute({ tooltipPlacement }: MediaButtonProps) {
 export function Caption({ tooltipPlacement }: MediaButtonProps) {
   const track = useMediaState('textTrack'),
     isOn = track && isTrackCaptionKind(track);
-  console.log(`track is on ${isOn} track ${track}`);
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>

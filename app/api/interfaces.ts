@@ -115,6 +115,7 @@ export interface Sermon {
   thumbnailUrl?: string;
   srtUrl?: string;
   vttUrl?: string;
+  vttContent?: string; // This isn't from the API, but it's fetched in the loader currently
 
   bibleReferences: BiblePassage[];
   topics: { name: string; slug: string }[];

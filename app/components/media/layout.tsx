@@ -1,10 +1,15 @@
-import { Captions, Controls, useMediaState } from '@vidstack/react';
+import { Captions, Controls, Title, useMediaState } from '@vidstack/react';
 
 import * as Buttons from './buttons';
 import * as Menus from './menus';
 import * as Sliders from './sliders';
 import { TimeGroup } from './time-group';
 import { Gestures } from './gestures';
+import {
+  AudioCaptions,
+  CustomCaptionDisplay,
+  VideoCaptions,
+} from '~/components/media/tracks';
 
 export interface AudioLayoutProps {
   title: string;
@@ -21,15 +26,21 @@ export const CustomLayout = ({ title, author }: AudioLayoutProps) => {
   return (
     <>
       <Gestures />
-      <Captions className="media-captions absolute inset-0 bottom-2 z-10 select-none break-words opacity-0 transition-[opacity,bottom] duration-300 media-captions:opacity-100 media-controls:bottom-[85px] media-preview:opacity-0 aria-hidden:hidden" />
+
+      {/* --- Video Captions --- */}
+      {viewType === 'video' && <VideoCaptions />}
+
       <Controls.Root className={`w-full p-4 ${controlStyle}`}>
         {/* Title and Author */}
         <div className="text-left font-light">
-          <div className="text-lg md:text-xl">{title}</div>
-          <div className="text-xs md:text-sm text-si-dim dark:text-gray-300">
+          <div className="text-lg md:text-xl font-bold">{title}</div>
+          <div className="text-xs md:text-sm text-text-gray-400 dark:text-gray-300">
             {author}
           </div>
         </div>
+
+        {/* --- Audio Captions --- */}
+        {viewType === 'audio' && <AudioCaptions />}
 
         {/* Time */}
         <Controls.Group className="p-4">
@@ -54,7 +65,7 @@ export const CustomLayout = ({ title, author }: AudioLayoutProps) => {
 
           {/* Settings */}
           <Controls.Group className="flex items-center justify-end w-1/3">
-            {/*<Buttons.Caption tooltipPlacement="top" />*/}
+            <Buttons.Caption tooltipPlacement="top" />
             <Menus.Settings placement="top end" tooltipPlacement="top end" />
           </Controls.Group>
         </div>
