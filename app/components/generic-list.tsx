@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { formatNumber } from '~/common/format-number';
 
 export interface GenericListProps<T> {
   items: T[];
@@ -7,7 +8,8 @@ export interface GenericListProps<T> {
   getItemId: (item: T) => string;
   getItemName: (item: T) => string;
   getItemLink: (item: T) => string;
-  columnClasses?: string;
+  getItemCount?: (item: T) => number;
+  columnsClassName?: string;
 }
 
 // A generic list component that groups items into some hierarchy
@@ -18,7 +20,8 @@ export const GenericList = <T,>({
   getItemId,
   getItemName,
   getItemLink,
-  columnClasses = 'w-full pt-2 columns-1 md:columns-2 xl:columns-3',
+  getItemCount,
+  columnsClassName = 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5',
 }: GenericListProps<T>) => {
   const itemsGrouped = getGroupedItems(items);
 
@@ -30,30 +33,20 @@ export const GenericList = <T,>({
             <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
               {getGroupKeyName(key)}
             </h2>
-            <div key={key} className={columnClasses}>
-              <ul>
+            <div key={key}>
+              <ul className={`grid ${columnsClassName} gap-2 pt-2`}>
                 {group.map((item) => (
                   <Link key={getItemId(item)} to={getItemLink(item)}>
                     <li
-                      className="group flex items-center h-10 text-sm justify-between pl-2 my-1 rounded-md hover:cursor-pointer hover:underline hover:bg-gray-300 dark:hover:bg-gray-700 break-inside-avoid-column"
+                      className="flex items-center justify-between h-10 px-2 text-sm rounded-lg hover:cursor-pointer bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-700 break-inside-avoid-column"
                       key={getItemName(item)}
                     >
                       <span>{getItemName(item)}</span>
-                      <span className="hidden group-hover:block transition-opacity duration-300">
-                        <svg
-                          className="h-6 w-6 text-slate-500 mr-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </span>
+                      {getItemCount && (
+                        <span className="inline-flex items-center justify-center w-9 h-4 ms-2 text-xs text-black bg-neutral-300 rounded-full">
+                          {formatNumber(getItemCount(item))}
+                        </span>
+                      )}
                     </li>
                   </Link>
                 ))}

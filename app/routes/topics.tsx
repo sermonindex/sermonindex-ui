@@ -1,11 +1,11 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
 import { ListResponse, Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
-import { useState } from 'react';
-import { TopicList } from '~/components/topic-list';
 import { TopicBubbles } from '~/components/topic-bubbles';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -22,6 +22,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { topics, popular };
 }
+
+const getTopicGroupedItems = (topics: Topic[]) => {
+  return topics.reduce((grouped, topic) => {
+    const letter = topic.name[0].toLowerCase();
+    if (!grouped[letter]) {
+      grouped[letter] = [];
+    }
+    grouped[letter].push(topic);
+    return grouped;
+  }, {} as { [key: string]: Topic[] });
+};
 
 export default function Index() {
   const { topics, popular } = useLoaderData<typeof loader>();
@@ -43,10 +54,16 @@ export default function Index() {
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
           required
         />
-        <TopicList
-          topics={topics.values.filter((t) =>
+        <GenericList<Topic>
+          items={topics.values.filter((t) =>
             t.name.toLowerCase().includes(filter),
           )}
+          getGroupedItems={getTopicGroupedItems}
+          getGroupKeyName={(key: string) => key}
+          getItemId={(topic: Topic) => topic.slug}
+          getItemName={(topic: Topic) => topic.name}
+          getItemLink={(topic: Topic) => `/topics/${topic.slug}`}
+          getItemCount={(topic: Topic) => topic.sermonCount}
         />
       </SiSection>
     </SiPage>

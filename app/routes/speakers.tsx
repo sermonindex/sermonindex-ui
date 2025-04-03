@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { Contributor, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
+import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
-import { SpeakerList } from '~/components/speaker-list';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
@@ -23,6 +23,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { featured, contributors };
 }
 
+const getContributorGroupedItems = (contributors: Contributor[]) => {
+  return contributors.reduce((grouped, contributor) => {
+    const letter = contributor.fullName[0].toLowerCase();
+    if (!grouped[letter]) {
+      grouped[letter] = [];
+    }
+    grouped[letter].push(contributor);
+    return grouped;
+  }, {} as { [key: string]: Contributor[] });
+};
+
 export default function Index() {
   const { featured, contributors } = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
@@ -33,13 +44,10 @@ export default function Index() {
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
           {featured.values.map((contributor, index) => (
             <Link to={`/speakers/${contributor.fullNameSlug}`} key={index}>
-              <div
-                key={index}
-                className="flex flex-col items-center m-2 hover:underline group"
-              >
+              <div key={index} className="flex flex-col items-center m-2 group">
                 <div className="relative">
                   <img
-                    className="w-16 h-16 rounded-full object-cover group-hover:scale-110 transition-transform duration-200"
+                    className="w-16 h-16 rounded-full object-cover group-hover:scale-125 transition-transform duration-200"
                     src={
                       contributor.imageUrl
                         ? contributor.imageUrl
@@ -66,10 +74,18 @@ export default function Index() {
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
           required
         />
-        <SpeakerList
-          contributors={contributors.values.filter((c) =>
+        <GenericList<Contributor>
+          items={contributors.values.filter((c) =>
             c.fullName.toLowerCase().includes(filter),
           )}
+          getGroupedItems={getContributorGroupedItems}
+          getGroupKeyName={(key: string) => key}
+          getItemId={(contributor: Contributor) => contributor.fullNameSlug}
+          getItemName={(contributor: Contributor) => contributor.fullName}
+          getItemLink={(contributor: Contributor) =>
+            `/speakers/${contributor.fullNameSlug}`
+          }
+          getItemCount={(contributor: Contributor) => contributor.sermonCount}
         />
       </SiSection>
     </SiPage>

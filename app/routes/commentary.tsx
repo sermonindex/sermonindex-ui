@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { BibleCommentary, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { getLanguageName } from '~/common/languages';
-import { SiSection } from '~/components/section';
 import { GenericList } from '~/components/generic-list';
+import { SiSection } from '~/components/section';
 import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -64,6 +64,7 @@ export default function Index() {
               (commentary: BibleCommentary) => ''
               // todo: something like `/commentary/${commentary.language}/${commentary.id}` ?
             }
+            columnsClassName="grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
           />
         </>
       </SiSection>

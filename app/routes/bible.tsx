@@ -1,12 +1,12 @@
-import SiPage from '~/components/si-page';
-import { useLoaderData } from '@remix-run/react';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { fetchApi } from '~/api/sdk';
-import { BibleTranslation, ListResponse } from '~/api/interfaces';
-import { SiSection } from '~/components/section';
+import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
+import { BibleTranslation, ListResponse } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
 import { getLanguageName } from '~/common/languages';
 import { GenericList } from '~/components/generic-list';
+import { SiSection } from '~/components/section';
+import SiPage from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const translations = await fetchApi<ListResponse<BibleTranslation>>(
@@ -61,6 +61,7 @@ export default function Index() {
             getItemLink={(bible: BibleTranslation) =>
               `/bible/${bible.language}/${bible.shortName}`
             }
+            columnsClassName="grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
           />
         </>
       </SiSection>
