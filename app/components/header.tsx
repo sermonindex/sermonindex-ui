@@ -118,11 +118,11 @@ export const Header = ({ sermon, contributor }: HeaderProps) => {
   return (
     <header className="flex flex-col">
       {/* Top navbar - logo, search bar, and site options */}
-      <div className="relative flex w-full space-x-4 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal">
+      <div className="relative flex w-full space-x-8 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal bg-gradient-to-t from-black/20">
         <Link to="/">
           <img
-            className="w-24 lg:w-48 h-auto p-4 sm:p-1"
-            src="/sermon-index.svg"
+            className="w-60 h-auto items-center"
+            src="/sermon-index-new.png"
             alt="sermon-index"
           />
         </Link>
@@ -134,7 +134,7 @@ export const Header = ({ sermon, contributor }: HeaderProps) => {
         >
           <FaSearch />
         </div>
-        <div className="hidden md:inline flex-1">
+        <div className="hidden md:inline flex-1 pr-8">
           <SermonSearch />
         </div>
 

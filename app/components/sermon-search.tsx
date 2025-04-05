@@ -219,8 +219,9 @@ export const SermonSearch = () => {
 
   return (
     <AsyncSelect
+      className="text-sm text-gray-500"
       loadOptions={loadOptions}
-      placeholder="Search SermonIndex..."
+      placeholder="Search Sermon Index..."
       noOptionsMessage={() => null}
       components={{
         IndicatorSeparator: () => null,
