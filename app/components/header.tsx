@@ -118,7 +118,7 @@ export const Header = ({ sermon, contributor }: HeaderProps) => {
   return (
     <header className="flex flex-col">
       {/* Top navbar - logo, search bar, and site options */}
-      <div className="relative flex w-full space-x-8 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal bg-gradient-to-t from-black/20">
+      <div className="relative flex w-full space-x-8 h-16 lg:h-24 py-2 px-4 items-center bg-si-main justify-between md:justify-normal dark:bg-gradient-to-t dark:from-black/20">
         <Link to="/">
           <img
             className="w-60 h-auto items-center"
