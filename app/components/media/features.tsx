@@ -1,7 +1,7 @@
 import { hasContent, isNumber } from '~/common/sanitize';
 import { formatNumber } from '~/common/format-number';
-import { FaEye } from 'react-icons/fa';
 import React from 'react';
+import { FiDownload } from 'react-icons/fi';
 
 export const Cover = ({
   title,
@@ -37,7 +37,7 @@ export const SermonViews = ({ views }: { views: number | undefined }) => {
   return (
     <div className="flex items-center gap-x-1">
       <span className="text-xs italic">{formatNumber(views)}</span>
-      <FaEye />
+      <FiDownload />
     </div>
   );
 };
