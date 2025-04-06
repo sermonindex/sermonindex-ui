@@ -56,6 +56,24 @@ export function Play({ tooltipPlacement }: MediaButtonProps) {
   );
 }
 
+export function MiniPlay({ tooltipPlacement }: MediaButtonProps) {
+  const isPaused = useMediaState('paused');
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        {/* Note - if you modify "buttonClass" you modify buttons in all the media players,
+        if we want to make this smaller make a new const or put styling here */}
+        <PlayButton className={buttonClass}>
+          {isPaused ? <PlayIcon /> : <PauseIcon />}
+        </PlayButton>
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {isPaused ? 'Play' : 'Pause'}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
 export function Mute({ tooltipPlacement }: MediaButtonProps) {
   const volume = useMediaState('volume'),
     isMuted = useMediaState('muted');

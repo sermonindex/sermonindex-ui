@@ -10,7 +10,7 @@ import {
   Track,
 } from '@vidstack/react';
 import { useRef, useState } from 'react';
-import { CustomLayout } from '~/components/media/layout';
+import { CustomLayout, MiniCustomLayout } from '~/components/media/layout';
 import { hasContent } from '~/common/sanitize';
 
 export interface PlayerProps {
@@ -79,6 +79,31 @@ export const Player = ({ sermons }: PlayerProps) => {
           />
         </MediaPlayer>
       </div>
+    </>
+  );
+};
+
+export interface MiniPlayerProps {
+  sermon: Sermon;
+}
+
+export const MiniPlayer = ({ sermon }: MiniPlayerProps) => {
+  let player = useRef<MediaPlayerInstance>(null);
+
+  return (
+    <>
+      <MediaPlayer
+        className="w-full items-center select-none overflow-hidden"
+        title={sermon.title}
+        src={sermon.streamUrl}
+        playsInline
+        crossOrigin
+        viewType={'audio'}
+        ref={player}
+      >
+        <MediaProvider />
+        <MiniCustomLayout />
+      </MediaPlayer>
     </>
   );
 };

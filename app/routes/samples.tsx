@@ -5,7 +5,7 @@ import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
 import { FeaturedMessage } from '~/components/featured';
 import SiPage from '~/components/si-page';
-import { Player } from '~/components/media/player';
+import { MiniPlayer, Player } from '~/components/media/player';
 import { SiSection } from '~/components/section';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -36,6 +36,20 @@ export default function Index() {
 
   return (
     <SiPage>
+      <span className="p-4">Example Mini Players</span>
+      <SiSection className="w-full bg-si-olive rounded-2xl p-4">
+        <ul>
+          <li className={'w-full'}>
+            <span className="p-2">Example Mini Player - Audio Sermon </span>
+            <MiniPlayer sermon={featured} />
+          </li>
+          <li>
+            <span className="p-2">Example Mini Player - Video Sermon </span>
+            <MiniPlayer sermon={videoSermon} />
+          </li>
+        </ul>
+      </SiSection>
+
       <span className="p-4">Example New Audio</span>
       <SiSection>
         <Player sermons={[featured]} />

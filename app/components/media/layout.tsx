@@ -8,6 +8,7 @@ import { Gestures } from './gestures';
 import { AudioCaptions, VideoCaptions } from '~/components/media/tracks';
 import { Cover } from '~/components/media/features';
 import { BufferingIndicator } from '~/components/media/buffering';
+import { MiniPlay } from './buttons';
 
 export interface CustomLayoutProps {
   title: string;
@@ -82,6 +83,36 @@ export const CustomLayout = ({
               <Buttons.Caption tooltipPlacement="top" />
               <Buttons.Fullscreen tooltipPlacement="top" />
               <Menus.Settings placement="top end" tooltipPlacement="top end" />
+            </Controls.Group>
+          </div>
+        </Controls.Root>
+      </div>
+    </>
+  );
+};
+
+export const MiniCustomLayout = () => {
+  return (
+    <>
+      <BufferingIndicator />
+
+      <div className={'flex w-full'}>
+        <Controls.Root
+          className={`w-full p-4 opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 z-10`}
+        >
+          <div className={'flex w-full'}>
+            <Controls.Group className={'items-center'}>
+              {/* todo - I made a MiniPlay button so we can style however we want for "mini mode */}
+              <Buttons.MiniPlay tooltipPlacement="top" />
+            </Controls.Group>
+
+            <Controls.Group
+              className={
+                'items-center w-full opacity-100 media-paused:opacity-0'
+              }
+            >
+              {/* todo - I made the time slider only show when the media is playing */}
+              <Sliders.Time />
             </Controls.Group>
           </div>
         </Controls.Root>
