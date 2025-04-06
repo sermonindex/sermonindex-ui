@@ -25,6 +25,7 @@ import {
   VolumeHighIcon,
   VolumeLowIcon,
 } from '@vidstack/react/icons';
+import { FaVolumeMute } from 'react-icons/fa';
 
 export interface MediaButtonProps {
   tooltipPlacement: TooltipPlacement;
@@ -37,7 +38,7 @@ export const bigButtonClass =
   'group ring-media-focus relative inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4';
 
 export const tooltipClass =
-  'animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-10 rounded-md bg-black/40 px-2 py-px text-xs font-medium parent-data-[open]:hidden';
+  'animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-30 rounded-full bg-black/10 dark:bg-black/30 backdrop-blur-sm px-2 py-px text-xs font-medium parent-data-[open]:hidden';
 
 export function Play({ tooltipPlacement }: MediaButtonProps) {
   const isPaused = useMediaState('paused');

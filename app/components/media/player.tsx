@@ -35,12 +35,12 @@ export const Player = ({ sermons }: PlayerProps) => {
       <div
         className={`${
           viewType === 'video'
-            ? 'aspect-video'
+            ? 'aspect-video w-full'
             : 'w-full rounded-xl shadow-2xl bg-si-gray text-black dark:text-white dark:bg-si-dark'
         }`}
       >
         <MediaPlayer
-          className={`w-full inline-flex items-center relative select-none overflow-hidden ${
+          className={`w-full inline-flex items-center select-none overflow-hidden ${
             viewType === 'video' ? 'aspect-video shadow-2xl' : ''
           }`}
           title={currentSermon.title}
@@ -75,6 +75,8 @@ export const Player = ({ sermons }: PlayerProps) => {
           <CustomLayout
             title={currentSermon.title}
             author={currentSermon.contributorFullName}
+            authorImageUrl={currentSermon.contributorImageUrl}
+            hits={currentSermon.hits}
           />
         </MediaPlayer>
       </div>

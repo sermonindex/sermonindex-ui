@@ -27,7 +27,7 @@ export interface SettingsProps {
 }
 
 export const menuClass =
-  'animate-out fade-out slide-out-to-bottom-2 data-[open]:animate-in data-[open]:fade-in data-[open]:slide-in-from-bottom-4 flex h-[var(--menu-height)] max-h-[400px] min-w-[200px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/40 p-1 text-xs font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden';
+  'animate-out fade-out slide-out-to-bottom-2 data-[open]:animate-in data-[open]:fade-in data-[open]:slide-in-from-bottom-4 flex h-[var(--menu-height)] max-h-[400px] min-w-[200px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/10 dark:bg-black/30 backdrop-blur-sm p-1 text-xs font-medium outline-none transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden';
 
 export const submenuClass =
   'hidden w-full flex-col items-start justify-center outline-none data-[keyboard]:mt-[3px] data-[open]:inline-block';

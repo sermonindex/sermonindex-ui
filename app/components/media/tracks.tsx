@@ -235,7 +235,7 @@ export function VideoCaptions() {
         numNext={4}
         lineHeight="1em"
         fontSize="0.9rem"
-        textColor="text-white" // <-- Pass text color for video
+        textColor="text-white"
       />
     </div>
   );
@@ -259,9 +259,8 @@ export function AudioCaptions() {
         numPrev={4}
         numNext={4}
         lineHeight="1em"
-        fontSize="0.9rem"
-        // Example: Use a different text color for the audio layout
-        textColor="text-black dark:text-white"
+        fontSize="0.9rem" // todo: fontsize and lineHeight need to scale with screen size
+        textColor="text-black dark:text-white media-fullscreen:text-white"
       />
     </div>
   );
