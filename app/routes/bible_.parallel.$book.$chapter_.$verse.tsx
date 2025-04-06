@@ -21,6 +21,7 @@ import {
   TabList,
   TabListItem,
 } from '~/components/tabs';
+import { AuthorImage } from '~/components/image-author';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { book, chapter, verse } = params;
@@ -115,11 +116,14 @@ export default function Index() {
                         >
                           {sermon.title}
                         </Link>
-                        <span className="pl-2">
-                          by {sermon.contributorFullName}
-                        </span>
+                        <div className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
+                          <AuthorImage
+                            author={sermon.contributorFullName}
+                            imageUrl={sermon.contributorImageUrl}
+                          />
+                        </div>
                       </div>
-                      <span className="text-sm text-gray-400 pl-2">
+                      <span className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
                         {formatNumber(sermon.hits)}
                       </span>
                     </div>

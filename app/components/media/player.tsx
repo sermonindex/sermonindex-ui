@@ -44,7 +44,6 @@ export const Player = ({ sermons }: PlayerProps) => {
             viewType === 'video' ? 'aspect-video shadow-2xl' : ''
           }`}
           title={currentSermon.title}
-          // TODO: scrub this and make sure if the file does not end in .mp3 and does not have youtube like origin, than add .mp4
           src={currentSermon.streamUrl}
           playsInline
           crossOrigin

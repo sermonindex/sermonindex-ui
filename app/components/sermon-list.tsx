@@ -4,6 +4,8 @@ import { IoDocumentText } from 'react-icons/io5';
 import { MediaType, SermonInfo } from '~/api/interfaces';
 import { formatNumber } from '~/common/format-number';
 import { hasContent } from '~/common/sanitize';
+import React from 'react';
+import { AuthorImage } from '~/components/image-author';
 
 function stripQuotes(str: string): string {
   if (str.startsWith('"') && str.endsWith('"')) {
@@ -57,7 +59,10 @@ export const SermonList = ({
               <div className="pt-1 flex flex-col">
                 {showContributor && (
                   <div className="pb-2">
-                    <span>Speaker: {sermon.contributorFullName}</span>
+                    <AuthorImage
+                      author={sermon.contributorFullName}
+                      imageUrl={sermon.contributorImageUrl}
+                    />
                   </div>
                 )}
                 {sermon.topics.length > 0 && showTopic && (
@@ -77,7 +82,7 @@ export const SermonList = ({
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col justify-end">
+                  <div className="flex flex-col justify-end pl-2">
                     <span>Downloads: {formatNumber(sermon.hits)}</span>
                   </div>
                 </div>
