@@ -82,7 +82,7 @@ export function SiSection({
                 maxHeight: contentHeight ? `${contentHeight}px` : '0px',
               }}
             >
-              <div className="p-4">{children}</div>
+              <div className="md:p-4">{children}</div>
             </div>
           </>
         ) : (
@@ -94,7 +94,7 @@ export function SiSection({
                 {title}
               </h1>
             </Link>
-            <div className="p-4">{children}</div>
+            <div className="md:p-4">{children}</div>
           </>
         )}
       </div>

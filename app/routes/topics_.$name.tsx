@@ -49,7 +49,6 @@ export default function Index() {
           sermons={topic.sermons.filter((s) =>
             s.title.toLowerCase().includes(filter),
           )}
-          showTopic={false}
           showContributor={true}
         />
       </SiSection>

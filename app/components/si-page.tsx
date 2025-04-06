@@ -3,9 +3,9 @@
 /// and styling for all pages.
 
 import React from 'react';
+import { Contributor, Sermon } from '~/api/interfaces';
 import { Footer } from './footer';
 import { Header } from './header';
-import { Contributor, Sermon } from '~/api/interfaces';
 
 interface SiPageProps {
   children: React.ReactNode;

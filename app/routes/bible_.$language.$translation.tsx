@@ -54,7 +54,7 @@ export default function Index() {
             `/bible/${bible.shortName}/${book.id}/1`
           }
           getItemCount={(book: BibleBook) => book.numberOfChapters}
-          columnsClassName="grid-cols-1 md:grid-cols-2"
+          columnsClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         />
       </SiSection>
     </SiPage>

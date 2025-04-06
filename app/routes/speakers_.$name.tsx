@@ -164,11 +164,7 @@ export default function Index() {
             loading={loadingMore}
             error={error}
           >
-            <SermonList
-              sermons={sermons}
-              showTopic={true}
-              showContributor={false}
-            />
+            <SermonList sermons={sermons} showContributor={false} />
           </InfiniteScroll>
         )}
       </SiSection>

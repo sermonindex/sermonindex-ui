@@ -142,6 +142,10 @@ export interface SermonInfo {
   description?: string;
   mediaType: MediaType;
 
+  streamUrl?: string;
+  downloadUrl?: string;
+  thumbnailUrl?: string;
+
   bibleReferences: BiblePassage[];
   topics: string[];
 
