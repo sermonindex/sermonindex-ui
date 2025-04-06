@@ -98,21 +98,18 @@ export const MiniCustomLayout = () => {
 
       <div className={'flex w-full'}>
         <Controls.Root
-          className={`w-full p-4 opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 z-10`}
+          className={
+            'w-full p-4 opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 z-10'
+          }
         >
-          <div className={'flex w-full'}>
+          <div className={'flex w-full gap-x-1'}>
             <Controls.Group className={'items-center'}>
-              {/* todo - I made a MiniPlay button so we can style however we want for "mini mode */}
               <Buttons.MiniPlay tooltipPlacement="top" />
             </Controls.Group>
 
-            <Controls.Group
-              className={
-                'items-center w-full opacity-100 media-paused:opacity-0'
-              }
-            >
-              {/* todo - I made the time slider only show when the media is playing */}
+            <Controls.Group className={'items-center w-full'}>
               <Sliders.Time />
+              <TimeGroup />
             </Controls.Group>
           </div>
         </Controls.Root>

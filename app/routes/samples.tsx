@@ -40,12 +40,18 @@ export default function Index() {
       <SiSection className="w-full bg-si-olive rounded-2xl p-4">
         <ul>
           <li className={'w-full'}>
-            <span className="p-2">Example Mini Player - Audio Sermon </span>
+            <span className="p-2">
+              Example Mini Player - Audio Sermon 'w-full'
+            </span>
             <MiniPlayer sermon={featured} />
           </li>
           <li>
-            <span className="p-2">Example Mini Player - Video Sermon </span>
-            <MiniPlayer sermon={videoSermon} />
+            <span className="p-2">
+              Example Mini Player - Video Sermon 'max-w-48'
+            </span>
+            <div className={'max-w-48'}>
+              <MiniPlayer sermon={videoSermon} />
+            </div>
           </li>
         </ul>
       </SiSection>
