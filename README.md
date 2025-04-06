@@ -33,9 +33,3 @@ Then run the app in production mode:
 npm start
 ```
 
-## TODO
-
-- make text-black the default rather than text white
-- add breadcrumbs
-- add footer
-- make re-usable heading/title component
