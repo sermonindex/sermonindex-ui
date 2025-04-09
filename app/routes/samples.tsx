@@ -43,14 +43,14 @@ export default function Index() {
             <span className="p-2">
               Example Mini Player - Audio Sermon 'w-full'
             </span>
-            <MiniPlayer sermon={featured} />
+            <MiniPlayer sermon={featured} loadStrategy={'visible'} />
           </li>
           <li>
             <span className="p-2">
               Example Mini Player - Video Sermon 'max-w-48'
             </span>
             <div className={'max-w-48'}>
-              <MiniPlayer sermon={videoSermon} />
+              <MiniPlayer sermon={videoSermon} loadStrategy={'visible'} />
             </div>
           </li>
         </ul>

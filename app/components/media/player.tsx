@@ -2,6 +2,7 @@ import './base.css';
 
 import { Sermon } from '~/api/interfaces';
 import {
+  MediaLoadingStrategy,
   MediaPlayer,
   MediaPlayerInstance,
   MediaProvider,
@@ -85,9 +86,13 @@ export const Player = ({ sermons }: PlayerProps) => {
 
 export interface MiniPlayerProps {
   sermon: Sermon;
+  loadStrategy?: MediaLoadingStrategy;
 }
 
-export const MiniPlayer = ({ sermon }: MiniPlayerProps) => {
+export const MiniPlayer = ({
+  sermon,
+  loadStrategy = 'visible',
+}: MiniPlayerProps) => {
   let player = useRef<MediaPlayerInstance>(null);
 
   return (
@@ -99,6 +104,8 @@ export const MiniPlayer = ({ sermon }: MiniPlayerProps) => {
         playsInline
         crossOrigin
         viewType={'audio'}
+        load={loadStrategy}
+        storage={'sermon-index-media'}
         ref={player}
       >
         <MediaProvider />
