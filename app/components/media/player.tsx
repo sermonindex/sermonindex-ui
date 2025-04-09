@@ -9,8 +9,9 @@ import {
   MediaViewType,
   Poster,
   Track,
+  useMediaStore,
 } from '@vidstack/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CustomLayout, MiniCustomLayout } from '~/components/media/layout';
 import { hasContent } from '~/common/sanitize';
 
@@ -87,13 +88,23 @@ export const Player = ({ sermons }: PlayerProps) => {
 export interface MiniPlayerProps {
   sermon: Sermon;
   loadStrategy?: MediaLoadingStrategy;
+  onDurationChange?: (duration: number) => void;
 }
 
 export const MiniPlayer = ({
   sermon,
   loadStrategy = 'visible',
+  onDurationChange,
 }: MiniPlayerProps) => {
   let player = useRef<MediaPlayerInstance>(null);
+  const { duration } = useMediaStore(player);
+
+  // Effect to report duration changes back to the parent
+  useEffect(() => {
+    if (onDurationChange && !isNaN(duration) && duration > 0) {
+      onDurationChange(duration);
+    }
+  }, [duration, onDurationChange]);
 
   return (
     <>

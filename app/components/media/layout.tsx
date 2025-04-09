@@ -7,7 +7,10 @@ import { TimeGroup } from './time-group';
 import { Gestures } from './gestures';
 import { AudioCaptions, VideoCaptions } from '~/components/media/tracks';
 import { Cover } from '~/components/media/features';
-import { BufferingIndicator } from '~/components/media/buffering';
+import {
+  BufferingIndicator,
+  MiniBufferingIndicator,
+} from '~/components/media/buffering';
 import { MiniPlay } from './buttons';
 
 export interface CustomLayoutProps {
@@ -94,7 +97,7 @@ export const CustomLayout = ({
 export const MiniCustomLayout = () => {
   return (
     <>
-      <BufferingIndicator />
+      <MiniBufferingIndicator />
 
       <div className={'flex w-full'}>
         <Controls.Root
