@@ -50,6 +50,7 @@ export const Player = ({ sermons }: PlayerProps) => {
           playsInline
           crossOrigin
           viewType={viewType}
+          storage={`sermon-audio-media-${currentSermon.id}`}
           ref={player}
         >
           <MediaProvider>
@@ -116,7 +117,7 @@ export const MiniPlayer = ({
         crossOrigin
         viewType={'audio'}
         load={loadStrategy}
-        storage={'sermon-index-media'}
+        storage={`sermon-audio-media-${sermon.id}`}
         ref={player}
       >
         <MediaProvider />
