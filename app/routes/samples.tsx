@@ -1,9 +1,7 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { formatNumber } from '~/common/format-number';
-import { FeaturedMessage } from '~/components/featured';
 import SiPage from '~/components/si-page';
 import { MiniPlayer, Player } from '~/components/media/player';
 import { SiSection } from '~/components/section';
