@@ -1,11 +1,13 @@
 import { Link, useLocation } from '@remix-run/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa6';
+import { formatNumber } from '~/common/format-number';
 import { hasContent } from '~/common/sanitize';
 
 interface SiSectionProps {
   title?: string;
   tag?: string;
+  count?: number;
   expandable?: boolean;
   defaultExpanded?: boolean;
   sharesLeftPadding?: boolean;
@@ -17,6 +19,7 @@ interface SiSectionProps {
 export function SiSection({
   title = '',
   tag = title,
+  count,
   expandable = false,
   defaultExpanded = false,
   sharesLeftPadding = false,
@@ -45,6 +48,19 @@ export function SiSection({
   const location = useLocation();
   const linkTo = `${location.pathname}#${tag}`;
 
+  const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 rounded-lg w-full text-black dark:text-white bg-neutral-200 dark:bg-neutral-600 shadow-lg ${className}`;
+  const countStyles =
+    'flex items-center justify-center w-12 h-5 ms-2 text-xs rounded-full text-black dark:text-white bg-neutral-300 dark:bg-neutral-700';
+
+  const getSectionTitle = () => {
+    return (
+      <h1 className="flex items-center space-x-4">
+        <span>{title}</span>
+        {count && <span className={countStyles}>{formatNumber(count)}</span>}
+      </h1>
+    );
+  };
+
   if (!hasContent(title)) {
     return <div className={`flex flex-col w-full ${padding}`}>{children}</div>;
   }
@@ -55,14 +71,12 @@ export function SiSection({
         {expandable ? (
           <>
             <button
-              className={`flex items-center justify-between rounded-lg w-full px-4 py-1 text-lg md:text-xl md:py-2 bg-si-gray text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
+              className={`flex items-center justify-between ${headingStyles}`}
               onClick={() => setOpen(!open)}
             >
               <div className="flex">
                 <span className="text-left text-lg md:text-xl font-light">
-                  <Link to={linkTo}>
-                    <h1>{title}</h1>
-                  </Link>
+                  <Link to={linkTo}>{getSectionTitle()}</Link>
                 </span>
               </div>
               <div className="flex text-sm items-center justify-center">
@@ -87,12 +101,8 @@ export function SiSection({
           </>
         ) : (
           <>
-            <Link to={linkTo}>
-              <h1
-                className={`flex items-center text-lg md:text-xl px-4 py-1 md:py-2 bg-si-gray rounded-lg w-full text-black dark:text-white dark:bg-si-dark shadow-lg ${className}`}
-              >
-                {title}
-              </h1>
+            <Link to={linkTo} className={headingStyles}>
+              {getSectionTitle()}
             </Link>
             <div className="md:p-4">{children}</div>
           </>

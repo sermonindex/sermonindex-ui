@@ -39,7 +39,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <SiSection title={'Commentaries'}>
+      <SiSection title={'Commentaries'} count={commentaries.values.length}>
         <>
           {/* Todo: make this component Generic */}
           <input

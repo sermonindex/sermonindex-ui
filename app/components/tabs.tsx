@@ -20,10 +20,11 @@ export const TabListItem = ({ title, active, ...props }: TabListItemProps) => {
   const location = useLocation();
 
   const activeStyles =
-    'rounded-xl text-black dark:text-white bg-si-gray dark:bg-si-main';
-  const inactiveStyles = 'text-gray-500';
+    'rounded-xl text-black dark:text-white bg-neutral-200 dark:bg-neutral-600';
+  const inactiveStyles =
+    'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300';
   const defaultStyles =
-    'inline-block py-3 px-6 font-medium hover:cursor-pointer hover:text-gray-800 dark:hover:text-gray-300';
+    'inline-block py-3 px-6 font-medium hover:cursor-pointer';
 
   return (
     <li

@@ -55,7 +55,7 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className="relative inline-flex items-center justify-between min-w-[135px] p-3 rounded-lg bg-si-gray text-black dark:text-white dark:bg-si-dark"
+        className="relative inline-flex items-center justify-between min-w-[135px] p-3 rounded-lg text-black dark:text-white bg-neutral-200 dark:bg-neutral-600"
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
@@ -71,12 +71,12 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
         </div>
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 min-w-[135px] mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
+        <div className="absolute right-0 z-10 min-w-[135px] mt-2 origin-top-right rounded-md bg-neutral-200 dark:bg-neutral-600 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
           <div className="py-1" role="none">
             {options.map((option) => (
               <label
                 key={option}
-                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-si-gray hover:text-gray-900"
+                className="flex items-center px-4 py-2 text-sm text-black dark:text-white hover:bg-neutral-300 hover:dark:bg-neutral-700"
                 role="menuitem"
               >
                 <div className="relative mr-2">
@@ -89,7 +89,7 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
                   <span
                     className={`border rounded border-gray-300 w-4 h-4 flex items-center justify-center transition-colors duration-200 ${
                       selectedOptions.includes(option)
-                        ? 'bg-si-olive border-si-olive'
+                        ? 'bg-neutral-500'
                         : 'bg-white'
                     }`}
                   >

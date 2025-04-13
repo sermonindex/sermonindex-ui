@@ -21,10 +21,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { topic };
 }
 
-function formatTopicTitle(name: string, count: number): string {
-  return `${count} Sermon${count === 1 ? '' : 's'} on ${name}`;
-}
-
 export default function Index() {
   const { topic } = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
@@ -35,7 +31,8 @@ export default function Index() {
         <p>{topic.summary}</p>
       </SiSection>
       <SiSection
-        title={formatTopicTitle(topic.name, topic.sermons.length)}
+        title={topic.name}
+        count={topic.sermons.length}
         tag="sermon-list"
       >
         <input

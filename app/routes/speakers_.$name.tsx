@@ -120,7 +120,8 @@ export default function Index() {
       </SiSection>
       {contributor.images.length > 0 && (
         <SiSection
-          title={`Images (${contributor.images.length})`}
+          title={`Images`}
+          count={contributor.images.length}
           tag="images"
           expandable={true}
           defaultExpanded={false}
@@ -141,7 +142,11 @@ export default function Index() {
         </SiSection>
       )}
 
-      <SiSection title={`Sermons (${initialSermons.total})`} tag="sermon-list">
+      <SiSection
+        title={`Sermons`}
+        count={initialSermons.total}
+        tag="sermon-list"
+      >
         <div className="flex items-center space-x-4">
           <input
             className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"

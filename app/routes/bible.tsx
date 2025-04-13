@@ -39,7 +39,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <SiSection title={'Bibles'}>
+      <SiSection title={'Bibles'} count={translations.values.length}>
         <>
           <input
             className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"

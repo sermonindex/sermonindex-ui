@@ -30,7 +30,7 @@ export const GenericList = <T,>({
       {Object.entries(itemsGrouped).map(([key, group]) => {
         return (
           <div key={key}>
-            <h2 className="text-lg pt-4 font-semibold capitalize border-slate-600 border-b-2">
+            <h2 className="text-lg pt-4 font-semibold capitalize border-neutral-200 dark:border-neutral-600 border-b-2">
               {getGroupKeyName(key)}
             </h2>
             <div key={key}>
@@ -38,12 +38,12 @@ export const GenericList = <T,>({
                 {group.map((item) => (
                   <Link key={getItemId(item)} to={getItemLink(item)}>
                     <li
-                      className="flex items-center justify-between h-10 px-2 text-sm rounded-lg hover:cursor-pointer bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-700 break-inside-avoid-column"
+                      className="flex items-center justify-between h-10 px-2 text-sm rounded-lg hover:cursor-pointer bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-600 break-inside-avoid-column"
                       key={getItemName(item)}
                     >
                       <span>{getItemName(item)}</span>
                       {getItemCount && (
-                        <span className="inline-flex items-center justify-center w-9 h-4 ms-2 text-xs text-black bg-neutral-300 rounded-full">
+                        <span className="inline-flex items-center justify-center w-9 h-4 ms-2 text-xs text-black dark:text-white bg-neutral-300 dark:bg-neutral-700 rounded-full">
                           {formatNumber(getItemCount(item))}
                         </span>
                       )}
