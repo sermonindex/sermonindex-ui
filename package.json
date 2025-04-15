@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-	"dev:host": "remix vite:dev --host",
+    "dev:host": "remix vite:dev --host",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
@@ -15,13 +15,13 @@
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
-    "@vidstack/react": "^1.12.11",
+    "@vidstack/react": "^1.12.13",
     "bible-passage-reference-parser": "^3.0.0",
     "d3": "^7.9.0",
     "downloadjs": "^1.4.7",
     "isbot": "^4.1.0",
     "jspdf": "^2.5.2",
-	"media-icons": "^1.0.0",
+    "media-icons": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.3.0",
@@ -42,7 +42,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-	"tailwindcss-animate": "^1.0.7",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
