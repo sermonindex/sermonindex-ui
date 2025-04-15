@@ -41,7 +41,7 @@ export default function Index() {
   return (
     <SiPage>
       <SiSection>
-        <Player sermons={[featured]} />
+        <Player sermons={[featured]} storageKey={'featured'} />
       </SiSection>
       <SermonCarousel
         title={'Recent Uploads'}

@@ -17,9 +17,15 @@ import { hasContent } from '~/common/sanitize';
 
 export interface PlayerProps {
   sermons: Sermon[];
+  startTime?: number | undefined;
+  storageKey?: string;
 }
 
-export const Player = ({ sermons }: PlayerProps) => {
+export const Player = ({
+  sermons,
+  startTime = undefined,
+  storageKey = '',
+}: PlayerProps) => {
   let player = useRef<MediaPlayerInstance>(null);
 
   // Early return for zero length sermon list
@@ -50,7 +56,8 @@ export const Player = ({ sermons }: PlayerProps) => {
           playsInline
           crossOrigin
           viewType={viewType}
-          storage={`sermon-audio-media-${currentSermon.id}`}
+          storage={`sermon-audio-media-${currentSermon.id}${storageKey}`}
+          currentTime={startTime}
           ref={player}
         >
           <MediaProvider>
@@ -117,7 +124,6 @@ export const MiniPlayer = ({
         crossOrigin
         viewType={'audio'}
         load={loadStrategy}
-        storage={`sermon-audio-media-${sermon.id}`}
         ref={player}
       >
         <MediaProvider />

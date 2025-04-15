@@ -9,6 +9,7 @@ import {
   useMediaState,
   type TooltipPlacement,
   SeekButton,
+  useMediaPlayer,
 } from '@vidstack/react';
 import {
   ClosedCaptionsIcon,
@@ -20,67 +21,85 @@ import {
   PictureInPictureExitIcon,
   PictureInPictureIcon,
   PlayIcon,
+  ReplayIcon,
   SeekBackward10Icon,
   SeekForward10Icon,
   VolumeHighIcon,
   VolumeLowIcon,
 } from '@vidstack/react/icons';
-import { FaVolumeMute } from 'react-icons/fa';
+import React from 'react';
 
 export interface MediaButtonProps {
   tooltipPlacement: TooltipPlacement;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+enum MediaButtonSize {
+  sm = 4,
+  md = 8,
+  lg = 14,
+  xl = 20,
+}
+
+function getButtonSize(size: 'sm' | 'md' | 'lg' | 'xl'): string {
+  const s = MediaButtonSize[size] as number;
+  return `h-${s} w-${s}`;
 }
 
 export const buttonClass =
-  'group ring-media-focus relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4';
-
-export const bigButtonClass =
-  'group ring-media-focus relative inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4';
+  'group ring-media-focus relative inline-flex cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4';
 
 export const tooltipClass =
   'animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-30 rounded-full bg-black/10 dark:bg-black/30 backdrop-blur-sm px-2 py-px text-xs font-medium parent-data-[open]:hidden';
 
-export function Play({ tooltipPlacement }: MediaButtonProps) {
+export function Play({ tooltipPlacement, size = 'lg' }: MediaButtonProps) {
   const isPaused = useMediaState('paused');
+  const isEnded = useMediaState('ended');
+  const player = useMediaPlayer();
+
+  const handleReplay = async () => {
+    if (player) {
+      try {
+        player.currentTime = 0;
+        await player.play();
+      } catch (error) {
+        console.error('Error attempting to replay:', error);
+      }
+    }
+  };
+
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <PlayButton className={bigButtonClass}>
-          {isPaused ? <PlayIcon /> : <PauseIcon />}
+        {/*{isEnded ? (*/}
+        {/*  <button*/}
+        {/*    type="button"*/}
+        {/*    className={`${buttonClass} ${getButtonSize(size)}`}*/}
+        {/*    aria-label="Replay"*/}
+        {/*    onClick={handleReplay}*/}
+        {/*  >*/}
+        {/*    <ReplayIcon />*/}
+        {/*  </button>*/}
+        {/*) : (*/}
+        <PlayButton className={`${buttonClass} ${getButtonSize(size)}`}>
+          {isPaused ? isEnded ? <ReplayIcon /> : <PlayIcon /> : <PauseIcon />}
         </PlayButton>
+        {/*)}*/}
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
-        {isPaused ? 'Play' : 'Pause'}
+        {isEnded ? 'Replay' : isPaused ? 'Play' : 'Pause'}
       </Tooltip.Content>
     </Tooltip.Root>
   );
 }
 
-export function MiniPlay({ tooltipPlacement }: MediaButtonProps) {
-  const isPaused = useMediaState('paused');
-  return (
-    <Tooltip.Root>
-      <Tooltip.Trigger asChild>
-        {/* Note - if you modify "buttonClass" you modify buttons in all the media players,
-        if we want to make this smaller make a new const or put styling here */}
-        <PlayButton className={buttonClass}>
-          {isPaused ? <PlayIcon /> : <PauseIcon />}
-        </PlayButton>
-      </Tooltip.Trigger>
-      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
-        {isPaused ? 'Play' : 'Pause'}
-      </Tooltip.Content>
-    </Tooltip.Root>
-  );
-}
-
-export function Mute({ tooltipPlacement }: MediaButtonProps) {
+export function Mute({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
   const volume = useMediaState('volume'),
     isMuted = useMediaState('muted');
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <MuteButton className={buttonClass}>
+        <MuteButton className={`${buttonClass} ${getButtonSize(size)}`}>
           {isMuted || volume == 0 ? (
             <MuteIcon />
           ) : volume < 0.5 ? (
@@ -97,13 +116,13 @@ export function Mute({ tooltipPlacement }: MediaButtonProps) {
   );
 }
 
-export function Caption({ tooltipPlacement }: MediaButtonProps) {
+export function Caption({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
   const track = useMediaState('textTrack'),
     isOn = track && isTrackCaptionKind(track);
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <CaptionButton className={buttonClass}>
+        <CaptionButton className={`${buttonClass} ${getButtonSize(size)}`}>
           {isOn ? <ClosedCaptionsOnIcon /> : <ClosedCaptionsIcon />}
         </CaptionButton>
       </Tooltip.Trigger>
@@ -114,12 +133,12 @@ export function Caption({ tooltipPlacement }: MediaButtonProps) {
   );
 }
 
-export function PIP({ tooltipPlacement }: MediaButtonProps) {
+export function PIP({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
   const isActive = useMediaState('pictureInPicture');
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <PIPButton className={buttonClass}>
+        <PIPButton className={`${buttonClass} ${getButtonSize(size)}`}>
           {isActive ? <PictureInPictureExitIcon /> : <PictureInPictureIcon />}
         </PIPButton>
       </Tooltip.Trigger>
@@ -130,12 +149,15 @@ export function PIP({ tooltipPlacement }: MediaButtonProps) {
   );
 }
 
-export function Fullscreen({ tooltipPlacement }: MediaButtonProps) {
+export function Fullscreen({
+  tooltipPlacement,
+  size = 'md',
+}: MediaButtonProps) {
   const isActive = useMediaState('fullscreen');
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <FullscreenButton className={buttonClass}>
+        <FullscreenButton className={`${buttonClass} ${getButtonSize(size)}`}>
           {isActive ? <FullscreenExitIcon /> : <FullscreenIcon />}
         </FullscreenButton>
       </Tooltip.Trigger>
@@ -150,12 +172,21 @@ export interface SeekButtonProps extends MediaButtonProps {
   seconds: number;
 }
 
-export function Seek({ seconds, tooltipPlacement }: SeekButtonProps) {
+export function Seek({
+  seconds,
+  tooltipPlacement,
+  size = 'md',
+}: SeekButtonProps) {
   const isBackward = seconds < 0;
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <SeekButton className={buttonClass} seconds={seconds}>
+        <SeekButton
+          className={`${buttonClass} ${getButtonSize(
+            size,
+          )} media-ended:opacity-0 media-ended:pointer-events-none media-ended:cursor-not-allowed`}
+          seconds={seconds}
+        >
           {isBackward ? <SeekBackward10Icon /> : <SeekForward10Icon />}
         </SeekButton>
       </Tooltip.Trigger>

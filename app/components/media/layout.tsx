@@ -11,7 +11,6 @@ import {
   BufferingIndicator,
   MiniBufferingIndicator,
 } from '~/components/media/buffering';
-import { MiniPlay } from './buttons';
 
 export interface CustomLayoutProps {
   title: string;
@@ -39,7 +38,8 @@ export const CustomLayout = ({
   return (
     <>
       <Gestures />
-      <BufferingIndicator />
+      {/* Youtube does its own buffering animation */}
+      {viewType !== 'video' && <BufferingIndicator />}
 
       <div className={'flex flex-col media-view-audio:w-full'}>
         <Controls.Root
@@ -107,7 +107,7 @@ export const MiniCustomLayout = () => {
         >
           <div className={'flex w-full gap-x-1'}>
             <Controls.Group className={'items-center'}>
-              <Buttons.MiniPlay tooltipPlacement="top" />
+              <Buttons.Play tooltipPlacement="top" size="md" />
             </Controls.Group>
 
             <Controls.Group className={'items-center w-full'}>

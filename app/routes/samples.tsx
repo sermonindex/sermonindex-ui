@@ -81,12 +81,12 @@ export default function Index() {
 
       <span className="p-4">Example New Audio</span>
       <SiSection>
-        <Player sermons={[featured]} />
+        <Player sermons={[featured]} startTime={0} storageKey={'sample'} />
       </SiSection>
 
       <span className="p-4">Example New Video</span>
       <SiSection>
-        <Player sermons={[videoSermon]} />
+        <Player sermons={[videoSermon]} startTime={0} storageKey={'sample'} />
       </SiSection>
     </SiPage>
   );
