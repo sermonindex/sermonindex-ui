@@ -9,7 +9,6 @@ import {
   useMediaState,
   type TooltipPlacement,
   SeekButton,
-  useMediaPlayer,
 } from '@vidstack/react';
 import {
   ClosedCaptionsIcon,
@@ -55,36 +54,13 @@ export const tooltipClass =
 export function Play({ tooltipPlacement, size = 'lg' }: MediaButtonProps) {
   const isPaused = useMediaState('paused');
   const isEnded = useMediaState('ended');
-  const player = useMediaPlayer();
-
-  const handleReplay = async () => {
-    if (player) {
-      try {
-        player.currentTime = 0;
-        await player.play();
-      } catch (error) {
-        console.error('Error attempting to replay:', error);
-      }
-    }
-  };
 
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        {/*{isEnded ? (*/}
-        {/*  <button*/}
-        {/*    type="button"*/}
-        {/*    className={`${buttonClass} ${getButtonSize(size)}`}*/}
-        {/*    aria-label="Replay"*/}
-        {/*    onClick={handleReplay}*/}
-        {/*  >*/}
-        {/*    <ReplayIcon />*/}
-        {/*  </button>*/}
-        {/*) : (*/}
         <PlayButton className={`${buttonClass} ${getButtonSize(size)}`}>
           {isPaused ? isEnded ? <ReplayIcon /> : <PlayIcon /> : <PauseIcon />}
         </PlayButton>
-        {/*)}*/}
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {isEnded ? 'Replay' : isPaused ? 'Play' : 'Pause'}
@@ -118,7 +94,13 @@ export function Mute({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
 
 export function Caption({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
   const track = useMediaState('textTrack'),
-    isOn = track && isTrackCaptionKind(track);
+    isOn = track && isTrackCaptionKind(track),
+    hasCaptions = useMediaState('hasCaptions');
+
+  if (!hasCaptions) {
+    return null;
+  }
+
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
@@ -135,6 +117,12 @@ export function Caption({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
 
 export function PIP({ tooltipPlacement, size = 'md' }: MediaButtonProps) {
   const isActive = useMediaState('pictureInPicture');
+  const canPip = useMediaState('canPictureInPicture');
+
+  if (!canPip) {
+    return null;
+  }
+
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
