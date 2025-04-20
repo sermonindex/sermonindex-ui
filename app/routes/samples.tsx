@@ -73,7 +73,11 @@ export default function Index() {
               out
             </span>
             <div className={'w-full'}>
-              <MiniPlayer sermon={videoSermon} loadStrategy={'visible'} />
+              <MiniPlayer
+                sermon={videoSermon}
+                loadStrategy={'play'}
+                displayLength={400}
+              />
             </div>
           </li>
         </ul>

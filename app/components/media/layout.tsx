@@ -96,7 +96,11 @@ export const CustomLayout = ({
   );
 };
 
-export const MiniCustomLayout = () => {
+export interface MiniLayoutProps {
+  displayLength?: number;
+}
+
+export const MiniCustomLayout = ({ displayLength }: MiniLayoutProps) => {
   return (
     <>
       <MiniBufferingIndicator />
@@ -114,7 +118,7 @@ export const MiniCustomLayout = () => {
 
             <Controls.Group className={'items-center w-full'}>
               <Sliders.Time />
-              <TimeGroup />
+              <TimeGroup displayLength={displayLength} />
             </Controls.Group>
           </div>
         </Controls.Root>

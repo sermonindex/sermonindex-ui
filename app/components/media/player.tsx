@@ -96,12 +96,14 @@ export const Player = ({
 export interface MiniPlayerProps {
   sermon: Sermon;
   loadStrategy?: MediaLoadingStrategy;
+  displayLength?: number;
   onDurationChange?: (duration: number) => void;
 }
 
 export const MiniPlayer = ({
   sermon,
   loadStrategy = 'visible',
+  displayLength,
   onDurationChange,
 }: MiniPlayerProps) => {
   let player = useRef<MediaPlayerInstance>(null);
@@ -127,7 +129,7 @@ export const MiniPlayer = ({
         ref={player}
       >
         <MediaProvider />
-        <MiniCustomLayout />
+        <MiniCustomLayout displayLength={displayLength} />
       </MediaPlayer>
     </>
   );
