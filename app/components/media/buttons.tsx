@@ -9,8 +9,10 @@ import {
   useMediaState,
   type TooltipPlacement,
   SeekButton,
+  GoogleCastButton,
 } from '@vidstack/react';
 import {
+  ChromecastIcon,
   ClosedCaptionsIcon,
   ClosedCaptionsOnIcon,
   FullscreenExitIcon,
@@ -151,6 +153,24 @@ export function Fullscreen({
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {isActive ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export function GoogleCast({
+  tooltipPlacement,
+  size = 'md',
+}: MediaButtonProps) {
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <GoogleCastButton className="group ring-sky-400 relative inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4">
+          <ChromecastIcon className={`${buttonClass} ${getButtonSize(size)}`} />
+        </GoogleCastButton>
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {'Google Cast'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

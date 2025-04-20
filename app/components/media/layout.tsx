@@ -84,6 +84,7 @@ export const CustomLayout = ({
             {/* Settings */}
             <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
               <Buttons.Caption tooltipPlacement="top" />
+              {/* todo: finish figuring out casting options <Buttons.GoogleCast tooltipPlacement="top" /> */}
               <Buttons.Fullscreen tooltipPlacement="top" />
               <Buttons.PIP tooltipPlacement="top" />
               <Menus.Settings placement="top end" tooltipPlacement="top end" />
