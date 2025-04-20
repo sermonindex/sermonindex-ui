@@ -48,7 +48,7 @@ export const Player = ({
         }`}
       >
         <MediaPlayer
-          className={`w-full inline-flex items-center select-none overflow-hidden ${
+          className={`w-full inline-flex items-center select-none ${
             viewType === 'video' ? 'aspect-video shadow-2xl' : ''
           }`}
           title={currentSermon.title}
@@ -77,7 +77,7 @@ export const Player = ({
                   language="en-US"
                   label="English"
                   type="vtt"
-                  default
+                  // default
                 />
               )}
           </MediaProvider>

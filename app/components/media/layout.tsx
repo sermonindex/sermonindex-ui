@@ -82,7 +82,7 @@ export const CustomLayout = ({
             </Controls.Group>
 
             {/* Settings */}
-            <Controls.Group className="flex items-center justify-end w-1/3">
+            <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
               <Buttons.Caption tooltipPlacement="top" />
               <Buttons.Fullscreen tooltipPlacement="top" />
               <Buttons.PIP tooltipPlacement="top" />
