@@ -23,6 +23,7 @@ import {
   PictureInPictureIcon,
   PlayIcon,
   ReplayIcon,
+  SearchIcon,
   SeekBackward10Icon,
   SeekForward10Icon,
   VolumeHighIcon,
@@ -51,7 +52,7 @@ export const buttonClass =
   'group ring-media-focus relative inline-flex cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4';
 
 export const tooltipClass =
-  'animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-30 rounded-full bg-black/10 dark:bg-black/30 backdrop-blur-sm px-2 py-px text-xs font-medium parent-data-[open]:hidden';
+  'animate-out fade-out slide-out-to-bottom-2 data-[visible]:animate-in data-[visible]:fade-in data-[visible]:slide-in-from-bottom-4 z-30 rounded-full bg-black/5 dark:bg-black/30 backdrop-blur-sm px-2 py-px text-sm font-medium parent-data-[open]:hidden';
 
 export function Play({ tooltipPlacement, size = 'lg' }: MediaButtonProps) {
   const isPaused = useMediaState('paused');
@@ -171,6 +172,22 @@ export function GoogleCast({
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {'Google Cast'}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export function SearchButton({
+  tooltipPlacement,
+  size = 'md',
+}: MediaButtonProps) {
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <SearchIcon className={`${buttonClass} ${getButtonSize(size)}`} />
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {'Search Sermon'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

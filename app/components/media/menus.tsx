@@ -70,7 +70,7 @@ export const submenuClass =
 
 export function Settings({ placement, tooltipPlacement }: SettingsProps) {
   return (
-    <Menu.Root className="parent">
+    <Menu.Root className="parent z-50">
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <Menu.Button className={buttonClass}>

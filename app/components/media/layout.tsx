@@ -13,78 +13,88 @@ import {
 } from '~/components/media/buffering';
 
 export interface CustomLayoutProps {
+  className?: string;
   title: string;
   author?: string;
   authorImageUrl?: string;
   hits?: number | undefined;
+  isSearchOpen: boolean;
+  toggleSearch: () => void;
 }
 
 export const CustomLayout = ({
+  className,
   title,
   author,
   authorImageUrl,
   hits,
+  isSearchOpen,
+  toggleSearch,
 }: CustomLayoutProps) => {
   const viewType = useMediaState('viewType');
+
+  const controlBaseClasses = `opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 media-paused:opacity-100`;
   const controlStyleBottom =
     viewType === 'video'
-      ? 'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 rounded-b-xl to-transparent text-white media-paused:opacity-100 media-fullscreen:bottom-8 media-fullscreen:left-8 media-fullscreen:right-8'
-      : 'flex flex-col media-fullscreen:text-white media-fullscreen:m-8';
+      ? `absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white rounded-b-xl z-10 media-fullscreen:bottom-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
+      : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-10`;
   const controlStyleVideoTop =
     viewType === 'video'
-      ? 'absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 rounded-t-xl to-transparent text-white media-fullscreen:top-8 media-fullscreen:left-8 media-fullscreen:right-8'
-      : 'flex flex-col media-fullscreen:text-white media-fullscreen:m-8';
+      ? `absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 text-white rounded-t-xl z-10 media-fullscreen:top-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
+      : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-20`;
+
+  const outerDivBaseClass = `relative w-full h-full`; // Base styles for the container
 
   return (
-    <>
+    <div className={`${outerDivBaseClass} ${className || ''}`}>
       <Gestures />
-      {/* Youtube does its own buffering animation */}
       {viewType !== 'video' && <BufferingIndicator />}
 
-      <div className={'flex flex-col media-view-audio:w-full'}>
+      {/* Inner container for layout flow */}
+      <div
+        className={`w-full h-full ${
+          viewType === 'audio' ? 'flex flex-col' : ''
+        }`}
+      >
+        {/* --- Top Controls --- */}
         <Controls.Root
-          className={`p-4 opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 media-paused:opacity-100 z-10 ${controlStyleVideoTop}`}
+          className={`${controlStyleVideoTop} ${
+            viewType === 'video' ? 'flex flex-col w-full' : ''
+          }`}
         >
-          {/* Title, Author, and Views */}
           <Cover
             title={title}
             author={author}
             authorImageUrl={authorImageUrl}
             hits={hits}
+            isSearchOpen={isSearchOpen}
+            onSearchIconClick={toggleSearch}
           />
         </Controls.Root>
 
-        {/* Captions */}
-        {viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}
+        {/* --- Captions --- */}
+        <div className={`${viewType === 'audio' ? 'flex-1' : ''} relative`}>
+          {viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}
+        </div>
 
-        <Controls.Root
-          className={`p-4 opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 z-10 ${controlStyleBottom}`}
-        >
-          {/* Time */}
+        {/* --- Bottom Controls --- */}
+        <Controls.Root className={controlStyleBottom}>
           <Controls.Group>
             <Sliders.Time />
             <TimeGroup />
           </Controls.Group>
-
-          {/* Bottom Controls */}
-          <div className="flex items-center justify-between">
-            {/* Volume */}
+          <div className="flex items-center justify-between mt-2">
             <Controls.Group className="flex items-center w-1/3">
               <Buttons.Mute tooltipPlacement="top" />
               <Sliders.Volume />
             </Controls.Group>
-
-            {/* Play and Seek Buttons */}
             <Controls.Group className="flex items-center justify-center w-1/3">
               <Buttons.Seek seconds={-10} tooltipPlacement="top" />
               <Buttons.Play tooltipPlacement="top" />
               <Buttons.Seek seconds={10} tooltipPlacement="top" />
             </Controls.Group>
-
-            {/* Settings */}
             <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
               <Buttons.Caption tooltipPlacement="top" />
-              {/* todo: finish figuring out casting options <Buttons.GoogleCast tooltipPlacement="top" /> */}
               <Buttons.Fullscreen tooltipPlacement="top" />
               <Buttons.PIP tooltipPlacement="top" />
               <Menus.Settings placement="top end" tooltipPlacement="top end" />
@@ -92,7 +102,7 @@ export const CustomLayout = ({
           </div>
         </Controls.Root>
       </div>
-    </>
+    </div>
   );
 };
 

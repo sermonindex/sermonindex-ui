@@ -36,6 +36,15 @@
     display: contents;
 }
 
+/* Custom add for search input within the media player */
+/* Allow text selection and standard input interaction */
+[data-media-player] input[type="search"],
+[data-media-player] input[type="text"] {
+    user-select: text;
+    -webkit-user-select: text; /* Include for older WebKit compatibility if needed */
+    pointer-events: auto;
+}
+
 /*
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * Provider
@@ -47,7 +56,6 @@
     position: relative;
     box-sizing: border-box;
     align-items: center;
-    border-radius: 0.75rem;
     width: 100%;
     aspect-ratio: inherit;
     overflow: hidden;
@@ -634,7 +642,7 @@ iframe.vds-youtube[data-no-controls] {
     z-index: 10;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
+    pointer-events: auto;
     padding: var(--media-controls-padding, 0px);
     transition: var(--media-controls-out-transition, opacity 0.2s ease-out);
 }
@@ -647,7 +655,7 @@ iframe.vds-youtube[data-no-controls] {
 
 :where(.vds-controls-spacer) {
     flex: 1 1 0%;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 /*
@@ -2452,4 +2460,17 @@ iframe.vds-youtube[data-no-controls] {
 [data-media-player]:not([data-muted]) .vds-mute-tooltip-text,
 [data-media-player][data-muted] .vds-unmute-tooltip-text {
     display: none;
+}
+
+/* Target the Allotment component using custom class */
+/* This is to change the color of the sash focus from bright blue to something more neutral */
+.custom-media-allotment {
+    --focus-border: theme('colors.gray.500');
+    --separator-border: theme('colors.gray.300');
+}
+
+/* Dark mode overrides */
+.dark .custom-media-allotment {
+    --focus-border: theme('colors.gray.400');
+    --separator-border: theme('colors.gray.700');
 }

@@ -20,9 +20,7 @@ export function formatNumber(value: number | string | undefined | null) {
  * @param seconds - The total duration in seconds.
  * @returns A formatted time string (hh:mm:ss or mm:ss).
  */
-export function convertSecondsToTimeString(
-  seconds: number | undefined,
-): string {
+export function formatTime(seconds: number | undefined): string {
   // 1. Handle invalid, infinite, or negative inputs
   if (seconds === undefined || !Number.isFinite(seconds) || seconds < 0) {
     return '00:00'; // Return default for invalid or negative times
