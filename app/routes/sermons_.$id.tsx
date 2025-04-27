@@ -34,20 +34,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  // This is a workaround to get the vttContent upfront
-  // to avoid cross-origin client side errors...
-  if (hasContent(sermon.vttUrl)) {
-    try {
-      // @ts-ignore: We check above if the vttUrl has a string
-      const response = await fetch(sermon.vttUrl);
-      sermon.vttContent = await response.text();
-    } catch (error) {
-      console.log(
-        `Failed to download vttContent from ${sermon.vttUrl} because ${error}, continuing without it...`,
-      );
-    }
-  }
-
   return { sermon, contributor };
 }
 
