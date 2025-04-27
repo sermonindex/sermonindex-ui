@@ -122,7 +122,7 @@ export const Header = ({ sermon, contributor }: HeaderProps) => {
         <Link to="/">
           <img
             className="w-60 h-auto items-center"
-            src="/sermon-index-new.png"
+            src="/sermon-index-white.png"
             alt="sermon-index"
           />
         </Link>
