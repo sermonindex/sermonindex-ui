@@ -4,14 +4,22 @@ import {
   ChapterVerse,
   FormattedText,
 } from '~/api/bible.types';
+import { OsisToBookName } from '~/common/bible-constants';
 import { constructVerseReference } from './bible-chapter';
 
 export interface VerseContextProps {
   book: string;
+  chapter: number;
+  verse: number;
   context: ChapterData;
 }
 
-export const VerseContext = ({ book, context: data }: VerseContextProps) => {
+export const VerseContext = ({
+  book,
+  chapter: chapterNumber,
+  verse: verseNumber,
+  context: data,
+}: VerseContextProps) => {
   const headingContent = data.content.find(
     (item) => item.type === 'heading',
   ) as ChapterHeading;
@@ -48,7 +56,12 @@ export const VerseContext = ({ book, context: data }: VerseContextProps) => {
       versesContent.push(
         reference,
         // TODO: Highlight verse if it is the current verse
-        <span key={`verse-${data.number}-${verse.number}`}>
+        <span
+          key={`verse-${data.number}-${verse.number}`}
+          className={`${
+            verse.number === verseNumber ? 'font-semibold' : 'text-sm'
+          }`}
+        >
           {verseText.join(' ')}
         </span>,
       );
@@ -56,13 +69,20 @@ export const VerseContext = ({ book, context: data }: VerseContextProps) => {
   }
 
   return (
-    <>
-      <p id="context-heading" className="font-bold mb-1">
+    <div className="p-4 md:p-8">
+      <h1 className="text-2xl md:text-3xl">
+        {OsisToBookName[book as keyof typeof OsisToBookName]} {chapterNumber}:
+        {verseNumber}
+      </h1>
+      <h2
+        id="context-heading"
+        className="mb-1 text-neutral-500 dark:text-neutral-400"
+      >
         {heading}
-      </p>
-      <p id="context-verses" className="px-2">
+      </h2>
+      <p id="context-verses" className="">
         {versesContent}
       </p>
-    </>
+    </div>
   );
 };

@@ -1,19 +1,18 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import React from 'react';
+import { useState } from 'react';
 import { ChapterData } from '~/api/bible.types';
 import {
   BibleParallel,
   CommentaryVerse,
+  ListPaginatedResponse,
   ListResponse,
-  Sermon,
+  SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { OsisToBookName } from '~/common/bible-constants';
-import { formatNumber } from '~/common/format-number';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { VerseContext } from '~/components/bible-verse-context';
-import { SiSection } from '~/components/section';
+import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
 import {
   TabContainer,
@@ -21,7 +20,13 @@ import {
   TabList,
   TabListItem,
 } from '~/components/tabs';
-import { AuthorImage } from '~/components/image-author';
+
+enum Tabs {
+  Scripture = 'Scripture',
+  // Summary = 'Summary',
+  Sermons = 'Sermons',
+  Commentary = 'Commentary',
+}
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { book, chapter, verse } = params;
@@ -32,8 +37,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
     fetchApi<BibleParallel>(
       `/bible/eng/parallel/${bookId}/${chapter}/${verse}?translations=BSB,eng_kjv,eng_asv,eng_webp,eng_ylt,eng_bbe,eng_drv,eng_gnv,eng_t4t,eng_our,eng_fbv,eng_pev,eng_ulb,eng_wbs,eng_lst`,
     ),
-    fetchApi<ListResponse<Sermon>>(
-      `/sermons?book=${bookId}&chapter=${chapter}&verse=${verse}&take=25`,
+    fetchApi<ListPaginatedResponse<SermonInfo>>(
+      `/sermons?book=${bookId}&chapter=${chapter}&verse=${verse}&offset=0&limit=50`,
     ),
     fetchApi<ListResponse<CommentaryVerse>>(
       `/commentary/eng/parallel/${bookId}/${chapter}/${verse}`,
@@ -57,33 +62,42 @@ export default function Index() {
   const { parallels, sermons, commentaries } = useLoaderData<typeof loader>();
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
-  const [activeTab, setActiveTab] = React.useState(commentaries.values[0].id);
+  const [activeTab, setActiveTab] = useState(Tabs.Scripture);
+  const [activeCommentaryTab, setActiveCommentaryTab] = useState(
+    commentaries.values[0].id,
+  );
 
   return (
     <SiPage>
-      <div className="flex flex-col pt-6 px-8 min-h-[calc(100vh-80px)]">
-        <div className="flex w-full py-2 items-center justify-between">
-          {/* TODO: NEED TO RETURN NEXT AND PREVIOUS VERSES FROM THE API */}
-          <span></span>
-          {/* <span className="text-si-brown hover:underline hover:cursor-pointer">
-            Genesis 1:1 {'>'}
-          </span> */}
-          <span className="text-4xl justify-center items-center w-full flex">
-            {OsisToBookName[parallels.book as keyof typeof OsisToBookName]}{' '}
-            {parallels.chapter}:{parallels.verse}
-          </span>
-          <span></span>
-          {/* <span className="text-si-brown hover:underline hover:cursor-pointer">
-            Genesis 1:3 {'>'}
-          </span> */}
-        </div>
-        <div className="grid grid-cols-3">
-          <div className="col-span-2">
-            <SiSection title="Verse">
+      <div>
+        <VerseContext
+          context={verseContext}
+          book={parallels.book}
+          chapter={parallels.chapter}
+          verse={parallels.verse}
+        />
+
+        <TabContainer>
+          <TabList>
+            {Object.values(Tabs).map((tab, index) => (
+              <TabListItem
+                title={tab}
+                key={index}
+                active={tab === activeTab}
+                onClick={() => setActiveTab(tab)}
+              />
+            ))}
+          </TabList>
+
+          <TabContent
+            key={Tabs.Scripture}
+            active={activeTab === Tabs.Scripture}
+            className="py-4 px-2 md:p-4"
+          >
+            <div>
               {parallels.verses.map((verse, index) => {
                 return (
                   <div key={index} className="py-1 px-2">
-                    {/* TODO: LINK TRANSLATION NAME TO CHAPTER PAGE */}
                     <Link
                       to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
                     >
@@ -95,72 +109,66 @@ export default function Index() {
                   </div>
                 );
               })}
-            </SiSection>
-          </div>
-          <div>
-            <SiSection title="Context">
-              <VerseContext context={verseContext} book={parallels.book} />
-            </SiSection>
-            {sermons.values.length > 0 && (
-              <SiSection title="Sermons">
-                {sermons.values.slice(0, 10).map((sermon, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="flex  justify-between py-1 px-2"
-                    >
-                      <div className="flex flex-col ">
-                        <Link
-                          to={`/sermons/${sermon.id}`}
-                          className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer"
-                        >
-                          {sermon.title}
-                        </Link>
-                        <div className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
-                          <AuthorImage
-                            author={sermon.contributorFullName}
-                            imageUrl={sermon.contributorImageUrl}
-                          />
-                        </div>
-                      </div>
-                      <span className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
-                        {formatNumber(sermon.hits)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </SiSection>
-            )}
-          </div>
-        </div>
-        {parallels.summary && (
-          <SiSection title="Summary">
-            <p>{parallels.summary}</p>
-          </SiSection>
-        )}
-        <SiSection title={'Commentaries'}>
-          <TabContainer>
-            <TabList>
-              {commentaries.values.map((commentary, index) => (
-                <TabListItem
-                  title={commentary.author ?? commentary.name}
-                  key={index}
-                  active={commentary.id === activeTab}
-                  onClick={() => setActiveTab(commentary.id)}
-                />
-              ))}
-            </TabList>
+            </div>
+          </TabContent>
 
-            {commentaries.values.map((commentary, index) => (
-              <TabContent key={index} active={commentary.id === activeTab}>
-                <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
-                <p className="px-6 pt-2 whitespace-pre-line">
-                  {commentary.text}
-                </p>
-              </TabContent>
-            ))}
-          </TabContainer>
-        </SiSection>
+          {/* <TabContent
+            key={Tabs.Summary}
+            active={activeTab === Tabs.Summary}
+            className="py-4 px-2 md:p-6"
+          >
+            <p>{parallels.summary}</p>
+          </TabContent> */}
+
+          <TabContent
+            key={Tabs.Sermons}
+            active={activeTab === Tabs.Sermons}
+            className="px-1 md:px-4 py-2"
+          >
+            <SermonList
+              sermons={sermons.values}
+              filters={{
+                book: parallels.book,
+                chapter: parallels.chapter,
+                verse: parallels.verse,
+              }}
+              nextPage={sermons.nextPage}
+              showContributor={true}
+            />
+          </TabContent>
+
+          <TabContent
+            key={Tabs.Commentary}
+            active={activeTab === Tabs.Commentary}
+            className="pt-2"
+          >
+            <TabContainer>
+              <TabList tabStyle="pill">
+                {commentaries.values.map((commentary, index) => (
+                  <TabListItem
+                    title={commentary.author ?? commentary.name}
+                    tabStyle="pill"
+                    key={index}
+                    active={commentary.id === activeCommentaryTab}
+                    onClick={() => setActiveCommentaryTab(commentary.id)}
+                  />
+                ))}
+              </TabList>
+
+              {commentaries.values.map((commentary, index) => (
+                <TabContent
+                  key={index}
+                  active={commentary.id === activeCommentaryTab}
+                >
+                  <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
+                  <p className="px-2 pt-2 whitespace-pre-line">
+                    {commentary.text}
+                  </p>
+                </TabContent>
+              ))}
+            </TabContainer>
+          </TabContent>
+        </TabContainer>
       </div>
     </SiPage>
   );

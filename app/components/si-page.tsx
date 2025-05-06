@@ -5,7 +5,7 @@
 import React from 'react';
 import { Contributor, Sermon } from '~/api/interfaces';
 import { Footer } from './footer';
-import { Header } from './header';
+import { Navbar } from './navbar';
 
 interface SiPageProps {
   children: React.ReactNode;
@@ -18,10 +18,14 @@ interface SiPageProps {
 export default function SiPage({ children, sermon, contributor }: SiPageProps) {
   return (
     <div className="bg-si-light dark:bg-si-slate text-si-slate dark:text-si-light">
-      <div className="container mx-auto md:border-x-2 md:border-si-gray md:dark:border-si-dim">
-        <Header sermon={sermon} contributor={contributor} />
-        {children}
-        <Footer />
+      <div className="">
+        <Navbar />
+        <div className="pt-[58px] md:ml-64 min-h-screen">
+          <div className="container mx-auto min-h-[calc(100vh-90px)]">
+            {children}
+          </div>
+          <Footer />
+        </div>
       </div>
     </div>
   );

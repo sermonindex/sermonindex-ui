@@ -1,80 +1,162 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { BibleChapter } from '~/api/interfaces';
+import { Link, useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
+import { IconContext } from 'react-icons';
+import {
+  FaRegArrowAltCircleLeft,
+  FaRegArrowAltCircleRight,
+} from 'react-icons/fa';
+import {
+  BibleChapter,
+  ListPaginatedResponse,
+  ListResponse,
+  SermonInfo,
+} from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
-import { SiSection } from '~/components/section';
 import { formatBibleChapter } from '~/components/bible-chapter';
+import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
+import {
+  TabContainer,
+  TabContent,
+  TabList,
+  TabListItem,
+} from '~/components/tabs';
+
+enum Tabs {
+  Scripture = 'Scripture',
+  // Summary = 'Summary',
+  Sermons = 'Sermons',
+  Commentary = 'Commentary',
+}
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { translation, book, chapter } = params;
   const bookId = getBibleBookId(book);
 
-  const result = await fetchApi<BibleChapter>(
-    `/bible/eng/${translation}/${bookId}/${chapter}`,
-  );
+  const [chapterContent, sermons, commentaries] = await Promise.all([
+    fetchApi<BibleChapter>(`/bible/eng/${translation}/${bookId}/${chapter}`),
+    fetchApi<ListPaginatedResponse<SermonInfo>>(
+      `/sermons?book=${bookId}&chapter=${chapter}&offset=0&limit=50`,
+    ),
+    // TODO: Add a CommentaryChapter type
+    fetchApi<ListResponse<any>>(
+      `/commentary/eng/parallel/${bookId}/${chapter}`,
+    ),
+  ]);
 
-  if ('statusCode' in result) {
+  if (
+    'statusCode' in chapterContent ||
+    'statusCode' in sermons ||
+    'statusCode' in commentaries
+  ) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
 
-  return { chapter: result, translation };
+  return { chapter: chapterContent, sermons, translation };
 }
 
 export default function Index() {
-  const { chapter, translation } = useLoaderData<typeof loader>();
-
+  const { chapter, sermons, translation } = useLoaderData<typeof loader>();
   const chapterText = JSON.parse(chapter.json);
+
+  const [activeTab, setActiveTab] = useState(Tabs.Scripture);
 
   return (
     <SiPage>
-      <div className="flex flex-col space-y-8 pt-6 px-20 min-h-[calc(100vh-80px)]">
-        {/* TODO: break bible header out into a component? */}
-        <div className="flex w-full items-center justify-between">
-          <span className="min-w-28 hover:underline hover:cursor-pointer text-si-main dark:text-si-brown">
-            <a
-              href={`/bible/${translation}/${chapter.previousBookId}/${chapter.previousChapterNumber}`}
+      <div>
+        <div className="flex w-full min-h-28 items-center justify-center space-x-14 md:space-x-24">
+          <Link
+            to={`/bible/${translation}/${chapter.previousBookId}/${chapter.previousChapterNumber}`}
+          >
+            <IconContext.Provider
+              value={{
+                className:
+                  'w-6 h-6 md:w-7 md:h-7 text-neutral-600 dark:text-neutral-200',
+              }}
             >
-              {chapter.previousBookId
-                ? `< ${
-                    OsisToBookName[
-                      chapter.previousBookId as keyof typeof OsisToBookName
-                    ]
-                  } ${chapter.previousChapterNumber}`
-                : ''}
-            </a>
-          </span>
-          <span className="text-4xl">{`${
+              <FaRegArrowAltCircleLeft />
+            </IconContext.Provider>
+          </Link>
+          <span className="text-3xl md:text-4xl">{`${
             OsisToBookName[chapter.bookId as keyof typeof OsisToBookName]
           } ${chapter.number}`}</span>
-          <span className="min-w-28 hover:underline hover:cursor-pointer text-si-main dark:text-si-brown">
-            <a
-              className="flex items-center"
-              href={`/bible/${translation}/${chapter.nextBookId}/${chapter.nextChapterNumber}`}
+          <span className="hover:underline hover:cursor-pointer">
+            <Link
+              to={`/bible/${translation}/${chapter.nextBookId}/${chapter.nextChapterNumber}`}
             >
-              {chapter.nextBookId
-                ? `${
-                    OsisToBookName[
-                      chapter.nextBookId as keyof typeof OsisToBookName
-                    ]
-                  } ${chapter.nextChapterNumber} >`
-                : ''}
-            </a>
+              <IconContext.Provider
+                value={{
+                  className:
+                    'w-6 h-6 md:w-7 md:h-7 text-neutral-600 dark:text-neutral-200',
+                }}
+              >
+                <FaRegArrowAltCircleRight />
+              </IconContext.Provider>
+            </Link>
           </span>
         </div>
-        <div key="chapter-content" className="">
-          <SiSection title={chapter.translationName}>
+
+        <TabContainer>
+          <TabList>
+            {Object.values(Tabs).map((tab, index) => (
+              <TabListItem
+                title={tab}
+                key={index}
+                active={tab === activeTab}
+                onClick={() => setActiveTab(tab)}
+              />
+            ))}
+          </TabList>
+
+          <TabContent
+            key={Tabs.Scripture}
+            active={activeTab === Tabs.Scripture}
+            className="py-4 px-2 md:p-4"
+          >
             {formatBibleChapter(
               translation as string,
               chapter.bookId as string,
               chapterText,
             )}
-          </SiSection>
-        </div>
+          </TabContent>
+
+          {/* <TabContent
+            key={Tabs.Summary}
+            active={activeTab === Tabs.Summary}
+            className="py-4 px-2 md:p-6"
+          >
+            <p>Todo</p>
+          </TabContent> */}
+
+          <TabContent
+            key={Tabs.Sermons}
+            active={activeTab === Tabs.Sermons}
+            className="px-1 md:px-4 py-2"
+          >
+            <SermonList
+              sermons={sermons.values}
+              filters={{
+                book: chapter.bookId,
+                chapter: chapter.number,
+              }}
+              nextPage={sermons.nextPage}
+              showContributor={true}
+            />
+          </TabContent>
+
+          <TabContent
+            key={Tabs.Commentary}
+            active={activeTab === Tabs.Commentary}
+            className="py-4 px-2 md:p-6"
+          >
+            <p>#Todo</p>
+          </TabContent>
+        </TabContainer>
       </div>
     </SiPage>
   );

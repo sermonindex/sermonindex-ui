@@ -1,21 +1,28 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   Contributor,
   ListPaginatedResponse,
   ListResponse,
-  MediaType,
   SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import DropdownCheckbox from '~/components/dropdown-checkbox';
-import { InfiniteScroll } from '~/components/infinite-scroll';
-import { SiSection } from '~/components/section';
+import { ContributorCard } from '~/components/contributor-card';
 import { SermonList } from '~/components/sermon-list';
 import SiPage from '~/components/si-page';
-import { SpeakerBio } from '~/components/speaker-bio';
-import { Spinner } from '~/components/spinner';
+import {
+  TabContainer,
+  TabContent,
+  TabList,
+  TabListItem,
+} from '~/components/tabs';
+
+enum SpeakerTabs {
+  Sermons = 'Sermons',
+  Bio = 'Bio',
+  Images = 'Images',
+}
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [contributors, sermons] = await Promise.all([
@@ -43,136 +50,77 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Index() {
   const { contributor, sermons: initialSermons } =
     useLoaderData<typeof loader>();
-  const [sermons, setSermons] = useState<SermonInfo[]>(initialSermons.values);
-  const [title, setTitle] = useState<string>();
-  const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
-    Object.values(MediaType),
-  );
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  );
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [loadingAll, setLoadingAll] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const offsetRef = useRef<number | null>(initialSermons.nextPage);
-  const initialRender = useRef(true);
+  const [activeTab, setActiveTab] = useState(SpeakerTabs.Sermons);
 
-  const setLoading = (loading: boolean, loadFirstPage: boolean) => {
-    if (loadFirstPage) setLoadingAll(loading);
-    else setLoadingMore(loading);
-  };
-
-  const fetchSermons = async (loadFirstPage: boolean = false) => {
-    try {
-      if (!loadFirstPage && offsetRef.current === null) {
-        setLoading(false, loadFirstPage);
-        return;
-      }
-      setLoading(true, loadFirstPage);
-
-      const nextOffset = loadFirstPage ? 0 : offsetRef.current;
-      const result = await fetchApi<ListPaginatedResponse<SermonInfo>>(
-        '/sermons',
-        {
-          fullNameSlug: contributor.fullNameSlug,
-          title: title,
-          mediaType: mediaTypes.join(','),
-          offset: nextOffset,
-          limit: 50,
-        },
-      );
-
-      if ('statusCode' in result) {
-        setError(result.message);
-        setLoading(false, loadFirstPage);
-        return;
-      }
-
-      offsetRef.current = result.nextPage;
-      setSermons((prevSermons) =>
-        loadFirstPage ? result.values : [...prevSermons, ...result.values],
-      );
-    } catch (error) {
-      setError('Failed to load sermons');
-    } finally {
-      setLoading(false, loadFirstPage);
-    }
-  };
-
-  useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
-
-    setLoadingAll(true);
-    setSermons([]);
-
-    if (debounceTimer) clearTimeout(debounceTimer);
-    setDebounceTimer(setTimeout(() => fetchSermons(true), 750));
-  }, [title, mediaTypes]);
+  let availableTabs = Object.values(SpeakerTabs);
+  if (contributor.images.length === 0) {
+    availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Images);
+  }
 
   return (
-    <SiPage contributor={contributor}>
-      <SiSection title={contributor.fullName}>
-        <SpeakerBio contributor={contributor} />
-      </SiSection>
-      {contributor.images.length > 0 && (
-        <SiSection
-          title={`Images`}
-          count={contributor.images.length}
-          tag="images"
-          expandable={true}
-          defaultExpanded={false}
-        >
-          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4">
-            {contributor.images.map((image, index) => (
-              <div key={`image-${index}`} className="py-4">
-                <a href={image.url} target="_blank">
-                  <img
-                    src={image.url}
-                    className="rounded-lg bg-slate-100 w-full"
-                    alt={image.title || ''}
-                  />
-                </a>
-              </div>
-            ))}
-          </div>
-        </SiSection>
-      )}
+    <SiPage>
+      <div className="p-3 md:p-10">
+        <ContributorCard contributor={contributor} />
+      </div>
+      <TabContainer>
+        <TabList>
+          {availableTabs.map((tab, index) => (
+            <TabListItem
+              title={tab}
+              key={index}
+              active={tab === activeTab}
+              onClick={() => setActiveTab(tab)}
+            />
+          ))}
+        </TabList>
 
-      <SiSection
-        title={`Sermons`}
-        count={initialSermons.total}
-        tag="sermon-list"
-      >
-        <div className="flex items-center space-x-4">
-          <input
-            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-            placeholder="Find a sermon..."
-            onChange={(e) => setTitle(e.target.value.toLowerCase())}
-            required
+        <TabContent
+          key={SpeakerTabs.Sermons}
+          active={activeTab === SpeakerTabs.Sermons}
+          className="px-1 md:px-4 py-2"
+        >
+          <SermonList
+            sermons={initialSermons.values}
+            filters={{ fullNameSlug: contributor.fullNameSlug }}
+            nextPage={initialSermons.nextPage}
+            showContributor={false}
           />
-          <DropdownCheckbox
-            title="Filter Media"
-            options={Object.values(MediaType)}
-            onFilterChange={(options: string[]) =>
-              setMediaTypes(options as MediaType[])
-            }
-          />
-        </div>
-        {loadingAll && <Spinner />}
-        {!loadingAll && (
-          <InfiniteScroll
-            fetchData={fetchSermons}
-            loading={loadingMore}
-            error={error}
+        </TabContent>
+
+        <TabContent
+          key={SpeakerTabs.Bio}
+          active={activeTab === SpeakerTabs.Bio}
+          className="py-4 px-2 md:p-6"
+        >
+          <p className="text-sm md:text-base">
+            {contributor.description ??
+              'No biography available for this speaker. Check back soon!'}
+          </p>
+        </TabContent>
+
+        {contributor.images.length > 0 && (
+          <TabContent
+            key={SpeakerTabs.Images}
+            active={activeTab === SpeakerTabs.Images}
+            className="p-2 md:p-6"
           >
-            <SermonList sermons={sermons} showContributor={false} />
-          </InfiniteScroll>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4">
+              {contributor.images.map((image, index) => (
+                <div key={`image-${index}`} className="py-4">
+                  <a href={image.url} target="_blank">
+                    <img
+                      src={image.url}
+                      className="rounded-lg bg-slate-100 w-full"
+                      alt={image.title || ''}
+                    />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </TabContent>
         )}
-      </SiSection>
+      </TabContainer>
     </SiPage>
   );
 }

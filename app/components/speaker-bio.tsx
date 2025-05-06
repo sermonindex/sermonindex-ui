@@ -1,7 +1,6 @@
-import { Contributor } from '~/api/interfaces';
-import { ClickableText, SiSection } from '~/components/section';
 import { Link } from '@remix-run/react';
-import React from 'react';
+import { Contributor } from '~/api/interfaces';
+import { ClickableText } from '~/components/section';
 
 interface SpeakerProps {
   contributor: Contributor;
@@ -18,10 +17,7 @@ export const SpeakerBio = ({
         <img
           className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
           loading={'lazy'}
-          src={
-            contributor.imageUrl ??
-            'https://sermonindex1.b-cdn.net/default-si-speaker.png'
-          }
+          src={contributor.imageUrl}
           alt={contributor.fullName}
         />
         <div className="px-4">

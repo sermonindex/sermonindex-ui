@@ -47,7 +47,7 @@ export interface Contributor {
   fullName: string;
   fullNameSlug: string;
   description?: string;
-  imageUrl?: string;
+  imageUrl: string;
   featured: boolean;
   type: ContributorType;
   createdAt: string;
@@ -141,6 +141,7 @@ export interface SermonInfo {
   title: string;
   description?: string;
   mediaType: MediaType;
+  duration?: number;
 
   streamUrl?: string;
   downloadUrl?: string;

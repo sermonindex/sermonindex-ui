@@ -35,17 +35,9 @@ export default function Index() {
         count={topic.sermons.length}
         tag="sermon-list"
       >
-        <input
-          className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-          placeholder={`Search sermons with topic "${topic.name}"...`}
-          onChange={(e) => setFilter(e.target.value.toLowerCase())}
-          required
-        />
-
         <SermonList
-          sermons={topic.sermons.filter((s) =>
-            s.title.toLowerCase().includes(filter),
-          )}
+          sermons={topic.sermons}
+          filters={{ topic: topic.name }}
           showContributor={true}
         />
       </SiSection>

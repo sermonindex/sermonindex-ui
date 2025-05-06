@@ -23,7 +23,7 @@ const AboutLinks: { [key: string]: FooterAboutLink } = {
 
 export const Footer = () => {
   return (
-    <footer className="flex flex-col pt-10">
+    <footer className="flex flex-col">
       <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-dim"></div>
       <div className="bg-si-dark p-4 dark:bg-gradient-to-t dark:from-black/40">
         <div className="mx-10">

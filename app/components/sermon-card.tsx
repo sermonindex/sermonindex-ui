@@ -1,9 +1,9 @@
 import { IconContext } from 'react-icons';
-import { FaVideo, FaVolumeUp } from 'react-icons/fa';
 import { FiDownload } from 'react-icons/fi';
-import { IoDocumentText } from 'react-icons/io5';
 import { MediaType, SermonInfo } from '~/api/interfaces';
+import { formatDuration } from '~/common/format-duration.fn';
 import { formatNumber } from '~/common/format-number';
+import { MediaIcon } from './media-icon';
 
 interface SermonCardProps {
   sermon: SermonInfo;
@@ -12,27 +12,12 @@ interface SermonCardProps {
   className?: string;
 }
 
-function getMediaIcon(sermon: SermonInfo) {
-  if (sermon.mediaType === MediaType.Video) {
-    return <FaVideo />;
-  } else if (sermon.mediaType === MediaType.Audio) {
-    return <FaVolumeUp />;
-  } else if (sermon.mediaType === MediaType.Text) {
-    return <IoDocumentText />;
-  }
-  // todo: other media types might be added like book, quote, short, etc.
-  return null;
-}
-
 export function SermonCard({
   sermon,
   showContributor = false,
   showMediaPlayer = false,
   className = '',
 }: SermonCardProps) {
-  const speakerImage =
-    sermon.contributorImageUrl ??
-    'https://sermonindex1.b-cdn.net/default-si-speaker.png';
   const addLabels =
     sermon.bibleReferences.length > 0 || sermon.topics.length > 0;
 
@@ -44,8 +29,8 @@ export function SermonCard({
         <div className="flex items-start space-x-2">
           {showContributor && (
             <img
-              className="w-8 h-8 md:w-12 md:h-12 rounded-full"
-              src={speakerImage}
+              className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover flex-shrink-0"
+              src={sermon.contributorImageUrl}
               alt={sermon.contributorFullName}
             />
           )}
@@ -65,9 +50,11 @@ export function SermonCard({
               <FiDownload />
             </IconContext.Provider>
           </span>
-          {sermon.mediaType !== MediaType.Text && <span>42:11</span>}
+          {sermon.mediaType !== MediaType.Text && (
+            <span>{formatDuration(sermon.duration)}</span>
+          )}
           <IconContext.Provider value={{ className: 'mt-[4px]' }}>
-            {getMediaIcon(sermon)}
+            <MediaIcon mediaType={sermon.mediaType} />
           </IconContext.Provider>
         </div>
       </div>
@@ -107,6 +94,13 @@ export function SermonCard({
           {sermon.description}
         </p>
       </div>
+      {/* <div onClick={(event) => event.stopPropagation()}>
+        <MiniPlayer
+          sermon={sermon as any as Sermon}
+          loadStrategy={'play'}
+          displayLength={sermon.duration}
+        />
+      </div> */}
     </div>
   );
 }
