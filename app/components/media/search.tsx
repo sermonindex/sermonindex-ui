@@ -412,18 +412,18 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
   const JumpButtonIconToDisplay = determinedJumpButtonIcon;
 
   return (
-    <div className="flex flex-col h-full w-full overflow-hidden">
+    <div className="flex flex-col h-full w-full overflow-hidden media-fullscreen:bg-black/90">
       {/* Search Bar */}
-      <div className="sticky top-0 z-10 bg-neutral-200 dark:bg-neutral-600 shadow-md p-2 flex-shrink-0 flex items-center">
-        <div className="flex flex-1 items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 transition duration-150 ease-in-out">
-          <SearchIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 flex-shrink-0" />
+      <div className="sticky top-0 z-10 bg-neutral-200 dark:bg-neutral-600 media-fullscreen:bg-neutral-600 shadow-md p-2 flex-shrink-0 flex items-center">
+        <div className="flex flex-1 items-center bg-white dark:bg-gray-800 media-fullscreen:bg-gray-800 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 media-fullscreen:border-gray-700 transition duration-150 ease-in-out">
+          <SearchIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 media-fullscreen:text-gray-500 mr-3 flex-shrink-0" />
           <input
             ref={inputRef}
             type="search"
             placeholder={
               hasCues ? 'Search transcript...' : 'No transcript available'
             }
-            className="flex-grow bg-transparent border-none outline-none w-full placeholder:text-gray-500 dark:placeholder-gray-400 text-sm"
+            className="flex-grow bg-transparent border-none outline-none w-full placeholder:text-gray-500 dark:placeholder-gray-400 media-fullscreen:placeholder-gray-400 text-sm"
             value={searchTerm}
             onChange={handleInputChange}
             disabled={!hasCues}
@@ -435,7 +435,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
               type="button"
               onClick={toggleSearch}
               aria-label="Close search panel"
-              className="ml-2 p-1 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 flex-shrink-0"
+              className="ml-2 p-1 rounded-full text-gray-500 dark:text-gray-400 media-fullscreen:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 media-fullscreen:hover:bg-gray-700 flex-shrink-0"
             >
               <XMarkIcon className="w-5 h-5" />
             </button>
@@ -448,8 +448,8 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
 
       {/* Search Results Info */}
       {!showFullTranscriptForDisplay && hasCues && (
-        <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 flex-shrink-0 z-10">
-          <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+        <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700 media-fullscreen:border-gray-700 bg-gray-50 dark:bg-gray-700 media-fullscreen:bg-gray-700 flex-shrink-0 z-10">
+          <span className="text-xs font-medium text-gray-600 dark:text-gray-300 media-fullscreen:text-gray-300">
             {searchResults.length > 0
               ? `${searchResults.length} occurrence${
                   searchResults.length === 1 ? '' : 's'
@@ -466,7 +466,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   <button
                     onClick={() => navigateResults('prev')}
                     aria-label="Previous match"
-                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200"
+                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 media-fullscreen:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200 media-fullscreen:text-gray-200"
                     disabled={searchResults.length <= 1}
                   >
                     <ChevronUpIcon className="w-4 h-4" />
@@ -481,7 +481,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   <button
                     onClick={() => navigateResults('next')}
                     aria-label="Next match"
-                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200"
+                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 media-fullscreen:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200 media-fullscreen:text-gray-200"
                     disabled={searchResults.length <= 1}
                   >
                     <ChevronDownIcon className="w-4 h-4" />
@@ -500,7 +500,22 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
       <div
         ref={resultsContainerRef}
         onScroll={handleScroll}
-        className="overflow-y-auto flex-grow [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 dark:[&::-webkit-scrollbar-track]:bg-transparent dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-400"
+        className="overflow-y-auto flex-grow
+        [&::-webkit-scrollbar]:w-2
+        [&::-webkit-scrollbar-track]:bg-transparent
+        [&::-webkit-scrollbar-track]:rounded-full
+        [&::-webkit-scrollbar-track]:bg-gray-100
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        [&::-webkit-scrollbar-thumb]:bg-gray-300
+        [&::-webkit-scrollbar-thumb:hover]:bg-gray-400
+        dark:[&::-webkit-scrollbar-track]:bg-transparent
+        dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+        dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+        dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-400
+        media-fullscreen:[&::-webkit-scrollbar-track]:bg-transparent
+        media-fullscreen:[&::-webkit-scrollbar-track]:bg-neutral-700
+        media-fullscreen:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+        media-fullscreen:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-400"
       >
         <div>
           {itemsToDisplay.length > 0 ? (
@@ -521,10 +536,11 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
 
               let highlightClass = '';
               if (isCurrentLiveCue) {
-                highlightClass = 'bg-si-olive/20 dark:bg-si-main/30';
+                highlightClass =
+                  'bg-si-olive/20 dark:bg-si-main/30 media-fullscreen:bg-si-main/30';
               } else if (isActiveSearchResult) {
                 highlightClass =
-                  'bg-emerald-100 dark:bg-emerald-800/50 font-semibold';
+                  'bg-emerald-100 dark:bg-emerald-800/50 media-fullscreen:bg-emerald-800/50 font-semibold';
               }
 
               return (
@@ -535,20 +551,20 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   ref={isActiveSearchResult ? activeItemRef : null}
                   data-cue-index={dataIndexForScroll}
                   onClick={() => handleCueClick(currentCue)}
-                  className={`flex items-start w-full text-left px-3 py-1.5 gap-x-2 text-sm hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors duration-100 ${highlightClass}`}
+                  className={`flex items-start w-full text-left px-3 py-1.5 gap-x-2 text-sm hover:bg-gray-200/50 dark:hover:bg-white/10 media-fullscreen:hover:bg-white/10 transition-colors duration-100 ${highlightClass}`}
                 >
-                  <span className="font-mono text-xs text-gray-500 dark:text-gray-400 mr-2 pt-0.5 w-12 shrink-0">
+                  <span className="font-mono text-xs text-gray-500 dark:text-gray-400 media-fullscreen:text-gray-400 mr-2 pt-0.5 w-12 shrink-0">
                     {formatTime(currentCue.startTime)}
                   </span>
                   <span
-                    className="text-gray-800 dark:text-gray-100"
+                    className="text-gray-800 dark:text-gray-100 media-fullscreen:text-gray-100"
                     dangerouslySetInnerHTML={{ __html: currentCue.text }}
                   />
                 </button>
               );
             })
           ) : (
-            <p className="p-3 text-sm text-gray-500 dark:text-gray-400 text-center">
+            <p className="p-3 text-sm text-gray-500 dark:text-gray-400 media-fullscreen:text-gray-400 text-center">
               {showFullTranscriptForDisplay
                 ? hasCues
                   ? 'Loading transcript...'

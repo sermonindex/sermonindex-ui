@@ -158,7 +158,7 @@ export const Player = ({
               className={
                 viewType === 'video'
                   ? 'col-start-1 row-start-1 z-10'
-                  : 'w-full h-full z-10'
+                  : 'w-full h-full z-10 media-fullscreen:bg-black'
               }
               title={currentSermon.title}
               author={currentSermon.contributorFullName}
