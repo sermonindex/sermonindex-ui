@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   useMediaPlayer,
   useMediaStore,
@@ -8,27 +8,25 @@ import {
 import {
   SearchIcon,
   XMarkIcon,
-  ChevronDownIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
   ChevronUpIcon,
+  ChevronDownIcon,
 } from '@vidstack/react/icons';
 import { VTTCue } from 'media-captions';
 import { formatTime } from '~/common/format-number';
 import { tooltipClass } from '~/components/media/buttons';
 
-// --- Simple Debounce Hook ---
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
-
     return () => {
       clearTimeout(handler);
     };
   }, [value, delay]);
-
   return debouncedValue;
 }
 
@@ -36,153 +34,211 @@ interface MediaSearchProps {
   toggleSearch: () => void;
 }
 
+interface SearchResultItem {
+  cue: VTTCue;
+  originalIndex: number;
+}
+
+function areCueArraysEffectivelyEqual(arr1: VTTCue[], arr2: VTTCue[]): boolean {
+  if (!arr1 && !arr2) return true;
+  if (!arr1 || !arr2) return false;
+  if (arr1.length !== arr2.length) return false;
+  for (let i = 0; i < arr1.length; i++) {
+    if (
+      arr1[i].startTime !== arr2[i].startTime ||
+      arr1[i].endTime !== arr2[i].endTime ||
+      arr1[i].text !== arr2[i].text
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
   const playerRef = useRef<MediaPlayerInstance>(null);
   const player = useMediaPlayer();
-  const { textTracks, textTrack } = useMediaStore(playerRef);
+  // @ts-ignore
+  const { textTracks, currentTime } = useMediaStore(playerRef, [
+    'textTracks',
+    'currentTime',
+  ]);
 
-  // --- State ---
   const [searchTerm, setSearchTerm] = useState('');
-  const [allCues, setAllCues] = useState<VTTCue[]>([]);
-  const [searchResults, setSearchResults] = useState<VTTCue[]>([]);
-  const [currentResultIndex, setCurrentResultIndex] = useState<number>(-1);
+  const searchTermRef = useRef(searchTerm);
+  useEffect(() => {
+    searchTermRef.current = searchTerm;
+  }, [searchTerm]);
 
-  // --- Refs ---
+  const [allCues, setAllCues] = useState<VTTCue[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
+  const [currentResultIndex, setCurrentResultIndex] = useState<number>(-1);
+  const [currentPlayingCueIndex, setCurrentPlayingCueIndex] =
+    useState<number>(-1);
+
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const userHasManuallyScrolledRef = useRef(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLButtonElement>(null);
 
-  // --- Debounce Search Term ---
+  const [isCurrentCueInView, setIsCurrentCueInView] = useState(true);
+  const [determinedJumpButtonIcon, setDeterminedJumpButtonIcon] = useState(
+    () => ArrowUpIcon,
+  );
+
+  const isProgrammaticScrollRef = useRef(false);
+  // this timeout is for determining the *end* of a programmatic scroll
+  const endProgrammaticScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const showFullTranscriptForDisplay = !searchTerm.trim();
 
-  // --- Effect: Load all cues ---
-  useEffect(() => {
-    let targetTrack: TextTrack | undefined = undefined;
+  const findCurrentCueIndex = useCallback(
+    (time: number): number => {
+      if (!allCues || allCues.length === 0) return -1;
+      for (let i = 0; i < allCues.length; i++) {
+        if (allCues[i].startTime <= time) {
+          if (i === allCues.length - 1 || allCues[i + 1].startTime > time) {
+            return i;
+          }
+        } else {
+          break;
+        }
+      }
+      return -1;
+    },
+    [allCues],
+  );
 
-    // Convert TextTrackList to array to use find()
-    const tracksArray = textTracks ? Array.from(textTracks) : [];
-    if (tracksArray.length > 0) {
-      targetTrack = tracksArray.find((track) => track.kind === 'subtitles');
+  const checkAndUpdateCueAndButtonState = useCallback(() => {
+    const isEffectivelyInFullTranscriptView = !debouncedSearchTerm.trim();
+    let cueIsVisible = true;
+    let iconType = ArrowUpIcon;
+
+    if (
+      isEffectivelyInFullTranscriptView &&
+      resultsContainerRef.current &&
+      currentPlayingCueIndex >= 0 &&
+      allCues.length > 0
+    ) {
+      const container = resultsContainerRef.current;
+      const cueElement = container.querySelector(
+        `[data-cue-index="${currentPlayingCueIndex}"]`,
+      ) as HTMLElement;
+      if (cueElement) {
+        const containerRect = container.getBoundingClientRect();
+        const cueRect = cueElement.getBoundingClientRect();
+        if (
+          cueRect.bottom <= containerRect.top ||
+          cueRect.top >= containerRect.bottom
+        ) {
+          cueIsVisible = false;
+          const cueCenterY = cueRect.top + cueRect.height / 2;
+          const containerCenterY = containerRect.top + containerRect.height / 2;
+          if (
+            cueRect.top >= containerRect.bottom ||
+            (cueRect.top > containerRect.top &&
+              cueCenterY > containerCenterY + 1)
+          ) {
+            iconType = ArrowDownIcon;
+          } else {
+            iconType = ArrowUpIcon;
+          }
+        }
+      } else {
+        cueIsVisible = false;
+      }
     } else {
-      console.warn('No text tracks found in the list.');
+      cueIsVisible = false;
     }
 
-    // Define the function that will load cues into state
-    const loadCues = () => {
-      // Double-check targetTrack and cues exist when the event fires or when called directly
-      if (targetTrack && targetTrack.cues) {
-        const cuesArray = Array.from(
-          targetTrack.cues as TextTrackCueList<VTTCue>,
-        );
-        setAllCues(cuesArray);
-      } else {
-        console.error(
-          'loadCues called, but targetTrack or targetTrack.cues not available.',
-        );
-        setAllCues([]);
-      }
-      // Reset search state whenever cues are loaded/reloaded
-      setSearchTerm('');
-      setSearchResults([]);
-      setCurrentResultIndex(-1);
+    setIsCurrentCueInView((prev) =>
+      prev !== cueIsVisible ? cueIsVisible : prev,
+    );
+    if (!cueIsVisible) {
+      setDeterminedJumpButtonIcon((prevIcon) =>
+        prevIcon !== iconType ? iconType : prevIcon,
+      );
+    } else {
+      setDeterminedJumpButtonIcon(ArrowUpIcon);
+    }
+  }, [debouncedSearchTerm, currentPlayingCueIndex, allCues.length]);
+
+  useEffect(() => {
+    // Load Cues
+    let targetTrack: TextTrack | undefined = undefined;
+    const tracksArray = textTracks ? Array.from(textTracks) : [];
+    if (tracksArray.length > 0)
+      targetTrack = tracksArray.find((track) => track.kind === 'subtitles');
+
+    const processCuesFromTrack = (track: TextTrack | null) => {
+      const newCuesArray: VTTCue[] =
+        track && track.cues
+          ? Array.from(track.cues as TextTrackCueList<VTTCue>)
+          : [];
+      setAllCues((prevAllCues) => {
+        if (!areCueArraysEffectivelyEqual(newCuesArray, prevAllCues)) {
+          setCurrentPlayingCueIndex(-1);
+          setSearchResults([]);
+          setCurrentResultIndex(-1);
+          setIsAutoScrolling(true);
+          userHasManuallyScrolledRef.current = false;
+          if (newCuesArray.length === 0 && prevAllCues.length > 0)
+            setSearchTerm('');
+          else if (!searchTermRef.current) setSearchTerm('');
+          return newCuesArray;
+        }
+        return prevAllCues;
+      });
     };
 
     if (targetTrack) {
-      // --- Check if track is already loaded ---
-      // readyState: 0=NONE, 1=LOADING, 2=LOADED, 3=ERROR
-      if (targetTrack.readyState === 2) {
-        loadCues();
-        // No listener needed, return empty cleanup function
-        return () => {};
-      } else if (targetTrack.readyState === 1 || targetTrack.readyState === 0) {
-        // --- If not loaded, listen for the 'load' event ---
-        targetTrack.addEventListener('load', loadCues);
-
-        // --- IMPORTANT: Return a cleanup function ---
-        // This removes the listener when the component unmounts
-        // or when the `textTracks` dependency changes
+      if (targetTrack.readyState === 2) processCuesFromTrack(targetTrack);
+      else if (targetTrack.readyState === 1 || targetTrack.readyState === 0) {
+        const loadHandler = () => {
+          processCuesFromTrack(targetTrack);
+          targetTrack?.removeEventListener('load', loadHandler);
+        };
+        targetTrack.addEventListener('load', loadHandler);
         return () => {
-          // Check if targetTrack still exists before removing listener
-          if (targetTrack) {
-            targetTrack.removeEventListener('load', loadCues);
-          }
+          targetTrack?.removeEventListener('load', loadHandler);
         };
       } else {
-        // Handle ERROR state (readyState === 3) or unexpected state
-        console.error(
-          'Track found but is in error or unexpected state (readyState:',
-          targetTrack.readyState,
-          '). Not loading cues.',
-        );
-        setAllCues([]);
-        return () => {};
+        processCuesFromTrack(null);
       }
     } else {
-      console.warn('No target subtitle track found. Setting cues to empty.');
-      // No target track found, ensure cues are empty
-      setAllCues([]);
-      // Reset search state
-      setSearchTerm('');
-      setSearchResults([]);
-      setCurrentResultIndex(-1);
-      // No listener added, so no cleanup needed
-      return () => {};
+      processCuesFromTrack(null);
     }
-
-    // --- This effect should re-run if the list of tracks changes ---
   }, [textTracks]);
 
-  // --- Effect: Scroll to active search result ---
   useEffect(() => {
-    if (
-      currentResultIndex !== -1 &&
-      activeItemRef.current &&
-      resultsContainerRef.current
-    ) {
-      // Scroll within the results container
-      resultsContainerRef.current.scrollTop =
-        activeItemRef.current.offsetTop - resultsContainerRef.current.offsetTop;
-    }
-  }, [currentResultIndex]);
-
-  // --- Handlers ---
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleCueClick = (cue: VTTCue) => {
-    if (player) {
-      player.currentTime = cue.startTime;
-    }
-  };
-
-  const navigateResults = (direction: 'next' | 'prev') => {
-    if (searchResults.length === 0) return;
-
-    let nextIndex = currentResultIndex;
-    if (direction === 'next') {
-      nextIndex = (currentResultIndex + 1) % searchResults.length;
+    // Update currentPlayingCueIndex
+    if (debouncedSearchTerm.trim()) {
+      setCurrentPlayingCueIndex((prevIndex) =>
+        prevIndex !== -1 ? -1 : prevIndex,
+      );
     } else {
-      nextIndex =
-        (currentResultIndex - 1 + searchResults.length) % searchResults.length;
+      const newIndex = findCurrentCueIndex(currentTime);
+      setCurrentPlayingCueIndex((prevIndex) =>
+        newIndex !== prevIndex ? newIndex : prevIndex,
+      );
     }
+  }, [currentTime, debouncedSearchTerm, findCurrentCueIndex]);
 
-    setCurrentResultIndex(nextIndex);
-  };
-
-  // --- Effect: Perform Search --- //
   useEffect(() => {
+    // Perform Search
     if (!debouncedSearchTerm.trim()) {
       setSearchResults([]);
       setCurrentResultIndex(-1);
       return;
     }
-
     if (allCues.length > 0) {
       const term = debouncedSearchTerm.toLowerCase();
-      const results = allCues.filter((cue) =>
-        cue.text.toLowerCase().includes(term),
-      );
+      const results: SearchResultItem[] = allCues
+        .map((cue, index) => ({ cue, originalIndex: index }))
+        .filter((item) => item.cue.text.toLowerCase().includes(term));
       setSearchResults(results);
       setCurrentResultIndex(results.length > 0 ? 0 : -1);
     } else {
@@ -191,25 +247,183 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
     }
   }, [debouncedSearchTerm, allCues]);
 
-  const cuesToDisplay = debouncedSearchTerm.trim() ? searchResults : allCues;
-  const showFullTranscript = !debouncedSearchTerm.trim();
+  // scrollToCue and its interaction with handleScroll
+  const scrollToCue = useCallback(
+    (indexInAllCues: number, behavior: ScrollBehavior = 'smooth') => {
+      if (indexInAllCues < 0 || !resultsContainerRef.current) return;
+      const cueElement = resultsContainerRef.current.querySelector(
+        `[data-cue-index="${indexInAllCues}"]`,
+      ) as HTMLElement;
+
+      if (cueElement) {
+        isProgrammaticScrollRef.current = true; // Signal that a programmatic scroll is starting
+        if (endProgrammaticScrollTimeoutRef.current) {
+          clearTimeout(endProgrammaticScrollTimeoutRef.current);
+        }
+
+        cueElement.scrollIntoView({
+          behavior,
+          block: 'center',
+          inline: 'nearest',
+        });
+
+        // This timeout will mark the programmatic scroll as "finished" if no further scroll events refresh it.
+        // The duration is how long we wait *after the last detected scroll event from this action*
+        // before considering the programmatic scroll to be over.
+        const quietPeriodAfterScrollEvents = 150; // ms
+        endProgrammaticScrollTimeoutRef.current = setTimeout(() => {
+          isProgrammaticScrollRef.current = false;
+          checkAndUpdateCueAndButtonState();
+        }, quietPeriodAfterScrollEvents);
+      }
+    },
+    [checkAndUpdateCueAndButtonState],
+  );
+
+  useEffect(() => {
+    // Cleanup for the programmatic scroll timeout
+    return () => {
+      if (endProgrammaticScrollTimeoutRef.current) {
+        clearTimeout(endProgrammaticScrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Scroll to active search result
+    if (
+      !showFullTranscriptForDisplay &&
+      currentResultIndex !== -1 &&
+      searchResults.length > 0 &&
+      searchResults[currentResultIndex]
+    ) {
+      const timer = setTimeout(() => {
+        if (activeItemRef.current) {
+          activeItemRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [currentResultIndex, searchResults, showFullTranscriptForDisplay]);
+
+  useEffect(() => {
+    // Autoscroll Effect
+    if (
+      isAutoScrolling &&
+      !userHasManuallyScrolledRef.current &&
+      !searchTerm.trim() &&
+      currentPlayingCueIndex >= 0
+    ) {
+      scrollToCue(currentPlayingCueIndex, 'smooth');
+    }
+  }, [isAutoScrolling, searchTerm, currentPlayingCueIndex, scrollToCue]);
+
+  useEffect(() => {
+    // Update jump button state based on its dependencies
+    checkAndUpdateCueAndButtonState();
+  }, [checkAndUpdateCueAndButtonState]);
+
+  // handle manual scroll
+  const handleScroll = useCallback(() => {
+    if (isProgrammaticScrollRef.current) {
+      // If this scroll event is part of an ongoing programmatic scroll,
+      // refresh the timeout. This keeps the programmatic flag true as long as events are firing.
+      if (endProgrammaticScrollTimeoutRef.current) {
+        clearTimeout(endProgrammaticScrollTimeoutRef.current);
+      }
+      const quietPeriodAfterScrollEvents = 150; // ms
+      endProgrammaticScrollTimeoutRef.current = setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+        checkAndUpdateCueAndButtonState();
+      }, quietPeriodAfterScrollEvents);
+      return; // Ignore this scroll event for user interaction purposes
+    }
+
+    // If we reach here, it's a user scroll
+    if (isAutoScrolling) {
+      setIsAutoScrolling(false);
+    }
+    userHasManuallyScrolledRef.current = true;
+    checkAndUpdateCueAndButtonState();
+  }, [isAutoScrolling, checkAndUpdateCueAndButtonState]);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newSearchTerm = e.target.value;
+      setSearchTerm(newSearchTerm);
+      if (newSearchTerm.trim()) {
+        if (isAutoScrolling) setIsAutoScrolling(false);
+      } else {
+        if (!userHasManuallyScrolledRef.current) setIsAutoScrolling(true);
+      }
+    },
+    [isAutoScrolling],
+  );
+
+  const handleCueClick = useCallback(
+    (clickedCue: VTTCue) => {
+      if (player) player.currentTime = clickedCue.startTime;
+      const indexInAllCues = allCues.findIndex(
+        (c) =>
+          c.startTime === clickedCue.startTime && c.text === clickedCue.text,
+      );
+      if (indexInAllCues !== -1) setCurrentPlayingCueIndex(indexInAllCues);
+      if (searchTermRef.current) setSearchTerm('');
+      setIsAutoScrolling(true);
+      userHasManuallyScrolledRef.current = false;
+    },
+    [player, allCues],
+  );
+
+  const navigateResults = useCallback(
+    (direction: 'next' | 'prev') => {
+      if (searchResults.length === 0) return;
+      let nextIndex = currentResultIndex;
+      if (direction === 'next')
+        nextIndex = (currentResultIndex + 1) % searchResults.length;
+      else
+        nextIndex =
+          (currentResultIndex - 1 + searchResults.length) %
+          searchResults.length;
+      setCurrentResultIndex(nextIndex);
+    },
+    [searchResults, currentResultIndex],
+  );
+
+  const handleJumpToCurrent = useCallback(() => {
+    if (currentPlayingCueIndex >= 0) {
+      scrollToCue(currentPlayingCueIndex, 'smooth');
+      setIsAutoScrolling(true);
+      userHasManuallyScrolledRef.current = false;
+    }
+  }, [currentPlayingCueIndex, scrollToCue]);
+
+  const itemsToDisplay = showFullTranscriptForDisplay ? allCues : searchResults;
   const hasCues = allCues.length > 0;
-  const hasResults = searchResults.length > 0;
+
+  const showJumpButton =
+    !isCurrentCueInView &&
+    !isAutoScrolling &&
+    !debouncedSearchTerm.trim() &&
+    hasCues;
+  const JumpButtonIconToDisplay = determinedJumpButtonIcon;
 
   return (
     <div className="flex flex-col h-full w-full overflow-hidden">
+      {/* Search Bar */}
       <div className="sticky top-0 z-10 bg-neutral-200 dark:bg-neutral-600 shadow-md p-2 flex-shrink-0 flex items-center">
-        <div
-          className={`flex flex-1 items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 transition duration-150 ease-in-out`} // Added flex-1 to allow it to grow
-        >
+        <div className="flex flex-1 items-center bg-white dark:bg-gray-800 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 transition duration-150 ease-in-out">
           <SearchIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 mr-3 flex-shrink-0" />
           <input
             ref={inputRef}
             type="search"
             placeholder={
-              hasCues ? 'Search this sermon...' : 'No transcript available'
+              hasCues ? 'Search transcript...' : 'No transcript available'
             }
-            className={`flex-grow bg-transparent border-none outline-none w-full placeholder:text-gray-500 dark:placeholder-gray-400 text-sm`}
+            className="flex-grow bg-transparent border-none outline-none w-full placeholder:text-gray-500 dark:placeholder-gray-400 text-sm"
             value={searchTerm}
             onChange={handleInputChange}
             disabled={!hasCues}
@@ -231,28 +445,28 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
           </Tooltip.Content>
         </Tooltip.Root>
       </div>
-      {!showFullTranscript && hasCues && (
+
+      {/* Search Results Info */}
+      {!showFullTranscriptForDisplay && hasCues && (
         <div className="flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 flex-shrink-0 z-10">
           <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-            {hasResults
+            {searchResults.length > 0
               ? `${searchResults.length} occurrence${
                   searchResults.length === 1 ? '' : 's'
                 } found`
               : 'No matches'}
-
-            {hasResults &&
+            {searchResults.length > 0 &&
               currentResultIndex !== -1 &&
               ` (${currentResultIndex + 1}/${searchResults.length})`}
           </span>
-          {hasResults && (
+          {searchResults.length > 0 && (
             <div className="flex gap-x-2">
-              {/* --- Previous Button --- */}
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
                   <button
                     onClick={() => navigateResults('prev')}
                     aria-label="Previous match"
-                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200 pointer-events-auto"
+                    className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 text-gray-700 dark:text-gray-200"
                     disabled={searchResults.length <= 1}
                   >
                     <ChevronUpIcon className="w-4 h-4" />
@@ -262,8 +476,6 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   Previous match
                 </Tooltip.Content>
               </Tooltip.Root>
-
-              {/* --- Next Button --- */}
               <Tooltip.Root>
                 <Tooltip.Trigger asChild>
                   <button
@@ -283,83 +495,81 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
           )}
         </div>
       )}
-      {/* Results/Transcript Panel - Takes remaining height and scrolls */}
+
+      {/* Results/Transcript Panel */}
       <div
         ref={resultsContainerRef}
-        className="
-          overflow-y-auto flex-grow
-          [&::-webkit-scrollbar]:w-2
-          [&::-webkit-scrollbar-track]:bg-transparent
-          [&::-webkit-scrollbar-track]:rounded-full
-          [&::-webkit-scrollbar-track]:bg-gray-100
-          [&::-webkit-scrollbar-thumb]:rounded-full
-          [&::-webkit-scrollbar-thumb]:bg-gray-300
-          [&::-webkit-scrollbar-thumb:hover]:bg-gray-400
-          dark:[&::-webkit-scrollbar-track]:bg-transparent
-          dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-          dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
-          dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-400
-          " // todo: consider using tailwind-scrollbar for scroll bar styling - these styles won't apply to firefox (but it looks good in firefox as is currently)
+        onScroll={handleScroll}
+        className="overflow-y-auto flex-grow [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb:hover]:bg-gray-400 dark:[&::-webkit-scrollbar-track]:bg-transparent dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:[&::-webkit-scrollbar-thumb:hover]:bg-neutral-400"
       >
-        {/* Scrollable Cue List */}
         <div>
-          {cuesToDisplay.length > 0 ? (
-            cuesToDisplay.map((cue, index) => {
-              const isCurrentSearchResult =
-                !showFullTranscript && index === currentResultIndex;
-              const matchesSearchTerm =
-                !showFullTranscript &&
-                searchTerm.trim() &&
-                cue.text
-                  .toLowerCase()
-                  .includes(searchTerm.trim().toLowerCase());
-              const tooltipText = `Seek to ${formatTime(cue.startTime)}`;
+          {itemsToDisplay.length > 0 ? (
+            itemsToDisplay.map((itemData, loopIndex) => {
+              const currentCue: VTTCue = showFullTranscriptForDisplay
+                ? (itemData as VTTCue)
+                : (itemData as SearchResultItem).cue;
+              const dataIndexForScroll: number = showFullTranscriptForDisplay
+                ? loopIndex
+                : (itemData as SearchResultItem).originalIndex;
+
+              const isCurrentLiveCue =
+                showFullTranscriptForDisplay &&
+                dataIndexForScroll === currentPlayingCueIndex;
+              const isActiveSearchResult =
+                !showFullTranscriptForDisplay &&
+                loopIndex === currentResultIndex;
+
+              let highlightClass = '';
+              if (isCurrentLiveCue) {
+                highlightClass = 'bg-si-olive/20 dark:bg-si-main/30';
+              } else if (isActiveSearchResult) {
+                highlightClass =
+                  'bg-emerald-100 dark:bg-emerald-800/50 font-semibold';
+              }
 
               return (
-                // todo: I didn't like the title tooltips (felt unmatched to the rest of the media player
-                //     and the vidstack Tooltip component is buggy on scroll movement, I didn't like how it looked.
-                // <Tooltip.Root key={`${cue.startTime}-${cue.id || index}`}>
-                //   {/* 2. Wrap the button with Tooltip.Trigger asChild */}
-                //   <Tooltip.Trigger asChild>
                 <button
-                  // key prop is now on Tooltip.Root
-                  ref={isCurrentSearchResult ? activeItemRef : null}
-                  onClick={() => handleCueClick(cue)}
-                  className={`flex items-center w-full text-left px-3 py-1.5 text-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-100 ${
-                    isCurrentSearchResult
-                      ? 'bg-blue-100 dark:bg-blue-800/50 font-semibold'
-                      : ''
-                  } ${
-                    matchesSearchTerm && !isCurrentSearchResult
-                      ? 'bg-yellow-100 dark:bg-yellow-700/30'
-                      : ''
+                  key={`${currentCue.startTime}-${
+                    currentCue.id || dataIndexForScroll
                   }`}
-                  // title={tooltipText}  -- see my todo above
+                  ref={isActiveSearchResult ? activeItemRef : null}
+                  data-cue-index={dataIndexForScroll}
+                  onClick={() => handleCueClick(currentCue)}
+                  className={`flex items-start w-full text-left px-3 py-1.5 gap-x-2 text-sm hover:bg-gray-200/50 dark:hover:bg-white/10 transition-colors duration-100 ${highlightClass}`}
                 >
-                  <span className="font-mono text-xs text-gray-500 dark:text-gray-400 mr-1 w-12 shrink-0">
-                    {formatTime(cue.startTime)}
+                  <span className="font-mono text-xs text-gray-500 dark:text-gray-400 mr-2 pt-0.5 w-12 shrink-0">
+                    {formatTime(currentCue.startTime)}
                   </span>
                   <span
                     className="text-gray-800 dark:text-gray-100"
-                    dangerouslySetInnerHTML={{ __html: cue.text }}
+                    dangerouslySetInnerHTML={{ __html: currentCue.text }}
                   />
                 </button>
-                //   </Tooltip.Trigger>
-                //   {/* 4. Add Tooltip.Content with styling and text */}
-                //   <Tooltip.Content className={tooltipClass} placement="top">
-                //     {tooltipText}
-                //   </Tooltip.Content>
-                // </Tooltip.Root>
               );
             })
           ) : (
             <p className="p-3 text-sm text-gray-500 dark:text-gray-400 text-center">
-              {showFullTranscript
-                ? 'Loading transcript or transcript empty.'
+              {showFullTranscriptForDisplay
+                ? hasCues
+                  ? 'Loading transcript...'
+                  : 'Transcript empty or unavailable.'
                 : 'No matching cues found.'}
             </p>
           )}
         </div>
+        {/* Show jump button */}
+        {showJumpButton && (
+          <div className="sticky bottom-4 transform z-20 w-auto flex justify-center">
+            <button
+              onClick={handleJumpToCurrent}
+              aria-label="Follow Transcript"
+              className="flex items-center gap-x-1.5 px-3 py-1.5 bg-si-olive hover:bg-si-main text-white rounded-full shadow-lg text-sm font-medium transition-colors duration-150"
+            >
+              <JumpButtonIconToDisplay className="w-3.5 h-3.5" />
+              Follow Transcript
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
