@@ -32,7 +32,7 @@ The ministry of SermonIndex.net started officially in December 2002. The site's 
 year before through the reading of a book _"Why Revival Tarries by Leonard Ravenhill."_ This book
 deeply impacted the founder, Greg Gordon, to contend for revival and to explore and map out the
 history of God's working in the moves of the Holy Spirit. The first message added to the website is
-by Leonard Ravenhill titled: _"Christ Magnified In Our Bodies."_
+by Leonard Ravenhill titled: _"[Christ Magnified In Our Bodies](/sermons/4882)."_
 
 :::card-start
 
@@ -77,7 +77,7 @@ ChristiansUnite, OnePlace, and SermonAudio.
 > and spiritual awakening that is so evident on SermonIndex.net. I'm happy to commend this excellent
 > resource to everyone, everywhere. - David Guzik
 
-Read more commendations of SermonIndex.net from various ministry leaders and pastors from many
+Read more [commendations](/md/commendations/) of SermonIndex.net from various [ministry leaders](/md/commendations) and pastors from many
 different denominations and groups in the wider Church.
 
 ## What We Believe
@@ -111,7 +111,7 @@ in His will, and in His service) till the Lord's return (John 7:37-39; Acts 1:8;
 
 ## Get Involved
 
-* [Contribute Content](/support) — If you have sermons, teachings, or writings that align with our vision, we
+* [Contribute Content](/md/support) — If you have sermons, teachings, or writings that align with our vision, we
   invite you to share them.
 * Support Us — SermonIndex.net operates on donations. Your support helps maintain and expand our
   resources.
