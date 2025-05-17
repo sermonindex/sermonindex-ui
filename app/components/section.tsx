@@ -65,6 +65,10 @@ export function SiSection({
     return <div className={`flex flex-col w-full ${padding}`}>{children}</div>;
   }
 
+  // Determine the class for the children container based on whether children exist
+  const childrenContainerClass =
+    React.Children.count(children) > 0 ? 'md:p-4' : '';
+
   return (
     <div className="flex flex-col" id={tag}>
       <div className={`flex flex-col w-full ${padding}`}>
@@ -104,7 +108,7 @@ export function SiSection({
             <Link to={linkTo} className={headingStyles}>
               {getSectionTitle()}
             </Link>
-            <div className="md:p-4">{children}</div>
+            <div className={childrenContainerClass}>{children}</div>
           </>
         )}
       </div>
