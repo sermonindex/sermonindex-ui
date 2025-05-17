@@ -13,12 +13,12 @@ interface FooterAboutLink {
 }
 
 const AboutLinks: { [key: string]: FooterAboutLink } = {
-  about: { name: 'About Us', linkTo: 'about' },
-  commendations: { name: 'Commendations', linkTo: 'todo' },
-  support: { name: 'Get Support', linkTo: 'todo' },
-  brand: { name: 'Brand Guidelines', linkTo: 'todo' },
-  copying: { name: 'Copying Permissions', linkTo: 'todo' },
-  privacy: { name: 'Privacy Policy', linkTo: 'todo' },
+  about: { name: 'About Us', linkTo: 'md/about' },
+  commendations: { name: 'Commendations', linkTo: 'md/commendations' },
+  support: { name: 'Get Support', linkTo: 'md/support' },
+  brand: { name: 'Brand Guidelines', linkTo: 'md/brand-guidelines' },
+  copying: { name: 'Copying Permissions', linkTo: 'md/copying-permissions' },
+  privacy: { name: 'Privacy Policy', linkTo: 'md/privacy-policy' },
 };
 
 export const Footer = () => {
@@ -27,7 +27,7 @@ export const Footer = () => {
       <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-dim"></div>
       <div className="bg-si-dark p-4 dark:bg-gradient-to-t dark:from-black/40">
         <div className="mx-10">
-          <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between py-4">
+          <div className="flex flex-col space-y-4 gap-x-6 md:space-y-0 md:flex-row md:justify-between py-4">
             <div className="flex flex-col text-wrap text-lg font-bold text-white">
               Everything we make is available for free because of a generous
               community of supporters.

@@ -66,12 +66,12 @@ const secondarySidebarItems: SidebarItem[] = [
   {
     name: 'About',
     icon: <IoInformationCircle />,
-    linkTo: '/about',
+    linkTo: '/md/about',
   },
   {
     name: 'Contact',
     icon: <FaMailBulk />,
-    linkTo: '/contact',
+    linkTo: '/md/contact',
   },
 ];
 
