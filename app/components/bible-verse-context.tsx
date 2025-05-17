@@ -32,7 +32,7 @@ export const VerseContext = ({
 
       const reference = constructVerseReference(
         book,
-        data.number,
+        chapterNumber,
         verse.number,
       );
       if (verse.content.length > 1) versesContent.push(' ');
@@ -57,7 +57,7 @@ export const VerseContext = ({
         reference,
         // TODO: Highlight verse if it is the current verse
         <span
-          key={`verse-${data.number}-${verse.number}`}
+          key={`verse-${chapterNumber}-${verse.number}`}
           className={`${
             verse.number === verseNumber ? 'font-semibold' : 'text-sm'
           }`}
