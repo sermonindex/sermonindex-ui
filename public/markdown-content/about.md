@@ -111,7 +111,7 @@ in His will, and in His service) till the Lord's return (John 7:37-39; Acts 1:8;
 
 ## Get Involved
 
-* Contribute Content — If you have sermons, teachings, or writings that align with our vision, we
+* [Contribute Content](/support) — If you have sermons, teachings, or writings that align with our vision, we
   invite you to share them.
 * Support Us — SermonIndex.net operates on donations. Your support helps maintain and expand our
   resources.
