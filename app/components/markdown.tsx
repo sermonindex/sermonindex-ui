@@ -9,6 +9,7 @@ import { toString } from 'mdast-util-to-string';
 import { linkifyScripture } from '~/components/linkify-scripture';
 import { ClickableText } from '~/components/section';
 import { FaCheck, FaLink } from 'react-icons/fa6';
+import { Link } from '@remix-run/react';
 
 const xPadding = 'px-6 md:px-10';
 const baseText = 'text-base leading-relaxed';
@@ -208,9 +209,30 @@ export const SiParagraph = ({ children }: { children: ReactNode }) => {
   return <p className={`py-2 ${baseText}`}>{renderableChildren}</p>;
 };
 
-const SiLink = ({ href, children }: { href: string; children: ReactNode }) => (
-  <ClickableText>{children}</ClickableText>
-);
+const SiLink = ({ href, children }: { href: string; children: ReactNode }) => {
+  // Check if it's an external link, mailto, or tel link
+  const isExternal =
+    href.startsWith('http://') ||
+    href.startsWith('https://') ||
+    href.startsWith('mailto:') ||
+    href.startsWith('tel:');
+
+  if (isExternal) {
+    // For external links, use a standard <a> tag and openin new tab
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        <ClickableText>{children}</ClickableText>
+      </a>
+    );
+  }
+
+  // For internal links (including hash links like those in the TOC), use Remix's Link
+  return (
+    <Link to={href}>
+      <ClickableText>{children}</ClickableText>
+    </Link>
+  );
+};
 
 const SiBlockquote = ({ children }: { children: ReactNode }) => (
   <div className={`py-2 ${baseText}`}>
