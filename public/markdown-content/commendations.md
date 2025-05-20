@@ -145,7 +145,7 @@
 
 :::card-start
 
-![Rich Carmicheal](http://sermonindex3.b-cdn.net/images/richcarmicheal.png)
+![Rich Carmicheal](http://sermonindex3.b-cdn.net/pdf/richcarmicheal.png)
 
 :::card-middle
 
