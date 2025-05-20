@@ -145,7 +145,7 @@
 
 :::card-start
 
-![]()
+![Rich Carmicheal](http://sermonindex3.b-cdn.net/images/richcarmicheal.jpg)
 
 :::card-middle
 
@@ -386,7 +386,7 @@
 
 :::card-start
 
-![]()
+![Paul Snyder](https://sermonindex3.b-cdn.net/pdf/paulsnyder.png)
 
 :::card-middle
 
@@ -400,7 +400,7 @@
 
 :::card-start
 
-![]()
+![Kevin Turner](https://sermonindex3.b-cdn.net/pdf/kevinturner.png)
 
 :::card-middle
 
@@ -510,7 +510,7 @@
 
 :::card-start
 
-![]()
+![Karen Stiller](https://sermonindex3.b-cdn.net/pdf/karenstiller.png)
 
 :::card-middle
 
