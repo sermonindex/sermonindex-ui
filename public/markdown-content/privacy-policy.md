@@ -1,6 +1,6 @@
-# Privacy Policy Effective Date
+# Privacy Policy
 
-_May 17, 2025_
+_Effective May 26, 2025_
 
 Your privacy is important to us. This policy explains how we handle information on our website.
 
