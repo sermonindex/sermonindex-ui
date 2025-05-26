@@ -132,7 +132,7 @@ export const SearchModal = ({}) => {
           <IconContext.Provider value={{ className: 'ml-1 text-neutral-500' }}>
             <FaSearch />
           </IconContext.Provider>
-          <span className="">/SermonIndex</span>
+          <span className="">Search SermonIndex</span>
         </div>
         <div className="flex md:hidden text-white">
           <FaSearch />

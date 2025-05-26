@@ -1,14 +1,21 @@
 import { Link } from '@remix-run/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { IoMoon, IoSunny } from 'react-icons/io5';
-import { SearchModal } from './search-modal';
+import { SearchModal } from '../search-modal';
 import { Sidebar } from './sidebar';
+import { Topbar } from '~/components/navigation/topbar';
 
-export const Navbar = () => {
+interface NavbarProps {
+  onEffectiveHeightChange: (height: number) => void;
+}
+
+export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
   const [dark, setDark] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const navRef = useRef<HTMLElement>(null);
 
   const darkModeHandler = (dark: boolean) => {
     setDark(dark);
@@ -37,14 +44,40 @@ export const Navbar = () => {
     }
   }, []);
 
+  // Effect to set top of page
+  useEffect(() => {
+    const calculateAndReportHeight = () => {
+      if (navRef.current) {
+        const height = navRef.current.offsetHeight;
+        onEffectiveHeightChange(height);
+      } else {
+        onEffectiveHeightChange(0);
+      }
+    };
+    calculateAndReportHeight();
+    const observer = new ResizeObserver(calculateAndReportHeight);
+    if (navRef.current) {
+      observer.observe(navRef.current);
+    }
+    window.addEventListener('resize', calculateAndReportHeight);
+
+    return () => {
+      if (navRef.current) {
+        observer.unobserve(navRef.current);
+      }
+      observer.disconnect();
+      window.removeEventListener('resize', calculateAndReportHeight);
+    };
+  }, [onEffectiveHeightChange]);
+
   return (
     <>
-      <nav className="fixed top-0 z-50 w-full bg-si-main">
-        <div className="px-2 md:px-3 py-3">
+      <nav ref={navRef} className="fixed top-0 z-50 w-full">
+        <div className="bg-si-main px-2 xl:px-3 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
               <div
-                className="flex md:hidden"
+                className="flex xl:hidden"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <IconContext.Provider
@@ -55,9 +88,9 @@ export const Navbar = () => {
                   <HiOutlineMenuAlt2 />
                 </IconContext.Provider>
               </div>
-              <Link to="/" className="ml-3 md:ml-0">
+              <Link to="/" className="ml-3 xl:ml-0">
                 <img
-                  className="w-40 md:w-48 h-auto items-center"
+                  className="w-48 h-auto items-center"
                   src="/sermon-index-white.png"
                   alt="sermon-index"
                 />
@@ -74,13 +107,17 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
+
+        {/* Shows Topbar on md screens and larger */}
+        <div className="xl:block hidden">
+          <Topbar />
+        </div>
       </nav>
 
-      <Sidebar sidebarOpen={sidebarOpen} />
-
-      {sidebarOpen && (
-        <div className="bg-neutral-600/60 dark:bg-neutral-500/60 fixed w-full h-screen z-20 top-0 left-0"></div>
-      )}
+      {/* Shows Sidebar on screens smaller than md */}
+      <div className="xl:hidden">
+        <Sidebar sidebarOpen={sidebarOpen} />
+      </div>
     </>
   );
 };
