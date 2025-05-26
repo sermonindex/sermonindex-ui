@@ -42,11 +42,7 @@ export default function Component() {
   return (
     <SiPage sermon={sermon}>
       {/* Only show this div if MediaType is Audio or Video */}
-      {sermon.mediaType != MediaType.Text && (
-        <SiSection>
-          <Player sermons={[sermon]} />
-        </SiSection>
-      )}
+      {sermon.mediaType != MediaType.Text && <Player sermons={[sermon]} />}
 
       <div className="flex flex-col sm:flex-row items-start justify-center">
         <div className="flex-grow sm:w-2/3">

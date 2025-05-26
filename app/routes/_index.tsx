@@ -40,9 +40,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <SiSection>
-        <Player sermons={[featured]} storageKey={'featured'} />
-      </SiSection>
+      <Player sermons={[featured]} storageKey={'featured'} />
       <SermonCarousel
         title={'Recent Uploads'}
         sermons={recent.values}
@@ -58,7 +56,6 @@ export default function Index() {
           return <span className="font-thin">{`${prettyDate} `}</span>;
         }}
       />
-
       <SermonCarousel
         title={'Popular Sermons'}
         sermons={popular.values}

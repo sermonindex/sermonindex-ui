@@ -36,11 +36,11 @@ export const CustomLayout = ({
   const controlBaseClasses = `opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 media-paused:opacity-100`;
   const controlStyleBottom =
     viewType === 'video'
-      ? `absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white rounded-b-xl z-10 media-fullscreen:bottom-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
+      ? `absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white sm:rounded-b-xl z-10 media-fullscreen:bottom-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
       : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-10`;
   const controlStyleVideoTop =
     viewType === 'video'
-      ? `absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 text-white rounded-t-xl z-10 media-fullscreen:top-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
+      ? `absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 text-white sm:rounded-t-xl z-10 media-fullscreen:top-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
       : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-20`;
 
   const outerDivBaseClass = `relative w-full h-full`; // Base styles for the container
