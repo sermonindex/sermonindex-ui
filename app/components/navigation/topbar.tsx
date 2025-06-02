@@ -1,6 +1,7 @@
 import {
   mainNavItems,
-  navItem,
+  NavItem,
+  NavItemLi,
   secondaryNavItems,
 } from '~/components/navigation/nav-items';
 import { Link } from '@remix-run/react';
@@ -13,38 +14,27 @@ import {
 
 export const Topbar = () => {
   return (
-    <nav className={`w-full shadow-sm ${secondaryNavbarStyle} border-b`}>
+    <nav
+      className={`w-full shadow-2xl ${secondaryNavbarStyle} border-b-2 border-si-gray dark:border-si-rock`}
+    >
       <div className="container mx-auto px-4 h-12 flex items-center justify-center gap-x-4">
-        {/* Right side navigation items */}
         {topNavbarList(mainNavItems)}
-        {/* Divider between left and right nav items */}
-        <div className="border-l-2 h-6 border-neutral-300 dark:border-neutral-700" />
-        {/* Left nav items */}
         {topNavbarList(secondaryNavItems)}
       </div>
     </nav>
   );
 };
 
-function topNavbarList(items: navItem[]) {
+function topNavbarList(items: NavItem[]) {
   return (
     <ul className="flex flex-row space-x-1 md:space-x-3">
       {items.map((item, index) => (
-        <li key={index}>
-          <Link to={item.linkTo} className={navItemStyle}>
-            {item.icon && (
-              <IconContext.Provider
-                value={{
-                  className: `${navIconStyle}`,
-                }}
-              >
-                {item.icon}
-              </IconContext.Provider>
-            )}
-            <span className={item.icon ? 'ms-2 md:ms-3' : ''}>{item.name}</span>
-          </Link>
-          {/* Sub-items logic is removed for this iteration - not sure how to handle these visually */}
-        </li>
+        <NavItemLi
+          item={item}
+          index={index}
+          showIcon={false}
+          showSubItems={false}
+        />
       ))}
     </ul>
   );

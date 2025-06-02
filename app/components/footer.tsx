@@ -13,18 +13,20 @@ interface FooterAboutLink {
 }
 
 const AboutLinks: { [key: string]: FooterAboutLink } = {
-  about: { name: 'About Us', linkTo: 'md/about' },
-  commendations: { name: 'Commendations', linkTo: 'md/commendations' },
-  support: { name: 'Get Support', linkTo: 'md/support' },
-  brand: { name: 'Brand Guidelines', linkTo: 'md/brand-guidelines' },
-  copying: { name: 'Copying Permissions', linkTo: 'md/copying-permissions' },
-  privacy: { name: 'Privacy Policy', linkTo: 'md/privacy-policy' },
+  about: { name: 'About Us', linkTo: '/md/about' },
+  contact: { name: 'Contact', linkTo: '/md/contact' },
+  api: { name: 'API', linkTo: 'http://localhost:3000/api' },
+  commendations: { name: 'Commendations', linkTo: '/md/commendations' },
+  support: { name: 'Get Support', linkTo: '/md/support' },
+  brand: { name: 'Brand Guidelines', linkTo: '/md/brand-guidelines' },
+  copying: { name: 'Copying Permissions', linkTo: '/md/copying-permissions' },
+  privacy: { name: 'Privacy Policy', linkTo: '/md/privacy-policy' },
 };
 
 export const Footer = () => {
   return (
     <footer className="flex flex-col">
-      <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-dim"></div>
+      <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-rock"></div>
       <div className="bg-si-dark p-4 dark:bg-gradient-to-t dark:from-black/40">
         <div className="mx-10">
           <div className="flex flex-col space-y-4 gap-x-6 md:space-y-0 md:flex-row md:justify-between py-4">
@@ -51,7 +53,7 @@ export const Footer = () => {
                     <Link
                       className={`block capitalize hover:text-si-accent`}
                       key={link.name}
-                      to={`/${link.linkTo}`}
+                      to={link.linkTo}
                     >
                       {link.name}
                     </Link>

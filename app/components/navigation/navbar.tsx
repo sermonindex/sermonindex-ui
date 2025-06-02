@@ -72,45 +72,47 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
 
   return (
     <>
-      <nav ref={navRef} className="fixed top-0 z-50 w-full">
-        <div className="bg-si-main px-2 xl:px-3 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center justify-start">
-              <div
-                className="flex xl:hidden"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-              >
-                <IconContext.Provider
-                  value={{
-                    className: 'w-7 h-7 text-white',
-                  }}
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 pb-4">
+        <div className="2xl:container 2xl:mx-auto">
+          <div className="bg-si-main p-4 xl:p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center justify-start">
+                <div
+                  className="flex xl:hidden"
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
                 >
-                  <HiOutlineMenuAlt2 />
-                </IconContext.Provider>
+                  <IconContext.Provider
+                    value={{
+                      className: 'w-7 h-7 text-white',
+                    }}
+                  >
+                    <HiOutlineMenuAlt2 />
+                  </IconContext.Provider>
+                </div>
+                <Link to="/" className="ml-3 xl:ml-0">
+                  <img
+                    className="w-48 xl:w-64 h-auto items-center"
+                    src="/sermon-index-white.png"
+                    alt="sermon-index"
+                  />
+                </Link>
               </div>
-              <Link to="/" className="ml-3 xl:ml-0">
-                <img
-                  className="w-48 h-auto items-center"
-                  src="/sermon-index-white.png"
-                  alt="sermon-index"
-                />
-              </Link>
-            </div>
-            <div className="flex items-center space-x-2 md:space-x-8">
-              <SearchModal />
-              <div
-                className="px-3 text-white text-lg"
-                onClick={() => darkModeHandler(!dark)}
-              >
-                {dark ? <IoSunny /> : <IoMoon />}
+              <div className="flex items-center space-x-2 md:space-x-8">
+                <SearchModal />
+                <div
+                  className="px-3 text-white text-lg"
+                  onClick={() => darkModeHandler(!dark)}
+                >
+                  {dark ? <IoSunny /> : <IoMoon />}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Shows Topbar on md screens and larger */}
-        <div className="xl:block hidden">
-          <Topbar />
+          {/* Shows Topbar on md screens and larger */}
+          <div className="xl:block hidden">
+            <Topbar />
+          </div>
         </div>
       </nav>
 
