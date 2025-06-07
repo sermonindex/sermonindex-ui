@@ -8,7 +8,7 @@ import {
 import path from 'path';
 import invariant from 'tiny-invariant';
 
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import MarkdownRenderer from '~/components/markdown';
 import fs from 'fs/promises';
 

@@ -15,7 +15,7 @@ import {
 export const Topbar = () => {
   return (
     <nav
-      className={`w-full shadow-2xl ${secondaryNavbarStyle} border-b-2 border-si-gray dark:border-si-rock`}
+      className={`w-full ${secondaryNavbarStyle} border-b-2 border-si-gray dark:border-si-rock`}
     >
       <div className="container mx-auto px-4 h-12 flex items-center justify-center gap-x-4">
         {topNavbarList(mainNavItems)}

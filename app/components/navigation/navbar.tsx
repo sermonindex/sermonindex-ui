@@ -72,11 +72,17 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
 
   return (
     <>
-      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 pb-4">
-        <div className="2xl:container 2xl:mx-auto">
-          <div className="bg-si-main p-4 xl:p-6">
+      <nav
+        ref={navRef}
+        className="
+        fixed top-0 left-0 right-0 z-50 xl:pb-2
+        xl:relative xl:z-auto"
+      >
+        {/*<div className="2xl:container 2xl:mx-auto">*/}
+        <div className="bg-si-main py-4 px-4 xl:px-6">
+          <div className="2xl:container 2xl:mx-auto">
             <div className="flex items-center justify-between">
-              <div className="flex items-center justify-start">
+              <div className="flex items-center justify-between">
                 <div
                   className="flex xl:hidden"
                   onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -108,12 +114,13 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
               </div>
             </div>
           </div>
-
-          {/* Shows Topbar on md screens and larger */}
-          <div className="xl:block hidden">
-            <Topbar />
-          </div>
         </div>
+
+        {/* Shows Topbar on md screens and larger */}
+        <div className="xl:block hidden">
+          <Topbar />
+        </div>
+        {/*</div>*/}
       </nav>
 
       {/* Shows Sidebar on screens smaller than md */}

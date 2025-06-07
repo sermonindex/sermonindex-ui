@@ -160,37 +160,39 @@ export default function Breadcrumbs({
       nav.push({
         name: crumbs[i]
           .replace(/-/g, ' ')
-          .replace(/\b\w/g, (l) => l.toUpperCase()),
+          .replace(/(?<!')\b\w/g, (l) => l.toUpperCase()),
         linkTo: `/${crumbs.slice(0, i + 1).join('/')}`,
       });
     }
   }
 
   return (
-    <div className="p-3 flex items-center">
-      <ul className="flex items-center space-x-1">
-        {nav.map((crumb, index) => (
-          <li className="flex items-center" key={`breadcrumb-${index}`}>
-            {index > 0 && (
-              <span className="pr-1 text-md">
-                <IoIosArrowForward />
-              </span>
-            )}
-            {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
-              <Link to={crumb.linkTo} className="text-sm hover:underline">
-                {crumb.name}
-              </Link>
-            ) : (
-              <span className="text-sm italic">
-                {crumb.name
-                  .replace('-', ' ')
-                  .replace('%20', ' ')
-                  .replace(/\b\w/g, (l) => l.toUpperCase())}
-              </span>
-            )}
-          </li>
-        ))}
-      </ul>
+    <div className="2xl:container 2xl:mx-auto">
+      <div className="xl:p-3 xl:flex items-center h-0 xl:h-auto hidden">
+        <ul className="flex items-center space-x-1">
+          {nav.map((crumb, index) => (
+            <li className="flex items-center" key={`breadcrumb-${index}`}>
+              {index > 0 && (
+                <span className="pr-1 text-md">
+                  <IoIosArrowForward />
+                </span>
+              )}
+              {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
+                <Link to={crumb.linkTo} className="text-sm hover:underline">
+                  {crumb.name}
+                </Link>
+              ) : (
+                <span className="text-sm italic">
+                  {crumb.name
+                    .replace('-', ' ')
+                    .replace('%20', ' ')
+                    .replace(/(?<!')\b\w/g, (l) => l.toUpperCase())}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

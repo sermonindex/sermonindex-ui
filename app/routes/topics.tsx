@@ -5,7 +5,7 @@ import { ListResponse, Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import { TopicBubbles } from '~/components/topic-bubbles';
 
 export async function loader({ params }: LoaderFunctionArgs) {

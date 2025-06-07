@@ -6,7 +6,7 @@ import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([

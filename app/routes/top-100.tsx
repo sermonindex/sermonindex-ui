@@ -4,7 +4,7 @@ import { ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
 import { SiSection } from '~/components/section';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [popular] = await Promise.all([

@@ -5,7 +5,7 @@ import { fetchApi } from '~/api/sdk';
 import { isOldTestament } from '~/common/get-bible-book-id.fn';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { _, language, translation } = params;

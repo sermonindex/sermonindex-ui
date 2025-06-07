@@ -13,7 +13,7 @@ import { fetchApi } from '~/api/sdk';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { VerseContext } from '~/components/bible-verse-context';
 import { SermonList } from '~/components/sermon-list';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import {
   TabContainer,
   TabContent,

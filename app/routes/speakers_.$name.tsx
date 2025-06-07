@@ -10,7 +10,7 @@ import {
 import { fetchApi } from '~/api/sdk';
 import { ContributorCard } from '~/components/contributor-card';
 import { SermonList } from '~/components/sermon-list';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import {
   TabContainer,
   TabContent,

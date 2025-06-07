@@ -5,7 +5,7 @@ import { SermonTopic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topic] = await Promise.all([

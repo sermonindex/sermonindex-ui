@@ -17,7 +17,7 @@ import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { formatBibleChapter } from '~/components/bible-chapter';
 import { SermonList } from '~/components/sermon-list';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import {
   TabContainer,
   TabContent,

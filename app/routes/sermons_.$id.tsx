@@ -4,7 +4,7 @@ import { Contributor, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
 import { ClickableText, SiSection } from '~/components/section';
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
 
 import React from 'react';

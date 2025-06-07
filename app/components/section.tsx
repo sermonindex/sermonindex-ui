@@ -67,7 +67,7 @@ export function SiSection({
 
   // Determine the class for the children container based on whether children exist
   const childrenContainerClass =
-    React.Children.count(children) > 0 ? 'md:p-4' : '';
+    React.Children.count(children) > 0 ? 'px-2 py-3 md:px-4 md:py-4' : '';
 
   return (
     <div className="flex flex-col" id={tag}>
@@ -100,7 +100,7 @@ export function SiSection({
                 maxHeight: contentHeight ? `${contentHeight}px` : '0px',
               }}
             >
-              <div className="md:p-4">{children}</div>
+              <div className={childrenContainerClass}>{children}</div>
             </div>
           </>
         ) : (

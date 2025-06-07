@@ -85,6 +85,8 @@ export interface NavItemProps {
   item: NavItem;
   index: number;
   showIcon?: boolean;
+  iconClassName?: string;
+  linkClassName?: string;
   showSubItems?: boolean;
 }
 
@@ -92,20 +94,17 @@ export const NavItemLi = ({
   item,
   index,
   showIcon = false,
+  iconClassName = 'w-5 h-5 text-neutral-500 transition duration-75 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white',
+  linkClassName = 'flex items-center px-2 py-1 rounded-lg hover:bg-si-main/40 group',
   showSubItems = false,
 }: NavItemProps) => {
   return (
     <li key={index}>
-      <Link
-        to={item.linkTo}
-        key={index}
-        className="flex items-center px-2 py-1 rounded-lg hover:bg-si-official-light dark:hover:bg-si-official group"
-      >
+      <Link to={item.linkTo} key={index} className={linkClassName}>
         {item.icon && showIcon && (
           <IconContext.Provider
             value={{
-              className:
-                'w-5 h-5 text-neutral-300 transition duration-75 dark:text-neutral-400 group-hover:text-white dark:group-hover:text-white',
+              className: iconClassName,
             }}
           >
             {item.icon}
@@ -118,11 +117,11 @@ export const NavItemLi = ({
       {item.subItems && showSubItems && (
         <ul key={`${item.name}-submenu`} className="space-y-1">
           {item.subItems.map((subItem, subIndex) => (
-            <li key={`${item.name}-${subIndex}`}>
+            <li key={`item-${subItem.name}-${subIndex}`}>
               <Link
                 to={subItem.linkTo}
-                key={subIndex}
-                className="flex items-center w-full p-2 text-sm transition duration-75 rounded-lg pl-11 hover:bg-si-official-light dark:hover:bg-si-official group"
+                key={`link-${subItem.name}-${subIndex}`}
+                className={linkClassName}
               >
                 {subItem.name}
               </Link>

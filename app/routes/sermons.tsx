@@ -1,4 +1,4 @@
-import SiPage from '~/components/si-page';
+import { SiPage } from '~/components/si-page';
 
 export default function Index() {
   return (
