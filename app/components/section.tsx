@@ -48,7 +48,8 @@ export function SiSection({
   const location = useLocation();
   const linkTo = `${location.pathname}#${tag}`;
 
-  const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 rounded-lg w-full text-black dark:text-white bg-neutral-200 dark:bg-neutral-600 shadow-lg ${className}`;
+  // const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 rounded-lg w-full text-black dark:text-white bg-neutral-200 dark:bg-neutral-600 shadow-lg ${className}`;
+  const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 w-full text-black dark:text-white border-b-2 border-b border-neutral-300 dark:border-neutral-700 pb-2 ${className}`;
   const countStyles =
     'flex items-center justify-center w-12 h-5 ms-2 text-xs rounded-full text-black dark:text-white bg-neutral-300 dark:bg-neutral-700';
 

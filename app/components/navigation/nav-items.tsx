@@ -6,7 +6,6 @@ import { PiBooksFill } from 'react-icons/pi';
 import { FaBlog, FaMusic } from 'react-icons/fa6';
 import { GiBookshelf } from 'react-icons/gi';
 import { Link } from '@remix-run/react';
-import { navItemStyle } from '~/components/navigation/nav-styles';
 import { IconContext } from 'react-icons';
 
 export interface NavItem {
@@ -18,29 +17,14 @@ export interface NavItem {
 
 export const mainNavItems: NavItem[] = [
   {
-    name: 'Sermons',
-    icon: <RiFilePaper2Fill />,
-    linkTo: '/top-100',
-  },
-  {
     name: 'Speakers',
     icon: <IoPersonSharp />,
     linkTo: '/speakers',
   },
   {
-    name: 'Topics',
-    icon: <ImBubbles />,
-    linkTo: '/topics',
-  },
-  {
-    name: 'Books',
-    icon: <GiBookshelf />,
-    linkTo: '/books',
-  },
-  {
-    name: 'Songs',
-    icon: <FaMusic />,
-    linkTo: '/songs',
+    name: 'Top 100',
+    icon: <RiFilePaper2Fill />,
+    linkTo: '/top-100',
   },
   {
     name: 'Bible',
@@ -66,6 +50,21 @@ export const mainNavItems: NavItem[] = [
     icon: <PiBooksFill />,
     linkTo: '/commentary',
     // TODO: Add subitems for a few popular commentaries
+  },
+  {
+    name: 'Books',
+    icon: <GiBookshelf />,
+    linkTo: '/books',
+  },
+  {
+    name: 'Topics',
+    icon: <ImBubbles />,
+    linkTo: '/topics',
+  },
+  {
+    name: 'Songs',
+    icon: <FaMusic />,
+    linkTo: '/songs',
   },
 ];
 export const secondaryNavItems: NavItem[] = [
@@ -95,7 +94,7 @@ export const NavItemLi = ({
   index,
   showIcon = false,
   iconClassName = 'w-5 h-5 text-neutral-500 transition duration-75 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white',
-  linkClassName = 'flex items-center px-2 py-1 rounded-lg hover:bg-si-main/40 group',
+  linkClassName = 'flex items-center px-2 border-b-2 border-transparent hover:border-si-accent group',
   showSubItems = false,
 }: NavItemProps) => {
   return (

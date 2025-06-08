@@ -167,32 +167,30 @@ export default function Breadcrumbs({
   }
 
   return (
-    <div className="2xl:container 2xl:mx-auto">
-      <div className="xl:p-3 xl:flex items-center h-0 xl:h-auto hidden">
-        <ul className="flex items-center space-x-1">
-          {nav.map((crumb, index) => (
-            <li className="flex items-center" key={`breadcrumb-${index}`}>
-              {index > 0 && (
-                <span className="pr-1 text-md">
-                  <IoIosArrowForward />
-                </span>
-              )}
-              {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
-                <Link to={crumb.linkTo} className="text-sm hover:underline">
-                  {crumb.name}
-                </Link>
-              ) : (
-                <span className="text-sm italic">
-                  {crumb.name
-                    .replace('-', ' ')
-                    .replace('%20', ' ')
-                    .replace(/(?<!')\b\w/g, (l) => l.toUpperCase())}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="lg:p-3 lg:flex items-center h-0 lg:h-auto hidden">
+      <ul className="flex items-center space-x-1">
+        {nav.map((crumb, index) => (
+          <li className="flex items-center" key={`breadcrumb-${index}`}>
+            {index > 0 && (
+              <span className="pr-1 text-md">
+                <IoIosArrowForward />
+              </span>
+            )}
+            {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
+              <Link to={crumb.linkTo} className="text-sm hover:underline">
+                {crumb.name}
+              </Link>
+            ) : (
+              <span className="text-sm italic">
+                {crumb.name
+                  .replace('-', ' ')
+                  .replace('%20', ' ')
+                  .replace(/(?<!')\b\w/g, (l) => l.toUpperCase())}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

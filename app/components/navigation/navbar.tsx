@@ -5,7 +5,8 @@ import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 import { SearchModal } from '../search-modal';
 import { Sidebar } from './sidebar';
-import { Topbar } from '~/components/navigation/topbar';
+import { Midbar } from '~/components/navigation/mid-bar';
+import { BibleBar } from '~/components/navigation/bible-bar';
 
 interface NavbarProps {
   onEffectiveHeightChange: (height: number) => void;
@@ -75,56 +76,55 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
       <nav
         ref={navRef}
         className="
-        fixed top-0 left-0 right-0 z-50 xl:pb-2
-        xl:relative xl:z-auto"
+        fixed top-0 left-0 right-0 z-50
+        lg:relative lg:z-auto
+        border-b-2 border-si-gray dark:border-si-rock
+        "
       >
-        {/*<div className="2xl:container 2xl:mx-auto">*/}
-        <div className="bg-si-main py-4 px-4 xl:px-6">
-          <div className="2xl:container 2xl:mx-auto">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center justify-between">
-                <div
-                  className="flex xl:hidden"
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
+        <div className="bg-si-main py-4 px-4 lg:px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between lg:p-2">
+              <div
+                className="flex lg:hidden"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              >
+                <IconContext.Provider
+                  value={{
+                    className: 'w-7 h-7 text-white',
+                  }}
                 >
-                  <IconContext.Provider
-                    value={{
-                      className: 'w-7 h-7 text-white',
-                    }}
-                  >
-                    <HiOutlineMenuAlt2 />
-                  </IconContext.Provider>
-                </div>
-                <Link to="/" className="ml-3 xl:ml-0">
-                  <img
-                    className="w-48 xl:w-64 h-auto items-center"
-                    src="/sermon-index-white.png"
-                    alt="sermon-index"
-                  />
-                </Link>
+                  <HiOutlineMenuAlt2 />
+                </IconContext.Provider>
               </div>
-              <div className="flex items-center space-x-2 md:space-x-8">
-                <SearchModal />
-                <div
-                  className="px-3 text-white text-lg"
-                  onClick={() => darkModeHandler(!dark)}
-                >
-                  {dark ? <IoSunny /> : <IoMoon />}
-                </div>
+              <Link to="/" className="ml-3 lg:ml-0">
+                <img
+                  className="w-48 lg:w-60 h-auto items-center"
+                  src="/sermon-index-white.png"
+                  alt="sermon-index"
+                />
+              </Link>
+            </div>
+            <div className="flex items-center space-x-2 lg:space-x-8">
+              <SearchModal />
+              <div
+                className="px-3 text-white text-lg lg:text-xl"
+                onClick={() => darkModeHandler(!dark)}
+              >
+                {dark ? <IoSunny /> : <IoMoon />}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Shows Topbar on md screens and larger */}
-        <div className="xl:block hidden">
-          <Topbar />
+        {/* Shows Midbar on lg screens and larger */}
+        <div className="lg:block hidden">
+          <Midbar />
+          <BibleBar />
         </div>
-        {/*</div>*/}
       </nav>
 
-      {/* Shows Sidebar on screens smaller than md */}
-      <div className="xl:hidden">
+      {/* Shows Sidebar on screens smaller than lg */}
+      <div className="lg:hidden">
         <Sidebar sidebarOpen={sidebarOpen} />
       </div>
     </>

@@ -42,6 +42,7 @@ export const TabListItem = ({
   return (
     <li
       className={`${defaultStyles} ${active ? activeStyles : inactiveStyles}`}
+      key={title}
       {...props}
     >
       {title}

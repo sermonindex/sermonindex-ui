@@ -128,7 +128,7 @@ export const SearchModal = ({}) => {
     <div className="relative">
       {/* Search Placeholder */}
       <div onClick={() => setIsOpen(!isOpen)}>
-        <div className="hidden md:flex items-center space-x-3 p-1 w-64 text-sm text-neutral-500 bg-neutral-50 border border-neutral-300 hover:cursor-pointer rounded-lg ">
+        <div className="hidden md:flex items-center space-x-3 p-1 w-64 text-sm lg:text-base text-neutral-500 bg-neutral-50 border border-neutral-300 hover:cursor-pointer rounded-full">
           <IconContext.Provider value={{ className: 'ml-1 text-neutral-500' }}>
             <FaSearch />
           </IconContext.Provider>

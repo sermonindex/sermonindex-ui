@@ -13,17 +13,16 @@ export const SpeakerBio = ({
 }: SpeakerProps) => {
   return (
     <>
-      <div className={'flex'}>
+      <div className={'flow-root'}>
         <img
-          className="flex-none rounded-lg bg-slate-100 w-36 h-48 object-cover"
+          className="float-left rounded-lg bg-slate-100 w-36 h-48 object-cover mr-4 mb-2"
           loading={'lazy'}
           src={contributor.imageUrl}
           alt={contributor.fullName}
         />
-        <div className="px-4">
-          <p>{contributor.description}</p>
-        </div>
+        <p>{contributor.description}</p>
       </div>
+
       {seeAllLinkVisible && (
         <div className="py-2">
           <Link to={`/speakers/${contributor.fullNameSlug}#sermon-list`}>
