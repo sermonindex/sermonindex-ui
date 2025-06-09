@@ -15,7 +15,7 @@ interface FooterAboutLink {
 const AboutLinks: { [key: string]: FooterAboutLink } = {
   about: { name: 'About Us', linkTo: '/md/about' },
   contact: { name: 'Contact', linkTo: '/md/contact' },
-  api: { name: 'API', linkTo: 'http://localhost:3000/api' },
+  api: { name: 'API', linkTo: 'http://localhost:3000/v1/api' },
   commendations: { name: 'Commendations', linkTo: '/md/commendations' },
   support: { name: 'Get Support', linkTo: '/md/support' },
   brand: { name: 'Brand Guidelines', linkTo: '/md/brand-guidelines' },

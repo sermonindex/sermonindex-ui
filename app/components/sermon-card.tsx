@@ -45,7 +45,7 @@ export function SermonCard({
         </div>
         <div className="flex space-x-2 md:space-x-4 items-start text-sm text-gray-600 dark:text-gray-200">
           <span className="flex items items-center">
-            {formatNumber(sermon.hits)}
+            {formatNumber(sermon.views)}
             <IconContext.Provider value={{ className: 'ml-1 w-4 h-4' }}>
               <FiDownload />
             </IconContext.Provider>
@@ -63,9 +63,9 @@ export function SermonCard({
           {sermon.topics.map((topic) => (
             <span
               className="text-black dark:text-white bg-si-olive dark:bg-si-main text-xs font-medium me-2 px-2.5 py-0.5 rounded-md"
-              key={topic}
+              key={topic.slug}
             >
-              {topic}
+              {topic.name}
             </span>
           ))}
           {sermon.bibleReferences.map((reference) => (

@@ -13,12 +13,18 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
         alt={contributor.fullName}
       />
       <div className="flex items-center space-x-6">
-        <div className="flex flex-col mb-6 space-y-3">
+        <div className="flex flex-col mb-6">
           <h3 className="text-xl md:text-3xl font-semibold">
             {contributor.fullName}
           </h3>
           <div className="flex items-center space-x-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
             <span>{contributor.sermonCount} Sermons</span>
+            {contributor.bookCount > 0 && (
+              <>
+                <span>|</span>
+                <span>{contributor.bookCount} Books</span>
+              </>
+            )}
             {contributor.images.length > 0 && (
               <>
                 <span>|</span>
@@ -26,8 +32,8 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
               </>
             )}
           </div>
-          <div className="flex items-center space-x-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
-            <span>{contributor.description}</span>
+          <div className="flex pt-3 text-xs md:text-sm">
+            <span className="line-clamp-3">{contributor.bio}</span>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [popular] = await Promise.all([
-    fetchApi<ListResponse<Sermon>>('/sermons/popular'),
+    fetchApi<ListResponse<Sermon>>('/sermons?sortBy=views&sortOrder=desc'),
   ]);
 
   if ('statusCode' in popular) {
@@ -67,7 +67,7 @@ export default function Index() {
                   {sermon.contributorFullName}
                 </p>
                 <p className="absolute bottom-4 right-4 text-sm">
-                  {formatNumber(sermon.hits)}
+                  {formatNumber(sermon.views)}
                 </p>
               </div>
             </Link>

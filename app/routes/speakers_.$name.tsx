@@ -5,9 +5,10 @@ import {
   Contributor,
   ListPaginatedResponse,
   ListResponse,
-  SermonInfo,
+  SermonInfo
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { BookList } from '~/components/book-list';
 import { ContributorCard } from '~/components/contributor-card';
 import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
@@ -20,35 +21,37 @@ import {
 
 enum SpeakerTabs {
   Sermons = 'Sermons',
+  Books = 'Books',
   Bio = 'Bio',
   Images = 'Images',
 }
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const [contributors, sermons] = await Promise.all([
-    fetchApi<ListResponse<Contributor>>(
-      `/contributors?fullNameSlug=${params.name}`,
+  const [contributor, sermons, books] = await Promise.all([
+    fetchApi<Contributor>(
+      `/contributors/slug/${params.name}`,
     ),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
-      `/sermons?fullNameSlug=${params.name}&offset=0&limit=50`,
+      `/sermons?contributorSlug=${params.name}&offset=0&limit=50`,
     ),
+    fetchApi<ListResponse<any>>(`/books?contributorSlug=${params.name}`),
   ]);
 
   if (
-    'statusCode' in contributors ||
-    'statusCode' in sermons ||
-    !contributors.values.length
+    'statusCode' in contributor ||
+    'statusCode' in sermons || 
+    'statusCode' in books
   ) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
 
-  return { contributor: contributors.values[0], sermons };
+  return { contributor, sermons, books };
 }
 
 export default function Index() {
-  const { contributor, sermons: initialSermons } =
+  const { contributor, sermons: initialSermons, books } =
     useLoaderData<typeof loader>();
 
   const [activeTab, setActiveTab] = useState(SpeakerTabs.Sermons);
@@ -56,6 +59,9 @@ export default function Index() {
   let availableTabs = Object.values(SpeakerTabs);
   if (contributor.images.length === 0) {
     availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Images);
+  }
+  if (contributor.bookCount === 0) {
+    availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Books);
   }
 
   return (
@@ -82,10 +88,18 @@ export default function Index() {
         >
           <SermonList
             sermons={initialSermons.values}
-            filters={{ fullNameSlug: contributor.fullNameSlug }}
+            filters={{ contributorSlug: contributor.slug }}
             nextPage={initialSermons.nextPage}
             showContributor={false}
           />
+        </TabContent>
+
+        <TabContent
+          key={SpeakerTabs.Books}
+          active={activeTab === SpeakerTabs.Books}
+          className="px-1 md:px-4 py-2"
+        >
+          <BookList books={books.values}/>
         </TabContent>
 
         <TabContent
@@ -94,7 +108,7 @@ export default function Index() {
           className="py-4 px-2 md:p-6"
         >
           <p className="text-sm md:text-base">
-            {contributor.description ??
+            {contributor.bio ??
               'No biography available for this speaker. Check back soon!'}
           </p>
         </TabContent>

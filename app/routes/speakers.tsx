@@ -10,8 +10,8 @@ import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
-    fetchApi<ListResponse<Contributor>>('/contributors/featured'),
-    fetchApi<ListResponse<Contributor>>('/contributors?contentType=SERMONS'),
+    fetchApi<ListResponse<Contributor>>('/contributors/featured/content/SERMONS'),
+    fetchApi<ListResponse<Contributor>>('/contributors?content=SERMONS'),
   ]);
 
   if ('statusCode' in featured || 'statusCode' in contributors) {
@@ -35,18 +35,15 @@ const getContributorGroupedItems = (contributors: Contributor[]) => {
 };
 
 export default function Index() {
-  const { contributors } = useLoaderData<typeof loader>();
-  const featured = contributors.values.filter(
-    (contributor) => contributor.featured,
-  );
+  const { featured, contributors } = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
 
   return (
     <SiPage>
       <SiSection title="Featured Speakers">
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 xl:grid-cols-12 py-4">
-          {featured.map((contributor, index) => (
-            <Link to={`/speakers/${contributor.fullNameSlug}`} key={index}>
+          {featured.values.map((contributor, index) => (
+            <Link to={`/speakers/${contributor.slug}`} key={index}>
               <div key={index} className="flex flex-col items-center m-2 group">
                 <div className="relative">
                   <img
@@ -79,10 +76,10 @@ export default function Index() {
           )}
           getGroupedItems={getContributorGroupedItems}
           getGroupKeyName={(key: string) => key}
-          getItemId={(contributor: Contributor) => contributor.fullNameSlug}
+          getItemId={(contributor: Contributor) => contributor.slug}
           getItemName={(contributor: Contributor) => contributor.fullName}
           getItemLink={(contributor: Contributor) =>
-            `/speakers/${contributor.fullNameSlug}`
+            `/speakers/${contributor.slug}`
           }
           getItemCount={(contributor: Contributor) => contributor.sermonCount}
         />

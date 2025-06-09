@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { ListResponse, Sermon } from '~/api/interfaces';
+import { ListResponse, SermonInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
 import { Player } from '~/components/media/player';
@@ -16,9 +16,9 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [popular, recent, featured] = await Promise.all([
-    fetchApi<ListResponse<Sermon>>('/sermons/popular'),
-    fetchApi<ListResponse<Sermon>>('/sermons/recent'),
-    fetchApi<Sermon>('/sermons/featured'),
+    fetchApi<ListResponse<SermonInfo>>('/sermons?sortBy=views&sortOrder=desc'),
+    fetchApi<ListResponse<SermonInfo>>('/sermons?sortBy=createdAt&sortOrder=desc'),
+    fetchApi<ListResponse<SermonInfo>>('/sermons/featured'),
   ]);
 
   if (
@@ -39,13 +39,13 @@ export default function Index() {
 
   return (
     <SiPage>
-      <Player sermons={[featured]} storageKey={'featured'} />
+      <Player sermons={[featured.values[0]]} storageKey={'featured'} />
       <SermonCarousel
         title={'Recent Uploads'}
         sermons={recent.values}
         customizer={(sermon) => {
           // TODO: Use a better date library (moment or dayjs)
-          const date = new Date(sermon.createdAt as string);
+          const date = new Date(sermon.createdAt as any as string);
           const prettyDate = date.toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -60,7 +60,7 @@ export default function Index() {
         sermons={popular.values}
         customizer={(sermon) => (
           <span className="font-thin">{`${formatNumber(
-            sermon.hits,
+            sermon.views,
           )} Downloads`}</span>
         )}
       />

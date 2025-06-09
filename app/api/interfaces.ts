@@ -25,37 +25,137 @@ export type ListBible<T> = {
   previousVerse?: number;
 };
 
+export enum ContributorType {
+  Individual = 'INDIVIDUAL',
+  Conference = 'CONFERENCE',
+}
+
+export enum MediaType {
+  Audio = 'AUDIO',
+  Video = 'VIDEO',
+  Text = 'TEXT',
+}
+
 export interface IErrorResponse {
   error: string;
   message: string;
   statusCode: number;
 }
 
-export enum ContributorType {
-  INDIVIDUAL = 'INDIVIDUAL',
-  CONFERENCE = 'CONFERENCE',
-}
-
 export interface ContributorImage {
   url: string;
-  title: string | null;
-  description: string | null;
+  title?: string;
+  description?: string;
+}
+
+export interface ContributorInfo {
+  id: string;
+  slug: string;
+  fullName: string;
+  imageUrl?: string;
+  type: ContributorType;
+  bookCount: number;
+  hymnCount: number;
+  sermonCount: number;
 }
 
 export interface Contributor {
-  id: number;
+  id: string;
+  slug: string;
   fullName: string;
-  fullNameSlug: string;
-  description?: string;
-  imageUrl: string;
-  featured: boolean;
+  bio?: string;
+  imageUrl?: string;
   type: ContributorType;
-  createdAt: string;
-  updatedAt: string;
+  bookCount: number;
+  hymnCount: number;
   sermonCount: number;
   images: ContributorImage[];
+  createdAt: string;
 }
 
+export interface Sermon {
+  id: string;
+
+  contributorSlug: string;
+  contributorFullName: string;
+  contributorImageUrl?: string;
+
+  title: string;
+  description?: string;
+  transcript?: string;
+
+  mediaType: MediaType;
+  duration: number;
+  views: number;
+
+  streamUrl?: string;
+  downloadUrl?: string;
+  thumbnailUrl?: string;
+  srtUrl?: string;
+  vttUrl?: string;
+
+  bibleReferences: BiblePassage[];
+  topics: Omit<TopicInfo, 'sermonCount'>[];
+
+  createdAt: string;
+}
+
+export interface SermonInfo {
+  id: string;
+
+  contributorSlug: string;
+  contributorFullName: string;
+  contributorImageUrl?: string;
+
+  title: string;
+  description?: string;
+
+  mediaType: MediaType;
+  duration: number;
+  views: number;
+
+  streamUrl?: string;
+  downloadUrl?: string;
+  thumbnailUrl?: string;
+
+  bibleReferences: BiblePassage[];
+  topics: { name: string; slug: string }[];
+
+  createdAt: string;
+}
+
+export interface Hymn {
+  id: string;
+
+  contributorSlug: string;
+  contributorFullName: string;
+  contributorImageUrl?: string;
+
+  title: string;
+  views: number;
+
+  mediaType: MediaType;
+  duration: number;
+
+  streamUrl?: string;
+  downloadUrl?: string;
+}
+
+export interface TopicInfo {
+  name: string;
+  slug: string;
+  sermonCount: number;
+}
+
+export interface Topic {
+  name: string;
+  summary: string;
+  sermons: SermonInfo[];
+  updatedAt: string;
+  createdAt: string;
+}
+
+// The following bible entities are subject to change
 export interface BiblePassage {
   text: string;
   book: string;
@@ -97,86 +197,6 @@ export interface BibleCommentary {
   sha256: string;
 }
 
-export interface Sermon {
-  id: number;
-  mysqlId?: number;
-
-  contributorId: number;
-  contributorFullName: string;
-  contributorFullNameSlug: string;
-  contributorImageUrl?: string;
-
-  title: string;
-  description?: string;
-  mediaType: MediaType;
-
-  streamUrl?: string;
-  downloadUrl?: string;
-  thumbnailUrl?: string;
-  srtUrl?: string;
-  vttUrl?: string;
-  vttContent?: string; // This isn't from the API, but it's fetched in the loader currently
-
-  bibleReferences: BiblePassage[];
-  topics: { name: string; slug: string }[];
-
-  hits: number;
-  featured: boolean;
-  previouslyFeatured: boolean;
-
-  preachedAt?: string;
-  updatedAt: string;
-  createdAt: string;
-
-  transcript?: string;
-}
-
-export interface SermonInfo {
-  id: number;
-
-  contributorFullName: string;
-  contributorFullNameSlug: string;
-  contributorImageUrl?: string;
-
-  title: string;
-  description?: string;
-  mediaType: MediaType;
-  duration?: number;
-
-  streamUrl?: string;
-  downloadUrl?: string;
-  thumbnailUrl?: string;
-
-  bibleReferences: BiblePassage[];
-  topics: string[];
-
-  hits: number;
-  featured: boolean;
-
-  createdAt: string;
-}
-
-export enum MediaType {
-  Audio = 'AUDIO',
-  Video = 'VIDEO',
-  Text = 'TEXT',
-}
-
-export interface Topic {
-  name: string;
-  slug: string;
-  sermonCount: number;
-}
-
-export interface SermonTopic {
-  name: string;
-  summary: string;
-  sermons: SermonInfo[];
-  updatedAt: string;
-  createdAt: string;
-}
-
-// The following bible entities are subject to change
 export interface BibleVerse {
   book: string;
   chapter: number;

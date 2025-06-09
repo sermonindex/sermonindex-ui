@@ -84,15 +84,10 @@ export default function Index() {
           <div className="pt-4 pb-8 px-4">
             {isAudioBook && <MiniPlayer sermon={chapter as Sermon} />}
             <h3 className="text-lg font-semibold pb-2">{chapter.title}</h3>
-            {isAudioBook && (
-              <p className="whitespace-pre-line">{chapter.text}</p>
-            )}
-            {!isAudioBook && (
-              <div
-                className="custom-html"
-                dangerouslySetInnerHTML={{ __html: chapter.text }}
-              />
-            )}
+            <div
+              className="custom-html whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: chapter.text }}
+            />
           </div>
         </div>
 

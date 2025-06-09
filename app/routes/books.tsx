@@ -1,10 +1,10 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { ListResponse, MediaType } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
-import { BookCover } from '~/components/book-cover';
-import DropdownCheckbox from '~/components/dropdown-checkbox';
+import { BookList } from '~/components/book-list';
+import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -58,38 +58,11 @@ export default function Index() {
           </div>
         </div>
       </div>
-
-      <div className="px-2 md:px-4 pb-8">
-        <div className="flex items-center space-x-4">
-          <input
-            className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
-            placeholder="Find a book..."
-            onChange={(e) => setFilter(e.target.value.toLowerCase())}
-            required
-          />
-          <DropdownCheckbox
-            title="Filter Media"
-            options={[MediaType.Text, MediaType.Audio]}
-            onFilterChange={(options: string[]) =>
-              setMediaTypes(options as MediaType[])
-            }
-          />
+      <SiSection title="Books">
+        <div className="px-2 md:px-4 pb-8">
+          <BookList books={books.values}/>
         </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-4 pt-4">
-          {books.values
-            .filter(
-              (b) =>
-                b.title.toLowerCase().includes(filter) &&
-                mediaTypes.includes(b.mediaType),
-            )
-            .map((book, index) => (
-              <Link to={`/books/${book.id}/1`} key={index}>
-                <BookCover book={book} />
-              </Link>
-            ))}
-        </div>
-      </div>
+      </SiSection>
     </SiPage>
   );
 }

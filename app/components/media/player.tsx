@@ -1,6 +1,5 @@
 import './base.css';
 
-import { Sermon } from '~/api/interfaces';
 import {
   MediaLoadingStrategy,
   MediaPlayer,
@@ -12,8 +11,9 @@ import {
   useMediaStore,
 } from '@vidstack/react';
 import { useEffect, useRef, useState } from 'react';
-import { CustomLayout, MiniCustomLayout } from '~/components/media/layout';
+import { MediaType, Sermon } from '~/api/interfaces';
 import { hasContent } from '~/common/sanitize';
+import { CustomLayout, MiniCustomLayout } from '~/components/media/layout';
 import { MediaSearch } from '~/components/media/search';
 
 // Using allotment to help resize the search panel
@@ -44,7 +44,7 @@ export const Player = ({
 
   const currentSermon = sermons[0];
   const viewType: MediaViewType =
-    currentSermon.mediaType.toLowerCase() === 'video' ? 'video' : 'audio';
+    currentSermon.mediaType === MediaType.Video ? 'video' : 'audio';
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -166,7 +166,7 @@ export const Player = ({
                 title={currentSermon.title}
                 author={currentSermon.contributorFullName}
                 authorImageUrl={currentSermon.contributorImageUrl}
-                hits={currentSermon.hits}
+                hits={currentSermon.views}
                 isSearchOpen={isSearchOpen}
                 toggleSearch={toggleSearch}
               />

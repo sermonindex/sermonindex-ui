@@ -68,7 +68,7 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div>
+      <div className="flex flex-col">
         <div className="flex w-full min-h-28 items-center justify-center space-x-14 md:space-x-24">
           <Link
             to={`/bible/${translation}/${chapter.previousBookId}/${chapter.previousChapterNumber}`}

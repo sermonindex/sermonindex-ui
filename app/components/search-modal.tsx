@@ -11,7 +11,7 @@ import {
   ListResponse,
   MediaType,
   SermonInfo,
-  Topic,
+  TopicInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatDuration } from '~/common/format-duration.fn';
@@ -38,7 +38,7 @@ export const SearchModal = ({}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState('');
   const [sermons, setSermons] = useState<SermonInfo[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [topics, setTopics] = useState<TopicInfo[]>([]);
   const [contributors, setContributors] = useState<Contributor[]>([]);
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null,
@@ -48,7 +48,7 @@ export const SearchModal = ({}) => {
   const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
 
   const fetchData = async () => {
-    fetchApi<ListResponse<Topic>>('/topics', {
+    fetchApi<ListResponse<TopicInfo>>('/topics', {
       name: input,
       sortBy: 'sermons',
       sortOrder: 'desc',
@@ -217,7 +217,7 @@ export const SearchModal = ({}) => {
                   {contributors.slice(0, 2).map((contributor, index) => (
                     <li key={index}>
                       <Link
-                        to={`/speakers/${contributor.fullNameSlug}`}
+                        to={`/speakers/${contributor.slug}`}
                         reloadDocument={true}
                       >
                         <div className="flex items-center space-x-2 p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600">
@@ -261,7 +261,7 @@ export const SearchModal = ({}) => {
                           </div>
                           <div className="hidden md:flex space-x-3 items-center pr-2 text-xs text-neutral-500 dark:text-neutral-200">
                             <span className="flex items items-center">
-                              {formatNumber(sermon.hits)}
+                              {formatNumber(sermon.views)}
                               <IconContext.Provider
                                 value={{ className: 'ml-1 w-4 h-4' }}
                               >

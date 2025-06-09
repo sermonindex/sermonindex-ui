@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
-import { ListResponse, Topic } from '~/api/interfaces';
+import { ListResponse, TopicInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
@@ -10,8 +10,8 @@ import { TopicBubbles } from '~/components/topic-bubbles';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topics, popular] = await Promise.all([
-    fetchApi<ListResponse<Topic>>('/topics'),
-    fetchApi<ListResponse<Topic>>('/topics/popular'),
+    fetchApi<ListResponse<TopicInfo>>('/topics'),
+    fetchApi<ListResponse<TopicInfo>>('/topics?sortBy=sermons&sortOrder=desc&limit=30'),
   ]);
 
   if ('statusCode' in topics || 'statusCode' in popular) {
@@ -23,7 +23,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { topics, popular };
 }
 
-const getTopicGroupedItems = (topics: Topic[]) => {
+const getTopicGroupedItems = (topics: TopicInfo[]) => {
   return topics.reduce((grouped, topic) => {
     const letter = topic.name[0].toLowerCase();
     if (!grouped[letter]) {
@@ -31,7 +31,7 @@ const getTopicGroupedItems = (topics: Topic[]) => {
     }
     grouped[letter].push(topic);
     return grouped;
-  }, {} as { [key: string]: Topic[] });
+  }, {} as { [key: string]: TopicInfo[] });
 };
 
 export default function Index() {
@@ -54,16 +54,16 @@ export default function Index() {
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
           required
         />
-        <GenericList<Topic>
+        <GenericList<TopicInfo>
           items={topics.values.filter((t) =>
             t.name.toLowerCase().includes(filter),
           )}
           getGroupedItems={getTopicGroupedItems}
           getGroupKeyName={(key: string) => key}
-          getItemId={(topic: Topic) => topic.slug}
-          getItemName={(topic: Topic) => topic.name}
-          getItemLink={(topic: Topic) => `/topics/${topic.slug}`}
-          getItemCount={(topic: Topic) => topic.sermonCount}
+          getItemId={(topic: TopicInfo) => topic.slug}
+          getItemName={(topic: TopicInfo) => topic.name}
+          getItemLink={(topic: TopicInfo) => `/topics/${topic.slug}`}
+          getItemCount={(topic: TopicInfo) => topic.sermonCount}
         />
       </SiSection>
     </SiPage>

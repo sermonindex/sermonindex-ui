@@ -1,12 +1,12 @@
 import { Link } from '@remix-run/react';
 import React, { useEffect, useState } from 'react';
-import { Sermon } from '~/api/interfaces';
+import { SermonInfo } from '~/api/interfaces';
 import { SiSection } from '~/components/section';
 
 interface SermonCarouselProps {
   title: string;
-  sermons: Sermon[];
-  customizer?: (sermon: Sermon) => JSX.Element;
+  sermons: SermonInfo[];
+  customizer?: (sermon: SermonInfo) => JSX.Element;
 }
 
 export const SermonCarousel: React.FC<SermonCarouselProps> = ({

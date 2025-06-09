@@ -9,8 +9,8 @@ import { SpeakerBio } from '~/components/speaker-bio';
 
 import React from 'react';
 import { linkifyScripture } from '~/components/linkify-scripture';
-import { SermonDownload } from '~/components/sermon-download';
 import { Player } from '~/components/media/player';
+import { SermonDownload } from '~/components/sermon-download';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   // todo: need to fetch the speaker bio, icon, etc and add to the loaded data
@@ -25,7 +25,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
 
   const contributor = await fetchApi<Contributor>(
-    `/contributors/id/${sermon.contributorId}`,
+    `/contributors/slug/${sermon.contributorSlug}`,
   );
 
   if ('statusCode' in contributor) {

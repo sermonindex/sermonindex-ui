@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
-import { SermonTopic } from '~/api/interfaces';
+import { Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
@@ -9,7 +9,7 @@ import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topic] = await Promise.all([
-    fetchApi<SermonTopic>(`/topics/slug/${params.name}`),
+    fetchApi<Topic>(`/topics/slug/${params.name}`),
   ]);
 
   if ('statusCode' in topic) {
