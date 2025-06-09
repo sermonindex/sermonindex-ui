@@ -25,4 +25,11 @@ body {
   .no-scroll {
     overflow: hidden;
   }
+  /* Used to space paragraphs with dangerouslySetInnerHTML */
+  .custom-html p {
+    margin-top: 1.25rem;
+  }
+  .custom-html a {
+    display: none;
+  }
 }

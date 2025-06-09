@@ -1,7 +1,7 @@
 import { IErrorResponse } from './interfaces';
 
 // TODO: Add SI_API_URL to .env
-const SI_API_URL = 'http://localhost:3000';
+const SI_API_URL = 'http://localhost:3000/v1';
 
 export async function fetchApi<T>(
   path: string,
