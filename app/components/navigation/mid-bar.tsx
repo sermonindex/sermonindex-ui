@@ -21,12 +21,9 @@ function topNavbarList(items: NavItem[]) {
   return (
     <ul className="flex flex-row space-x-1 xl:space-x-3">
       {items.map((item, index) => (
-        <NavItemLi
-          item={item}
-          index={index}
-          showIcon={false}
-          showSubItems={false}
-        />
+        <li key={index}>
+          <NavItemLi item={item} showIcon={false} showSubItems={false} />
+        </li>
       ))}
     </ul>
   );
