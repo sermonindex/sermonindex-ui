@@ -5,6 +5,13 @@ import {
   RiPinterestLine,
   RiTwitterXLine,
   RiYoutubeLine,
+  RiMediumLine,
+  RiTumblrLine,
+  RiGithubLine,
+  RiVimeoLine,
+  RiSoundcloudLine,
+  RiThreadsLine,
+  RiTiktokLine,
 } from 'react-icons/ri';
 
 interface FooterAboutLink {
@@ -47,7 +54,7 @@ export const Footer = () => {
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between py-4">
             <div className="flex flex-col">
               <h3 className="text-si-light text-lg font-bold">About</h3>
-              <ul className="text-si-light text-sm">
+              <ul className="text-si-light text-md">
                 {Object.values(AboutLinks).map((link: FooterAboutLink) => {
                   return (
                     <Link
@@ -71,7 +78,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Facebook"
                 >
-                  <RiFacebookLine className="text-si-light size-6" />
+                  <RiFacebookLine className="text-si-light size-9" />
                 </a>
                 <a
                   href="https://x.com/SermonIndex"
@@ -79,7 +86,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="X"
                 >
-                  <RiTwitterXLine className="text-si-light size-6" />
+                  <RiTwitterXLine className="text-si-light size-9" />
                 </a>
                 <a
                   href="https://www.instagram.com/sermonindexnet"
@@ -87,7 +94,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Instagram"
                 >
-                  <RiInstagramLine className="text-si-light size-6" />
+                  <RiInstagramLine className="text-si-light size-9" />
                 </a>
                 <a
                   href="https://ca.pinterest.com/sermonindex"
@@ -95,7 +102,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Pinterest"
                 >
-                  <RiPinterestLine className="text-si-light size-6" />
+                  <RiPinterestLine className="text-si-light size-9" />
                 </a>
                 <a
                   href="https://www.youtube.com/@sermonindex"
@@ -103,8 +110,65 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Youtube"
                 >
-                  <RiYoutubeLine className="text-si-light size-6" />
+                  <RiYoutubeLine className="text-si-light size-9" />
                 </a>
+                <a
+                  href="https://www.tiktok.com/@sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                >
+                  <RiTiktokLine className="text-si-light size-9" />
+                </a>
+                <a
+                  href="https://www.threads.net/@sermonindexnet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Threads"
+                >
+                  <RiThreadsLine className="text-si-light size-9" />
+                </a>
+                <a
+                  href="https://soundcloud.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Soundcloud"
+                >
+                  <RiSoundcloudLine className="text-si-light size-9" />
+                </a>
+                 <a
+                  href="https://vimeo.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Vimeo"
+                >
+                  <RiVimeoLine className="text-si-light size-9" />
+                </a>
+                 <a
+                  href="https://github.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Github"
+                >
+                  <RiGithubLine className="text-si-light size-9" />
+                </a>
+                 <a
+                  href="https://www.tumblr.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Tumblr"
+                >
+                  <RiTumblrLine className="text-si-light size-9" />
+                </a>
+                <a
+                  href="https://medium.com/@sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Medium"
+                >
+                  <RiMediumLine className="text-si-light size-9" />
+                </a>
+                
               </ul>
             </div>
             {/* Quote (Only shown if the screen size is medium or larger */}
@@ -125,7 +189,7 @@ export const Footer = () => {
             </div>
           </div>
           <p className="text-si-tan text-sm py-4 text-center">
-            © {Math.max(new Date().getFullYear(), 2024)} SermonIndex
+            {Math.max(new Date().getFullYear(), 2024)} SermonIndex | <a href="/md/copying-permissions">public domain CC0 1.0 Universal</a>
           </p>
         </div>
       </div>
