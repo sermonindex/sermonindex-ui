@@ -78,7 +78,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Facebook"
                 >
-                  <RiFacebookLine className="text-si-light size-9" />
+                  <RiFacebookLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://x.com/SermonIndex"
@@ -86,7 +86,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="X"
                 >
-                  <RiTwitterXLine className="text-si-light size-9" />
+                  <RiTwitterXLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://www.instagram.com/sermonindexnet"
@@ -94,7 +94,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Instagram"
                 >
-                  <RiInstagramLine className="text-si-light size-9" />
+                  <RiInstagramLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://ca.pinterest.com/sermonindex"
@@ -102,7 +102,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Pinterest"
                 >
-                  <RiPinterestLine className="text-si-light size-9" />
+                  <RiPinterestLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://www.youtube.com/@sermonindex"
@@ -110,7 +110,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Youtube"
                 >
-                  <RiYoutubeLine className="text-si-light size-9" />
+                  <RiYoutubeLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://www.tiktok.com/@sermonindex"
@@ -118,7 +118,8 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="TikTok"
                 >
-                  <RiTiktokLine className="text-si-light size-9" />
+                  <RiTiktokLine className="text-si-light size-8" />
+                  <br></br>
                 </a>
                 <a
                   href="https://www.threads.net/@sermonindexnet"
@@ -126,7 +127,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Threads"
                 >
-                  <RiThreadsLine className="text-si-light size-9" />
+                  <RiThreadsLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://soundcloud.com/sermonindex"
@@ -134,7 +135,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Soundcloud"
                 >
-                  <RiSoundcloudLine className="text-si-light size-9" />
+                  <RiSoundcloudLine className="text-si-light size-8" />
                 </a>
                  <a
                   href="https://vimeo.com/sermonindex"
@@ -142,7 +143,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Vimeo"
                 >
-                  <RiVimeoLine className="text-si-light size-9" />
+                  <RiVimeoLine className="text-si-light size-8" />
                 </a>
                  <a
                   href="https://github.com/sermonindex"
@@ -150,7 +151,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Github"
                 >
-                  <RiGithubLine className="text-si-light size-9" />
+                  <RiGithubLine className="text-si-light size-8" />
                 </a>
                  <a
                   href="https://www.tumblr.com/sermonindex"
@@ -158,7 +159,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Tumblr"
                 >
-                  <RiTumblrLine className="text-si-light size-9" />
+                  <RiTumblrLine className="text-si-light size-8" />
                 </a>
                 <a
                   href="https://medium.com/@sermonindex"
@@ -166,7 +167,7 @@ export const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label="Medium"
                 >
-                  <RiMediumLine className="text-si-light size-9" />
+                  <RiMediumLine className="text-si-light size-8" />
                 </a>
                 
               </ul>
