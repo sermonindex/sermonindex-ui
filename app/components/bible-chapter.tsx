@@ -173,7 +173,12 @@ export function addFootnotesToChapterContent(
 ) {
   if (footnotes.length > 0) {
     // Separate the chapter content from the footnotes
-    content.push(<div className="border-t border-gray-300 my-8 mx-6"></div>);
+    content.push(
+      <div
+        key="footnote-seperator"
+        className="border-t border-gray-300 my-8 mx-6"
+      ></div>,
+    );
 
     content.push(
       <p key={'footnotes'} id={`footnotes`} className="font-bold my-4">
