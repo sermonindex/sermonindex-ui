@@ -86,7 +86,15 @@ export default function Component() {
               tag="sermon-summary"
               sharesRightPadding={true}
             >
-              <p>{sermon.description}</p>
+              {hasContent(sermon.description) ? (
+                <p className="whitespace-pre-line">
+                  {linkifyScripture(sermon.description).map((part, index) => (
+                    <React.Fragment key={index}>{part}</React.Fragment>
+                  ))}
+                </p>
+              ) : (
+                <p>No sermon summary available.</p>
+              )}
             </SiSection>
           )}
         </div>
@@ -94,7 +102,7 @@ export default function Component() {
           {/* ... Scriptures content ... */}
           <SiSection title="Scriptures" sharesLeftPadding={true}>
             {Array.isArray(sermon.bibleReferences) &&
-            sermon.bibleReferences.length > 0 ? (
+              sermon.bibleReferences.length > 0 ? (
               sermon.bibleReferences.map((reference, index) => (
                 <div
                   key={index}
