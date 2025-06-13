@@ -12,7 +12,13 @@ import {
   RiSoundcloudLine,
   RiThreadsLine,
   RiTiktokLine,
+  RiPatreonLine,
+  RiFlickrLine,
+  RiLinkedinLine,
+  RiBloggerLine,
 } from 'react-icons/ri';
+import { LiaWeebly } from "react-icons/lia";
+import { PiLinktreeLogo } from "react-icons/pi";
 
 interface FooterAboutLink {
   name: string;
@@ -71,7 +77,10 @@ export const Footer = () => {
             {/* Follow, Social Media Column */}
             <div className="flex-1 flex flex-col px-4 text-center">
               <h3 className="text-si-light text-lg font-bold">Follow</h3>
-              <ul className="flex flex-row text-si-light text-sm space-x-2 pt-2 justify-center">
+              <ul
+                className="grid grid-cols-6 gap-3 mx-auto text-si-light text-sm pt-4 justify-center"
+                style={{ maxWidth: "336px" }}
+              >
                 <a
                   href="https://www.facebook.com/search/top?q=sermonindex.net"
                   target="_blank"
@@ -119,7 +128,6 @@ export const Footer = () => {
                   aria-label="TikTok"
                 >
                   <RiTiktokLine className="text-si-light size-8" />
-                  <br></br>
                 </a>
                 <a
                   href="https://www.threads.net/@sermonindexnet"
@@ -137,7 +145,7 @@ export const Footer = () => {
                 >
                   <RiSoundcloudLine className="text-si-light size-8" />
                 </a>
-                 <a
+                <a
                   href="https://vimeo.com/sermonindex"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -145,7 +153,7 @@ export const Footer = () => {
                 >
                   <RiVimeoLine className="text-si-light size-8" />
                 </a>
-                 <a
+                <a
                   href="https://github.com/sermonindex"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -153,7 +161,7 @@ export const Footer = () => {
                 >
                   <RiGithubLine className="text-si-light size-8" />
                 </a>
-                 <a
+                <a
                   href="https://www.tumblr.com/sermonindex"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -169,7 +177,55 @@ export const Footer = () => {
                 >
                   <RiMediumLine className="text-si-light size-8" />
                 </a>
-                
+                <a
+                  href="https://www.patreon.com/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Patreon"
+                >
+                  <RiPatreonLine className="text-si-light size-8" />
+                </a>
+                <a
+                  href="https://www.flickr.com/photos/sermonindexnet/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Flickr"
+                >
+                  <RiFlickrLine className="text-si-light size-8" />
+                </a>
+                <a
+                  href="https://linkedin.com/company/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Linkedin"
+                >
+                  <RiLinkedinLine className="text-si-light size-8" />
+                </a>
+                <a
+                  href="https://sermonindex.blogspot.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Blogspot"
+                >
+                  <RiBloggerLine className="text-si-light size-8" />
+                </a>
+                <a
+                  href="https://sermonindexnet.weebly.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Weebly"
+                >
+                  <LiaWeebly className="text-si-light size-8" />
+                </a>
+                <a
+                  href="https://linktr.ee/sermonindex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Linktree"
+                >
+                  <PiLinktreeLogo className="text-si-light size-8" />
+                </a>
+
               </ul>
             </div>
             {/* Quote (Only shown if the screen size is medium or larger */}
@@ -194,6 +250,6 @@ export const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
+    </footer >
   );
 };
