@@ -9,6 +9,7 @@ import { Navbar } from './navigation/navbar';
 import Breadcrumbs from '~/components/breadcrumbs';
 import { useLocation } from '@remix-run/react';
 import { SiMargins } from '~/components/margin';
+import { PostFrontmatter } from '~/routes/blog_.$name';
 
 interface SiPageProps {
   children: React.ReactNode;
@@ -16,9 +17,10 @@ interface SiPageProps {
   // to re-fetch it from the API for the SermonIndex Page breadcrumbs
   sermon?: Sermon;
   contributor?: Contributor;
+  post?: PostFrontmatter;
 }
 
-export function SiPage({ children, sermon, contributor }: SiPageProps) {
+export function SiPage({ children, sermon, contributor, post }: SiPageProps) {
   const [navbarOffset, setNavbarOffset] = useState(0);
   const location = useLocation();
 
@@ -40,6 +42,7 @@ export function SiPage({ children, sermon, contributor }: SiPageProps) {
               location={location.pathname}
               sermon={sermon}
               contributor={contributor}
+              post={post}
             />
             {/* Note: if we want more padding, we should add in children, this
             precise padding allows pinning media content to the top on mobile */}

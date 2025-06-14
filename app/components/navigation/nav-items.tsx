@@ -71,7 +71,7 @@ export const secondaryNavItems: NavItem[] = [
   {
     name: 'Blog',
     icon: <FaBlog />,
-    linkTo: '/md/blog',
+    linkTo: '/blog',
   },
   {
     name: 'About',

@@ -4,6 +4,8 @@ import { Contributor, Sermon } from '~/api/interfaces';
 import { hasContent, isNumber } from '~/common/sanitize';
 import { OsisToBookName } from '~/common/bible-constants';
 import { isValidLanguage } from '~/common/languages';
+import { PostFrontmatter } from '~/routes/blog_.$name';
+import { format } from 'date-fns';
 
 interface NavCrumb {
   name: string;
@@ -29,6 +31,14 @@ function isSpeakerCrumb(crumbs: string[]): boolean {
 
 function isBibleCrumb(crumbs: string[]): boolean {
   return crumbs.length > 1 && crumbs[0].toLowerCase() === 'bible';
+}
+
+function isBlogPost(crumbs: string[]): boolean {
+  return crumbs.length > 1 && crumbs[0].toLowerCase() === 'blog';
+}
+
+function isMarkdownPage(crumbs: string[]): boolean {
+  return crumbs.length > 1 && crumbs[0].toLowerCase() === 'md';
 }
 
 function buildSermonCrumbs(
@@ -130,10 +140,47 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
   return nav;
 }
 
+function buildBlogCrumbs(
+  crumbs: string[],
+  post: PostFrontmatter | undefined,
+  nav: NavCrumb[],
+): NavCrumb[] {
+  nav.push({
+    name: 'Blog',
+    linkTo: '/blog',
+  });
+  if (post) {
+    let date = format(new Date(post.date), 'MMMM d, yyyy');
+    nav.push({
+      name: date,
+      linkTo: '',
+    });
+    nav.push({
+      name: post.title,
+      linkTo: `/blog/${crumbs[1]}`,
+    });
+  } else {
+    nav.push({
+      name: crumbs[1].replace(/%20/g, ' ').replace(/-/g, ' '),
+      linkTo: `/blog/${crumbs[1]}`,
+    });
+  }
+  return nav;
+}
+
+function buildMarkdownCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
+  nav.push({
+    name: crumbs[1].replace(/%20/g, ' ').replace(/-/g, ' '),
+    linkTo: `/md/${crumbs[1]}`,
+  });
+  return nav;
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
   contributor?: Contributor;
+  post?: PostFrontmatter;
 }
 
 /// Note that some breadcrumbs can be inferred directly from the url path (location)
@@ -145,6 +192,7 @@ export default function Breadcrumbs({
   location,
   sermon,
   contributor,
+  post,
 }: BreadcrumbProps) {
   const crumbs = location.substring(1).split('/');
   let nav: NavCrumb[] = [{ name: 'Home', linkTo: '/' }];
@@ -155,6 +203,10 @@ export default function Breadcrumbs({
     nav = buildSpeakerCrumbs(crumbs, contributor, nav);
   } else if (isBibleCrumb(crumbs)) {
     nav = buildBibleCrumbs(crumbs, nav);
+  } else if (isBlogPost(crumbs)) {
+    nav = buildBlogCrumbs(crumbs, post, nav);
+  } else if (isMarkdownPage(crumbs)) {
+    nav = buildMarkdownCrumbs(crumbs, nav);
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({
