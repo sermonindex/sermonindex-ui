@@ -78,7 +78,7 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
         className="
         fixed top-0 left-0 right-0 z-50
         lg:relative lg:z-auto
-        border-b-2 border-si-gray dark:border-si-rock
+        lg:border-b-2 lg:border-si-gray lg:dark:border-si-rock
         "
       >
         <div className="bg-si-main py-4 px-4 lg:px-6">
