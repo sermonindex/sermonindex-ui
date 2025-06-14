@@ -21,6 +21,9 @@ import {
   TabListItem,
 } from '~/components/tabs';
 
+import React from 'react';
+import { linkifyScripture } from '~/components/linkify-scripture';
+
 enum Tabs {
   Scripture = 'Scripture',
   // Summary = 'Summary',
@@ -162,7 +165,11 @@ export default function Index() {
                 >
                   <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
                   <p className="px-2 pt-2 whitespace-pre-line">
-                    {commentary.text}
+                    <p className="whitespace-pre-line">
+                      {linkifyScripture(commentary.text).map((part, index) => (
+                        <React.Fragment key={index}>{part}</React.Fragment>
+                      ))}
+                    </p>
                   </p>
                 </TabContent>
               ))}

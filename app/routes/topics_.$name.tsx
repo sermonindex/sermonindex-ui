@@ -7,6 +7,9 @@ import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
 
+import React from 'react';
+import { linkifyScripture } from '~/components/linkify-scripture';
+
 export async function loader({ params }: LoaderFunctionArgs) {
   const [topic] = await Promise.all([
     fetchApi<Topic>(`/topics/slug/${params.name}`),
@@ -28,7 +31,11 @@ export default function Index() {
   return (
     <SiPage>
       <SiSection title={topic.name} tag="topic">
-        <p>{topic.summary}</p>
+        <p className="whitespace-pre-line">
+          {linkifyScripture(topic.summary).map((part, index) => (
+            <React.Fragment key={index}>{part}</React.Fragment>
+          ))}
+        </p>
       </SiSection>
       <SiSection
         title={topic.name}
