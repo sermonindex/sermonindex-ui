@@ -17,8 +17,8 @@ import {
   RiLinkedinLine,
   RiBloggerLine,
 } from 'react-icons/ri';
-import { LiaWeebly } from "react-icons/lia";
-import { PiLinktreeLogo } from "react-icons/pi";
+import { LiaWeebly } from 'react-icons/lia';
+import { PiLinktreeLogo } from 'react-icons/pi';
 
 interface FooterAboutLink {
   name: string;
@@ -48,9 +48,13 @@ export const Footer = () => {
               community of supporters.
             </div>
             <div className="flex flex-col">
-              <button onClick={() => window.location.href = '/md/support'} className="bg-si-accent text-si-dark px-4 py-2 rounded-lg">
+              <Link
+                key={'support-si-footer'}
+                to={'/md/support'}
+                className="bg-si-accent text-si-dark px-4 py-2 rounded-lg justify-center text-center"
+              >
                 Support SermonIndex
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -76,10 +80,7 @@ export const Footer = () => {
             {/* Follow, Social Media Column */}
             <div className="flex-1 flex flex-col px-4 text-center">
               <h3 className="text-si-light text-lg font-bold">Follow</h3>
-              <ul
-                className="grid grid-cols-6 gap-3 mx-auto text-si-light text-sm pt-4 justify-center"
-                style={{ maxWidth: "336px" }}
-              >
+              <ul className="grid grid-cols-6 gap-3 mx-auto text-si-light text-sm pt-4 justify-center">
                 <a
                   href="https://www.facebook.com/search/top?q=sermonindex.net"
                   target="_blank"
@@ -224,7 +225,6 @@ export const Footer = () => {
                 >
                   <PiLinktreeLogo className="text-si-light size-8" />
                 </a>
-
               </ul>
             </div>
             {/* Quote (Only shown if the screen size is medium or larger */}
@@ -245,10 +245,13 @@ export const Footer = () => {
             </div>
           </div>
           <p className="text-si-tan text-sm py-4 text-center">
-            {Math.max(new Date().getFullYear(), 2024)} SermonIndex | <a href="/md/copying-permissions">public domain CC0 1.0 Universal</a>
+            {Math.max(new Date().getFullYear(), 2024)} SermonIndex |{' '}
+            <a href="/md/copying-permissions">
+              public domain CC0 1.0 Universal
+            </a>
           </p>
         </div>
       </div>
-    </footer >
+    </footer>
   );
 };
