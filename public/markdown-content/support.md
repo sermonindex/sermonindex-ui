@@ -45,8 +45,8 @@ You can read other [commendations](/md/commendations) from pastors and ministry 
 
 <a href="https://thegc.org/us/projects/sermonindexnet" target="_blank" rel="noopener noreferrer">
   <button style="
-    background-color: #facc15; /* Adjust to match si-accent */
-    color: #1e293b;            /* Adjust to match si-dark */
+    background-color: #D4AF37; /* match si-accent */
+    color: #242424;            /* match si-slate */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.5rem;
@@ -67,8 +67,8 @@ Friends of the Great Commission PO Box 6305 Colorado Springs, CO 80934
 
 <a href="https://thegc.org/ca/projects/sermonindexnet" target="_blank" rel="noopener noreferrer">
   <button style="
-    background-color: #facc15; /* Adjust to match si-accent */
-    color: #1e293b;            /* Adjust to match si-dark */
+    background-color: #D4AF37; /* match si-accent */
+    color: #242424;            /* match si-slate */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.5rem;
