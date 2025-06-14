@@ -109,6 +109,12 @@ ready for the return of Jesus, and that, in the meantime, each Christian should 
 in His will, and in His service) till the Lord's return (John 7:37-39; Acts 1:8; Eph. 5:18; Matt.
 24:44; Luke 19:13; Titus 2:11-15; 1 Peter 1:13-19).
 
+# About Site Content
+
+All audio sermons and video sermons, including text sermons are all unmodified in its original form. We have not used audio or video restoration tools of anykind. Commentaries and Bibles are from open source locations and from original writings of translators and authors not being modified in anyway.
+
+Disclaimer: We do want to make a note that all transcripts on the website were automatically created with Whisper AI technology, with over 98% accuracy in most cases. We also utilized AI models for descriptions on Topic pages, Summaries of sermons. For Scripture references we used a mix of AI and python scripting, etc. The topics were 30% hand-chosen and the rest are AI generated. We have sought to utilize this technology in its infancy to create a better product and way for searching to be done for all sermon content. This has also enabled us to offer SRT subtitling that corresponds to the transcripts that were produced. We will re-visit this content and update it potentially as accuracy improves in audio transcription with AI.
+
 ## Get Involved
 
 * [Contribute Content](/md/contact) — If you have sermons, teachings, or writings that align with our vision, we

@@ -4,10 +4,28 @@ Since the inception of SermonIndex to goal of the ministry has been to freely di
 
 Paul the Apostle gives the example to us of freely sharing the gospel without cost: _"What is my reward then? That when I preach the gospel, I may present the gospel of Christ without charge."_ (1 Corinthians 9:18 NKJV)
 
-In the 19th century, C.H. Spurgeon said: _"The Gospel is not to be bought or sold. I cannot bear to hear of a man who puts a price upon sermons or prayers."_
+:::card-start
 
-George Fox a 17th century minister challenged the body of Christ in his day saying, _"Christ
-commanded His ministers to give freely, as they had received freely."_
+![C.H. Spurgeon](https://sermonindex3.b-cdn.net/pdf/chspurgeon.png)
+
+:::card-middle
+
+> In the 19th century, C.H. Spurgeon said: "The Gospel is not to be bought or sold. I cannot bear to hear of a man who puts a price upon sermons or prayers." and “We do not serve for pay; we feed the flock of God not for filthy lucre, but of a ready mind. It is detestable that men should teach in order to earn money by it... God save us from such degradation!”
+
+
+:::card-end
+
+:::card-start
+
+![George Fox](https://sermonindex3.b-cdn.net/pdf/georgefox.png)
+
+:::card-middle
+
+> George Fox a 17th century minister challenged the body of Christ in his day saying, "Christ
+commanded His ministers to give freely, as they had received freely." and "The Gospel of Christ is not to be sold for money, but to be declared freely. He that preaches for money has his reward, but not from Christ."
+
+
+:::card-end
 
 ## Copying Permission Statement
 
@@ -46,9 +64,9 @@ on "Unity that brings revival by A.W. Tozer" as an example.
 * Chicago Style — "Unity that brings revival by A.W. Tozer." SermonIndex.net, accessed February 15,
   2024, [https://www.sermonindex.net/sermons/62b509fd-2df5-43fc-a16b-26db7a8d8256]
 
-## Downloading Sermon Content in Bulk
+## Downloading Sermon / Bible Content in Bulk
 
-We will be providing ways soon to download all sermons, content and databases in bulk form as per our license and distribution goals.
+We will be providing ways soon to download all sermons, bibles, content and databases in bulk form as per our license and distribution goals. The Holy Scriptures and expounded texts upon it should never be copyright. 
 
 ## Notions of Content That Hold Different Licensing
 
@@ -56,10 +74,36 @@ If you are a copyright holder of any content and do not wish for the sermon cont
 
 _"Let the one who is thirsty come, and the one who desires the water of life drink freely."_ - Revelation 22:17 (BSB)
 
-C.H. Spurgeon in the 19th century, again said: _"We give freely, because we have received freely. It would be vile to charge for the Bread of Life."_
+:::card-start
 
-Augustine in the 4th century said: _"The Gospel is not for sale. I do not sell the truth I teach."_ and _"Do not make a business out of the Word of God."_
+![C.H. Spurgeon](https://sermonindex3.b-cdn.net/pdf/chspurgeon.png)
 
-Cyprian of Carthage in the 3rd century said: _"That which is freely given by God must not be sold, and the grace of the Lord must be administered without price."_
+:::card-middle
+
+> C.H. Spurgeon in the 19th century, again said: "We give freely, because we have received freely. It would be vile to charge for the Bread of Life." He also said: “Shame on the man who can preach only if he is paid for it. He serves not the Master, but himself. Such men degrade the pulpit and hinder the Gospel.”
+
+
+:::card-end
+
+:::card-start
+
+![Augustine](https://sermonindex3.b-cdn.net/pdf/StAugustine.png)
+
+:::card-middle
+
+> Augustine in the 4th century said: "The Gospel is not for sale. I do not sell the truth I teach." and "Do not make a business out of the Word of God.", “What was freely given to the apostles ought to be freely given by their successors.”
+
+:::card-end
+
+:::card-start
+
+![Cyprian of Carthage](https://sermonindex3.b-cdn.net/pdf/cyprianofcarthage.png)
+
+:::card-middle
+
+> Cyprian of Carthage in the 3rd century said: "That which is freely given by God must not be sold, and the grace of the Lord must be administered without price." and "He who traffics in the priesthood, and makes merchandise of the laying on of hands, is not a bishop but a blasphemer."
+
+:::card-end
+
 
 We have sought for over 20 years to emulate this and give the gospel freely.
