@@ -30,7 +30,7 @@ const AboutLinks: { [key: string]: FooterAboutLink } = {
   contact: { name: 'Contact', linkTo: '/md/contact' },
   api: { name: 'API', linkTo: 'http://localhost:3000/v1/api' },
   commendations: { name: 'Commendations', linkTo: '/md/commendations' },
-  support: { name: 'Get Support', linkTo: '/md/support' },
+  support: { name: 'Support', linkTo: '/md/support' },
   brand: { name: 'Brand Guidelines', linkTo: '/md/brand-guidelines' },
   copying: { name: 'Copying Permissions', linkTo: '/md/copying-permissions' },
   privacy: { name: 'Privacy Policy', linkTo: '/md/privacy-policy' },
@@ -48,8 +48,7 @@ export const Footer = () => {
               community of supporters.
             </div>
             <div className="flex flex-col">
-              {/* todo: what does clicking this button do? */}
-              <button className="bg-si-accent text-si-dark px-4 py-2 rounded-lg">
+              <button onClick={() => window.location.href = '/md/support'} className="bg-si-accent text-si-dark px-4 py-2 rounded-lg">
                 Support SermonIndex
               </button>
             </div>

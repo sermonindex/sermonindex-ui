@@ -1,54 +1,88 @@
 # Support
 
-We are here to serve and help you however we can with the sermons on the site. Please first review
-the FAQs below and if there is not a resolution to your problem you can contact us at the email
-address at the bottom of the page.
+<img src="https://img.sermonindex.net/give/thegcf-images2.png">
 
-## Frequently Asked Questions
+Exciting News! After 22+ years, SermonIndex now has **tax-deductible** status for all giving in partnership with The Great Commission Foundation.
 
-#### Q. How Do you download the audio/video sermons?
+# Financial Giving Options
 
-**Answer:** To download the audio/video sermons to your desktop simply choose the “download MP3 /
-MP4” option by clicking on the hyperlink on the individual sermon pages. If a MP3 download link is
-not available on the sermon page it is a text sermon resource.
+Your support helps change lives across the world for eternity. You can give one-time amounts or setup a reccuring monthly donation. With the GCF there are many options to give from Credit Card, Paypal, Interac, etc. (It is safe and secure!).
 
-#### Q. Can I copy these sermons to my website or burn them to CDs?
+_"May God bless you as you pray and sacrifically give to this ministry for the furtherance of the gospel. Your gifts help these sermons reach millions and allow us to expand and grow the website and the reach of the ministry." - Greg Gordon, Founder of SermonIndex_
 
-**Answer:** Yes. All materials on SermonIndex.net can be freely copied for personal use,
-distribution, and re-sharing. We encourage that the materials be distributed as widely as possible
-only many mediums such as CDs, USB sticks, radio, other websites, etc. You can read more about this
-on our Copying Permissions page.
+**What Other Ministry Leaders Are Saying:**
 
-#### Q. Can I put a link to SermonIndex.net?
+:::card-start
 
-**Answer:** Yes. This is encouraged and it helps us spread these messages to many more people.
+![Steve Gallagher](https://sermonindex3.b-cdn.net/pdf/stevegallagher.png)
 
-#### Q. Some speakers on SermonIndex vary in their doctrinal stance?
+:::card-middle
 
-**Answer:** Because of the nature of this website and the amount of material available here, the
-views are those of the original speaker or author. Because of the diversity of viewpoints on some
-issues, there probably isn't a single individual anywhere who would subscribe to all of the views on
-all of the topics presented here, and we don't either. However, the material is still valuable and
-worth studying. The importance is not what you agree with and what you do not agree with! But the
-most important thing is your obedience and love in your relationship with Jesus Christ.
+> For years SermonIndex has provided a resource to the Body of Christ of inestimable value. I, for
+> one, plan on doing my best to respond to the ongoing needs of this important work. - Steve
+> Gallagher (Founder of [Pure Life Ministries](https://www.purelifeministries.org/))
 
-#### Q. How can I submit my sermons or obtain hosting for my sermons?
+:::card-end
 
-**Answer:** All sermons are SermonIndex does not host sermons for churches or ministries as a
-service. All materials have been hand-chosen and selected to be hosted for free. You are welcome to
-submit and mail sermons in but over 95% of the materials submitted are not accepted for addition to
-sermonindex. We intend to add older vintage audio sermons from the past century as well as
-historical text messages from Church history.
+:::card-start
 
-#### Q. Can I financially support this work?
+![George Verwer](https://sermonindex3.b-cdn.net/pdf/georgeverwer.png)
 
-**Answer:** Yes. The website of SermonIndex is 100% supported by the generous community of
-supporters who pray and have been blessed by the messages. All messages are offered freely and part
-of how they are made available in this way is through monthly supporters that help with all the
-costs of the website and ministry. You can learn how to support SermonIndex here.
+:::card-middle
 
----
+> How I thank the Lord for this great website and ministry. I am thankful that they make known so
+> many of my own messages given over the last 50 years around the globe and so many other great
+> messages. We need to all make this site more known. - George Verwer (Founder of Operation
+> Mobilisation)
 
-If you want to reach us for support directly you can email us at support@sermonindex.com
+:::card-end
 
-We will attempt to reach you in 24 hours with a response in most cases.
+You can read other [commendations](/md/commendations) from pastors and ministry leaders from about the world. Below are the two different ways to give based on your region. For international giving we recommend the **united states** option below.
+
+<br/>
+
+# United States Giving
+
+<a href="https://thegc.org/us/projects/sermonindexnet" target="_blank" rel="noopener noreferrer">
+  <button style="
+    background-color: #facc15; /* Adjust to match si-accent */
+    color: #1e293b;            /* Adjust to match si-dark */
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+  ">
+    USA Donations
+  </button>
+</a>
+
+Mailing Address For Donations (put in memo on cheque: **SermonIndex / F1640**)
+
+Friends of the Great Commission PO Box 6305 Colorado Springs, CO 80934
+
+<br/>
+
+# Canada Giving
+
+<a href="https://thegc.org/ca/projects/sermonindexnet" target="_blank" rel="noopener noreferrer">
+  <button style="
+    background-color: #facc15; /* Adjust to match si-accent */
+    color: #1e293b;            /* Adjust to match si-dark */
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+  ">
+    Canada Donations
+  </button>
+</a>
+
+Mailing Address For Donations (put in memo on cheque: **SermonIndex / 1640**)
+
+The Great Commission Foundation PO Box 14006 Abbotsford, B.C. V2T 0B4 CANADA
+
+<br/><br/>
+
+

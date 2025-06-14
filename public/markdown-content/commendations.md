@@ -468,7 +468,7 @@
 
 :::card-start
 
-![Derek L. Melton](https://sermonindex3.b-cdn.net/pdf/stevegallagher.png)
+![Derek L. Melton](https://sermonindex3.b-cdn.net/pdf/derekmelton.png)
 
 :::card-middle
 

@@ -32,4 +32,4 @@ new Privacy Policy on this page. You are advised to review this Privacy Policy p
 changes.
 
 Contact Us If you have any questions about this Privacy Policy, please contact us
-support@sermonindex.com.
+sermonindex@gmail.com.

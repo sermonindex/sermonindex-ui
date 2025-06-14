@@ -82,7 +82,7 @@ different denominations and groups in the wider Church.
 
 ## What We Believe
 
-We have included the statement of faith from the ministry of the Herald of His Coming. We felt was a
+We have included the statement of faith from the ministry of the <a href="https://heraldofhiscoming.org/">Herald of His Coming</a>. We felt was a
 very succinct but clear undenominational statement that captures a lot of the essence and burden of
 SermonIndex Biblically.
 
@@ -111,10 +111,9 @@ in His will, and in His service) till the Lord's return (John 7:37-39; Acts 1:8;
 
 ## Get Involved
 
-* [Contribute Content](/md/support) — If you have sermons, teachings, or writings that align with our vision, we
+* [Contribute Content](/md/contact) — If you have sermons, teachings, or writings that align with our vision, we
   invite you to share them.
-* Support Us — SermonIndex.net operates on donations. Your support helps maintain and expand our
+* [Support Us](/md/support) — SermonIndex.net operates on donations. Your support helps maintain and expand our
   resources.
 * Spread the Word — Help us reach more people by sharing our content and vision. Join in our social
-  media profiles in the footer of the website to stay tuned to upcoming news and join our email
-  newsletter.
+  media profiles in the footer of the website to stay tuned to upcoming news and join our <a href="https://mailchi.mp/67c9198f0bd9/sermonindexnet-newsletter">email newsletter</a>.
