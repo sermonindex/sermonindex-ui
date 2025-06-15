@@ -69,13 +69,29 @@ ChristiansUnite, OnePlace, and SermonAudio.
 
 ## What Others Are Saying
 
+:::card-start
+
+![Gary Wilkerson](https://sermonindex3.b-cdn.net/pdf/garywilkerson.png)
+
+:::card-middle
+
 > God's Holy Spirit puts a burning fire of hunger in the heart of his children, then he graciously
-> provides resources to feed that holy hunger. Sermon Index is such a source. - Gary Wilkerson
+> provides resources to feed that holy hunger. Sermon Index is such a source.  - Gary Wilkerson (Director of World Challange)
+
+:::card-end
+
+:::card-start
+
+![David Guzik](https://sermonindex3.b-cdn.net/pdf/davidguzik.png)
+
+:::card-middle
 
 > The work of SermonIndex.net has spiritually fed, instructed, corrected, inspired, and simply
 > blessed thousands upon thousands all over the world. I especially appreciate the heart for revival
-> and spiritual awakening that is so evident on SermonIndex.net. I'm happy to commend this excellent
-> resource to everyone, everywhere. - David Guzik
+> and spiritual awakening that is so evident on SermonIndex.net. I'm happy commend this excellent
+> resource to everyone, everywhere. - David Guzik (Pastor of Calvary Chapel Santa Barbara)
+
+:::card-end
 
 Read more [commendations](/md/commendations/) of SermonIndex.net from various [ministry leaders](/md/commendations) and pastors from many
 different denominations and groups in the wider Church.
@@ -84,7 +100,7 @@ different denominations and groups in the wider Church.
 
 We have included the statement of faith from the ministry of the <a href="https://heraldofhiscoming.org/">Herald of His Coming</a>. We felt was a
 very succinct but clear undenominational statement that captures a lot of the essence and burden of
-SermonIndex Biblically.
+SermonIndex Biblically. We also hold whole-heartily to the historical creeds **Apostles Creed, Nicene Creed** of the Church.
 
 Being undenominational, we seek to minister to all who love our Lord Jesus Christ in sincerity (Eph.
 6:24), and to love all who love Him (John 15:12; 1 John 4:20-21). By this shall all men know that ye
@@ -109,7 +125,7 @@ ready for the return of Jesus, and that, in the meantime, each Christian should 
 in His will, and in His service) till the Lord's return (John 7:37-39; Acts 1:8; Eph. 5:18; Matt.
 24:44; Luke 19:13; Titus 2:11-15; 1 Peter 1:13-19).
 
-# About Site Content
+## About Site Content
 
 All audio sermons and video sermons, including text sermons are all unmodified in its original form. We have not used audio or video restoration tools of anykind. Commentaries and Bibles are from open source locations and from original writings of translators and authors not being modified in anyway.
 

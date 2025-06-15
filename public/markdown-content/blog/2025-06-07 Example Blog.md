@@ -3,7 +3,7 @@ title: 'Example Blog Post'
 date: '2025-06-07'
 author: 'Jon Doe'
 description: 'An example blog post on SermonIndex'
-tags: ['old paths', 'SermonIndex', 'blog']
+tags: ['SermonIndex', 'blog']
 ---
 
 # Example Blog
