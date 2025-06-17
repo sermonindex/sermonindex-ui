@@ -65,7 +65,6 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
     setCurrentSrc(newSermon.streamUrl);
     setErrorDetail(null);
     setHasAttemptedFallback(false);
-    hasPlaybackStarted.current = false;
   }, [currentIndex, sermons]);
 
   // We fetch the vtt content so that the lazy loading strategy in the
@@ -197,7 +196,11 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
           playsInline
           crossOrigin
           viewType={viewType}
-          storage={`sermon-index-media-${currentSermon.id}${storageKey}`}
+          storage={
+            isPlaylistMode
+              ? undefined
+              : `sermon-index-media-${currentSermon.id}${storageKey}`
+          }
           ref={player}
           onEnded={handleNextSermon}
           onPlay={handlePlay}
