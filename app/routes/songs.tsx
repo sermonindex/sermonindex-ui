@@ -71,10 +71,10 @@ export default function Index() {
 
   return (
     <SiPage>
-      <SiSection title="Song Artists" count={songs.values.length}>
+      <SiSection title="Song Artists" count={artists.length}>
         <input
           className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-black"
-          placeholder="Find a song..."
+          placeholder="Find an artist or group..."
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
         />
         <GenericList<Artist>
