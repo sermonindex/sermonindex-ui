@@ -26,10 +26,12 @@ export const SpeakerBio = ({
       {seeAllLinkVisible && (
         <div className="py-2">
           <Link to={`/speakers/${contributor.slug}#sermon-list`}>
-            <ClickableText>
-              See all {contributor.sermonCount} sermons by{' '}
-              {contributor.fullName}
-            </ClickableText>
+            {contributor.sermonCount > 0 && (
+              <ClickableText>
+                See all {contributor.sermonCount} sermons by{' '}
+                {contributor.fullName}
+              </ClickableText>
+            )}
           </Link>
         </div>
       )}
