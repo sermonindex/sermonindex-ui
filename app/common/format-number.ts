@@ -8,7 +8,7 @@ export function formatNumber(value: number | string | undefined | null) {
   } else if (num < 10e3 && num >= 1e3) {
     return (num / 1e3).toFixed(1) + 'K';
   }
-  return num.toString();
+  return num.toLocaleString();
 }
 
 /**
