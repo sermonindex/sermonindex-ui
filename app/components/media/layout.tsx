@@ -1,4 +1,4 @@
-import { Controls, useMediaState } from '@vidstack/react';
+import { Controls, MediaErrorDetail, useMediaState } from '@vidstack/react';
 
 import * as Buttons from './buttons';
 import * as Menus from './menus';
@@ -11,6 +11,7 @@ import {
   BufferingIndicator,
   MiniBufferingIndicator,
 } from '~/components/media/buffering';
+import { SiMediaError } from '~/components/media/error';
 
 export interface CustomLayoutProps {
   className?: string;
@@ -20,6 +21,8 @@ export interface CustomLayoutProps {
   hits?: number | undefined;
   isSearchOpen: boolean;
   toggleSearch: () => void;
+  isPlaylistMode: boolean;
+  errorDetail: MediaErrorDetail | null;
 }
 
 export const CustomLayout = ({
@@ -30,8 +33,11 @@ export const CustomLayout = ({
   hits,
   isSearchOpen,
   toggleSearch,
+  isPlaylistMode,
+  errorDetail,
 }: CustomLayoutProps) => {
   const viewType = useMediaState('viewType');
+  const hasError = errorDetail !== null;
 
   const controlBaseClasses = `opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 media-paused:opacity-100`;
   const controlStyleBottom =
@@ -48,7 +54,7 @@ export const CustomLayout = ({
   return (
     <div className={`${outerDivBaseClass} ${className || ''}`}>
       <Gestures />
-      {viewType !== 'video' && <BufferingIndicator />}
+      {viewType !== 'video' && !hasError && <BufferingIndicator />}
 
       {/* Inner container for layout flow */}
       <div
@@ -69,8 +75,11 @@ export const CustomLayout = ({
             hits={hits}
             isSearchOpen={isSearchOpen}
             onSearchIconClick={toggleSearch}
+            isPlaylistMode={isPlaylistMode}
           />
         </Controls.Root>
+
+        {hasError && <SiMediaError detail={errorDetail} />}
 
         {/* --- Captions --- */}
         <div className={`${viewType === 'audio' ? 'flex-1' : ''} relative`}>

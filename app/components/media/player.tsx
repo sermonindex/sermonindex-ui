@@ -1,12 +1,16 @@
 import './base.css';
 
 import {
+  MediaErrorDetail,
+  MediaErrorEvent,
   MediaLoadingStrategy,
   MediaPlayer,
   MediaPlayerInstance,
   MediaProvider,
+  MediaSourceChangeEvent,
   MediaViewType,
   Poster,
+  Src,
   Track,
   useMediaStore,
 } from '@vidstack/react';
@@ -16,23 +20,23 @@ import { hasContent } from '~/common/sanitize';
 import { CustomLayout, MiniCustomLayout } from '~/components/media/layout';
 import { MediaSearch } from '~/components/media/search';
 
-// Using allotment to help resize the search panel
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
+import { getMediaFallbackUrl } from '~/common/hacky';
+import { SermonPlaylist } from '~/components/media/playlist';
 
 export interface PlayerProps {
   sermons: Sermon[];
-  startTime?: number | undefined;
   storageKey?: string;
 }
 
-export const Player = ({
-  sermons,
-  startTime = undefined,
-  storageKey = '',
-}: PlayerProps) => {
+export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
   const player = useRef<MediaPlayerInstance>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [errorDetail, setErrorDetail] = useState<MediaErrorDetail | null>(null);
+  const [hasAttemptedFallback, setHasAttemptedFallback] = useState(false);
+  const hasPlaybackStarted = useRef(false);
 
   if (sermons.length < 1) {
     return (
@@ -42,7 +46,10 @@ export const Player = ({
     );
   }
 
-  const currentSermon = sermons[0];
+  const currentSermon = sermons[currentIndex];
+  const isPlaylistMode = sermons.length > 1;
+  const [currentSrc, setCurrentSrc] = useState(currentSermon.streamUrl);
+
   const viewType: MediaViewType =
     currentSermon.mediaType === MediaType.Video ? 'video' : 'audio';
 
@@ -52,6 +59,14 @@ export const Player = ({
 
   const [vttContent, setVttContent] = useState<string | undefined>(undefined);
   const [isLoadingVtt, setIsLoadingVtt] = useState<boolean>(false);
+
+  useEffect(() => {
+    const newSermon = sermons[currentIndex];
+    setCurrentSrc(newSermon.streamUrl);
+    setErrorDetail(null);
+    setHasAttemptedFallback(false);
+    hasPlaybackStarted.current = false;
+  }, [currentIndex, sermons]);
 
   // We fetch the vtt content so that the lazy loading strategy in the
   // vidstack media player tracks element doesn't starve the vtt data
@@ -102,96 +117,167 @@ export const Player = ({
     }
   }, [currentSermon.vttUrl]);
 
+  const handleNextSermon = () => {
+    if (currentIndex < sermons.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePlaylistItemClick = (index: number) => {
+    if (index !== currentIndex) {
+      setCurrentIndex(index);
+    }
+  };
+
+  const handlePlay = () => {
+    if (!hasPlaybackStarted.current) {
+      hasPlaybackStarted.current = true;
+    }
+  };
+
+  const handleCanPlay = () => {
+    if (hasPlaybackStarted.current) {
+      player.current?.play();
+    }
+  };
+
+  const handleError = (
+    detail: MediaErrorDetail,
+    nativeEvent: MediaErrorEvent,
+  ) => {
+    setErrorDetail(detail);
+
+    // This is a hack, where, if we fail to load we check if this is from
+    // and archive.org src and try to infer the bunny cdn url
+    if (!hasAttemptedFallback && player.current) {
+      console.log('Original source failed. Attempting fallback...');
+      const originalUrl = currentSermon.streamUrl;
+      const fallbackUrl = getMediaFallbackUrl(originalUrl);
+
+      if (fallbackUrl) {
+        console.log('Generated fallback URL:', fallbackUrl);
+        setHasAttemptedFallback(true);
+        setCurrentSrc(fallbackUrl);
+      } else {
+        console.log('Could not generate a fallback URL.');
+      }
+    }
+  };
+
+  const handleSourceChange = (
+    src: Src<unknown>,
+    nativeEvent: MediaSourceChangeEvent,
+  ) => {
+    setErrorDetail(null);
+  };
+
   const transitionClasses = 'transition-all duration-300 ease-in-out';
-
-  // Base classes for the MediaPlayer element itself
-  const mediaPlayerBaseClasses = `w-full select-none shadow-2xl`;
-
-  // Conditional classes for the MediaPlayer element
+  const mediaPlayerBaseClasses = `w-full select-none`;
   const mediaPlayerViewClasses =
     viewType === 'video'
-      ? `aspect-video sm:rounded-xl overflow-hidden`
-      : `h-[400px] sm:rounded-xl text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
+      ? `aspect-video`
+      : `${
+          isPlaylistMode ? 'h-[300px]' : 'h-[400px]'
+        } text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
 
   return (
     <div className="sm:py-4 sm:px-8">
-      <MediaPlayer
-        className={`${mediaPlayerBaseClasses} ${mediaPlayerViewClasses} overflow-hidden`}
-        title={currentSermon.title}
-        src={currentSermon.streamUrl}
-        playsInline
-        crossOrigin
-        viewType={viewType}
-        storage={`sermon-index-media-${currentSermon.id}${storageKey}`}
-        currentTime={startTime}
-        ref={player}
+      <div
+        className={`${
+          isPlaylistMode ? 'shadow-2xl sm:rounded-xl overflow-hidden' : ''
+        }`}
       >
-        <Allotment className="custom-media-allotment">
-          <Allotment.Pane>
-            {/* --- Main Content Area --- */}
-            <div
-              className={`min-w-0 relative grid grid-cols-1 grid-rows-1 h-full ${transitionClasses}`}
-            >
-              <MediaProvider
-                className={
-                  viewType === 'video' ? 'col-start-1 row-start-1' : ''
-                }
+        <MediaPlayer
+          className={`${mediaPlayerBaseClasses} ${mediaPlayerViewClasses} ${
+            isPlaylistMode ? '' : 'shadow-2xl sm:rounded-xl overflow-hidden'
+          }`}
+          title={currentSermon.title}
+          src={currentSrc}
+          key={currentSrc}
+          playsInline
+          crossOrigin
+          viewType={viewType}
+          storage={`sermon-index-media-${currentSermon.id}${storageKey}`}
+          ref={player}
+          onEnded={handleNextSermon}
+          onPlay={handlePlay}
+          onCanPlay={handleCanPlay}
+          onError={handleError}
+          onSourceChange={handleSourceChange}
+        >
+          <Allotment className="custom-media-allotment">
+            <Allotment.Pane>
+              <div
+                className={`min-w-0 relative grid grid-cols-1 grid-rows-1 h-full ${transitionClasses}`}
               >
-                {viewType === 'video' && (
-                  <Poster
-                    className="absolute inset-0 block h-full w-full opacity-0 transition-opacity data-[visible]:opacity-100 object-cover z-0"
-                    src={currentSermon.thumbnailUrl}
-                    alt={currentSermon.description ?? currentSermon.title}
-                  />
-                )}
-                {hasContent(currentSermon.vttUrl) && (
-                  <Track
-                    kind="subtitles"
-                    content={vttContent}
-                    key={currentSermon.vttUrl}
-                    language="en-US"
-                    label="English"
-                    type="vtt"
-                  />
-                )}
-              </MediaProvider>
+                <MediaProvider
+                  className={
+                    viewType === 'video' ? 'col-start-1 row-start-1' : ''
+                  }
+                >
+                  {viewType === 'video' && (
+                    <Poster
+                      className="absolute inset-0 block h-full w-full opacity-0 transition-opacity data-[visible]:opacity-100 object-cover z-0"
+                      src={currentSermon.thumbnailUrl}
+                      alt={currentSermon.description ?? currentSermon.title}
+                    />
+                  )}
+                  {hasContent(currentSermon.vttUrl) && (
+                    <Track
+                      kind="subtitles"
+                      content={vttContent}
+                      key={currentSermon.vttUrl}
+                      language="en-US"
+                      label="English"
+                      type="vtt"
+                    />
+                  )}
+                </MediaProvider>
 
-              {/* CustomLayout (Controls) - Overlays video via grid, sits normally for audio */}
-              <CustomLayout
-                className={
-                  viewType === 'video'
-                    ? 'col-start-1 row-start-1 z-10'
-                    : 'w-full h-full z-10 media-fullscreen:bg-black'
-                }
-                title={currentSermon.title}
-                author={currentSermon.contributorFullName}
-                authorImageUrl={currentSermon.contributorImageUrl}
-                hits={currentSermon.views}
-                isSearchOpen={isSearchOpen}
-                toggleSearch={toggleSearch}
-              />
-            </div>
-          </Allotment.Pane>
-
-          {/* --- Search Panel Area --- */}
-          <Allotment.Pane
-            preferredSize={320}
-            minSize={200}
-            maxSize={600}
-            visible={isSearchOpen}
-            snap
-          >
-            <div
-              className={`flex flex-col bg-gray-100 dark:bg-gray-800 shadow-b-xl overflow-hidden h-full`}
-              aria-hidden={!isSearchOpen}
-            >
-              <div className="h-full overflow-y-auto">
-                {isSearchOpen && <MediaSearch toggleSearch={toggleSearch} />}
+                <CustomLayout
+                  className={
+                    viewType === 'video'
+                      ? 'col-start-1 row-start-1 z-10'
+                      : 'w-full h-full z-10 media-fullscreen:bg-black'
+                  }
+                  title={currentSermon.title}
+                  author={currentSermon.contributorFullName}
+                  authorImageUrl={currentSermon.contributorImageUrl}
+                  hits={currentSermon.views}
+                  isSearchOpen={isSearchOpen}
+                  toggleSearch={toggleSearch}
+                  isPlaylistMode={isPlaylistMode}
+                  errorDetail={errorDetail}
+                />
               </div>
-            </div>
-          </Allotment.Pane>
-        </Allotment>
-      </MediaPlayer>
+            </Allotment.Pane>
+
+            <Allotment.Pane
+              preferredSize={320}
+              minSize={200}
+              maxSize={600}
+              visible={isSearchOpen}
+              snap
+            >
+              <div
+                className={`flex flex-col bg-gray-100 dark:bg-gray-800 shadow-b-xl overflow-hidden h-full`}
+                aria-hidden={!isSearchOpen}
+              >
+                <div className="h-full overflow-y-auto">
+                  {isSearchOpen && <MediaSearch toggleSearch={toggleSearch} />}
+                </div>
+              </div>
+            </Allotment.Pane>
+          </Allotment>
+        </MediaPlayer>
+        {isPlaylistMode && (
+          <SermonPlaylist
+            sermons={sermons}
+            currentIndex={currentIndex}
+            onPlaylistItemClick={handlePlaylistItemClick}
+          />
+        )}
+      </div>
     </div>
   );
 };

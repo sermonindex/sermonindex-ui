@@ -12,6 +12,7 @@ export const Cover = ({
   hits,
   isSearchOpen,
   onSearchIconClick,
+  isPlaylistMode,
 }: {
   title: string;
   author: string | undefined;
@@ -19,13 +20,14 @@ export const Cover = ({
   hits: number | undefined;
   isSearchOpen: boolean;
   onSearchIconClick: () => void;
+  isPlaylistMode: boolean;
 }) => {
   return (
     <div className="w-full">
       <div className="w-full justify-start text-left font-light space-y-2 pb-1">
         <div className="flex w-full justify-between items-center">
           <Title title={title} />
-          {!isSearchOpen && (
+          {!isSearchOpen && !isPlaylistMode && (
             <button onClick={onSearchIconClick} aria-label="Open search panel">
               <Controls.Group>
                 <SearchButton tooltipPlacement={'bottom end'} size={'md'} />
