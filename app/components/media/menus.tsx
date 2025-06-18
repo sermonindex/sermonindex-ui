@@ -34,6 +34,8 @@ export const menuClass = [
   'max-h-0', // Start collapsed
   'overflow-hidden', // Hide content when collapsed
 
+  'z-50', // menu takes highest z-index as it opens overtop everything else
+
   // Layout & Base Styling (Always Applied):
   'min-w-[200px]',
   'flex',
@@ -70,7 +72,7 @@ export const submenuClass =
 
 export function Settings({ placement, tooltipPlacement }: SettingsProps) {
   return (
-    <Menu.Root className="parent z-50">
+    <Menu.Root className="parent">
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <Menu.Button className={buttonClass}>
