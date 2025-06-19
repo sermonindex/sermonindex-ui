@@ -11,7 +11,7 @@ import { useRef } from 'react';
 
 export function Volume() {
   return (
-    <VolumeSlider.Root className="volume-slider group relative mx-[7.5px] inline-flex h-10 w-full max-w-16 md:max-w-24 cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
+    <VolumeSlider.Root className="volume-slider group relative mx-[7.5px] inline-flex h-10 w-full max-w-12 md:max-w-24 cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
       <VolumeSlider.Track className="relative ring-media-focus z-0 h-[5px] w-full rounded-sm bg-black/30 dark:bg-white/30 media-view-video:bg-white/30 media-fullscreen:bg-white/30 group-data-[focus]:ring-[3px]">
         <VolumeSlider.TrackFill className="bg-black/50 dark:bg-white/50 media-view-video:bg-white/50 media-fullscreen:bg-white/50 absolute h-full w-[var(--slider-fill)] rounded-sm will-change-[width]" />
       </VolumeSlider.Track>
