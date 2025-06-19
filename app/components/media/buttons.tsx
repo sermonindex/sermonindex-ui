@@ -18,10 +18,12 @@ import {
   FullscreenExitIcon,
   FullscreenIcon,
   MuteIcon,
+  NextIcon,
   PauseIcon,
   PictureInPictureExitIcon,
   PictureInPictureIcon,
   PlayIcon,
+  PreviousIcon,
   ReplayIcon,
   SearchIcon,
   SeekBackward10Icon,
@@ -217,6 +219,46 @@ export function Seek({
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {isBackward ? 'Seek Backward' : 'Seek Forward'}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export interface SkipButtonProps extends MediaButtonProps {
+  direction: 'forward' | 'backward';
+  onSkipClick: (() => void) | undefined;
+}
+
+export function Skip({
+  direction,
+  onSkipClick,
+  tooltipPlacement,
+  size = 'md',
+}: SkipButtonProps) {
+  const isBackward = direction === 'backward';
+  const icon = isBackward ? (
+    <PreviousIcon
+      className={`${buttonClass} ${getButtonSize(
+        size,
+      )} media-ended:opacity-0 media-ended:pointer-events-none media-ended:cursor-not-allowed`}
+    />
+  ) : (
+    <NextIcon
+      className={`${buttonClass} ${getButtonSize(
+        size,
+      )} media-ended:opacity-0 media-ended:pointer-events-none media-ended:cursor-not-allowed`}
+    />
+  );
+  const aria = isBackward ? 'skip to previous' : 'skip to next';
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <button onClick={onSkipClick} aria-label={aria}>
+          {icon}
+        </button>
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {isBackward ? 'Play Previous' : 'Play Next'}
       </Tooltip.Content>
     </Tooltip.Root>
   );
