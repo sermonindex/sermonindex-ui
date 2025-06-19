@@ -122,6 +122,12 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
     }
   };
 
+  const handlePreviousSermon = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
   const handlePlaylistItemClick = (index: number) => {
     if (index !== currentIndex) {
       setCurrentIndex(index);
@@ -251,6 +257,9 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
                   toggleSearch={toggleSearch}
                   isPlaylistMode={isPlaylistMode}
                   errorDetail={errorDetail}
+                  nextCallback={handleNextSermon}
+                  prevCallback={handlePreviousSermon}
+                  downloadUrl={currentSermon.downloadUrl}
                 />
               </div>
             </Allotment.Pane>

@@ -23,6 +23,9 @@ export interface CustomLayoutProps {
   toggleSearch: () => void;
   isPlaylistMode: boolean;
   errorDetail: MediaErrorDetail | null;
+  nextCallback?: () => void;
+  prevCallback?: () => void;
+  downloadUrl?: string;
 }
 
 export const CustomLayout = ({
@@ -35,6 +38,9 @@ export const CustomLayout = ({
   toggleSearch,
   isPlaylistMode,
   errorDetail,
+  nextCallback,
+  prevCallback,
+  downloadUrl,
 }: CustomLayoutProps) => {
   const viewType = useMediaState('viewType');
   const hasError = errorDetail !== null;
@@ -63,22 +69,25 @@ export const CustomLayout = ({
         }`}
       >
         {/* --- Top Controls --- */}
-        <Controls.Root
-          className={`${controlStyleVideoTop} ${
-            viewType === 'video' ? 'flex flex-col w-full' : ''
-          }`}
-        >
-          <Cover
-            title={title}
-            author={author}
-            authorImageUrl={authorImageUrl}
-            hits={hits}
-            isSearchOpen={isSearchOpen}
-            onSearchIconClick={toggleSearch}
-            isPlaylistMode={isPlaylistMode}
-          />
-        </Controls.Root>
+        <div className={''}>
+          <Controls.Root
+            className={`${controlStyleVideoTop} ${
+              viewType === 'video' ? 'flex flex-col w-full' : ''
+            }`}
+          >
+            <Cover
+              title={title}
+              author={author}
+              authorImageUrl={authorImageUrl}
+              hits={hits}
+              isSearchOpen={isSearchOpen}
+              onSearchIconClick={toggleSearch}
+              isPlaylistMode={isPlaylistMode}
+            />
+          </Controls.Root>
+        </div>
 
+        {/* Error Div */}
         {hasError && <SiMediaError detail={errorDetail} />}
 
         {/* --- Captions --- */}
@@ -97,16 +106,38 @@ export const CustomLayout = ({
               <Buttons.Mute tooltipPlacement="top" />
               <Sliders.Volume />
             </Controls.Group>
-            <Controls.Group className="flex items-center justify-center w-1/3">
-              <Buttons.Seek seconds={-10} tooltipPlacement="top" />
+            <Controls.Group className="flex items-center justify-center w-1/3 gap-x-1">
+              {isPlaylistMode && (
+                <Buttons.Skip
+                  direction="backward"
+                  onSkipClick={prevCallback}
+                  tooltipPlacement="top"
+                />
+              )}
+              {!isPlaylistMode && (
+                <Buttons.Seek seconds={-10} tooltipPlacement="top" />
+              )}
               <Buttons.Play tooltipPlacement="top" />
-              <Buttons.Seek seconds={10} tooltipPlacement="top" />
+              {!isPlaylistMode && (
+                <Buttons.Seek seconds={10} tooltipPlacement="top" />
+              )}
+              {isPlaylistMode && (
+                <Buttons.Skip
+                  direction="forward"
+                  onSkipClick={nextCallback}
+                  tooltipPlacement="top"
+                />
+              )}
             </Controls.Group>
             <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
               <Buttons.Caption tooltipPlacement="top" />
               <Buttons.Fullscreen tooltipPlacement="top" />
               <Buttons.PIP tooltipPlacement="top" />
-              <Menus.Settings placement="top end" tooltipPlacement="top end" />
+              <Menus.Settings
+                placement="top end"
+                tooltipPlacement="top end"
+                downloadUrl={downloadUrl}
+              />
             </Controls.Group>
           </div>
         </Controls.Root>
