@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Menu,
@@ -10,23 +10,28 @@ import {
   useVideoQualityOptions,
   useMediaState,
   SpeedSlider,
+  Src,
 } from '@vidstack/react';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClosedCaptionsIcon,
+  DownloadIcon,
+  MenuVerticalIcon,
   PlaybackSpeedCircleIcon,
   RadioButtonIcon,
   RadioButtonSelectedIcon,
-  SettingsIcon,
   SettingsMenuIcon,
 } from '@vidstack/react/icons';
 
 import { buttonClass, tooltipClass } from './buttons';
+import { downloadMP3, downloadMP4 } from '~/common/download';
+import { LoadingSpinner } from '~/components/spinner';
 
 export interface SettingsProps {
   placement: MenuPlacement;
   tooltipPlacement: TooltipPlacement;
+  downloadUrl?: string;
 }
 
 export const menuClass = [
@@ -70,13 +75,18 @@ export const menuClass = [
 export const submenuClass =
   'hidden w-full flex-col items-start justify-center outline-none data-[keyboard]:mt-[3px] data-[open]:inline-block';
 
-export function Settings({ placement, tooltipPlacement }: SettingsProps) {
+export function Settings({
+  placement,
+  tooltipPlacement,
+  downloadUrl,
+}: SettingsProps) {
   return (
     <Menu.Root className="parent">
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <Menu.Button className={buttonClass}>
-            <SettingsIcon className="h-8 w-8 transform transition-transform duration-200 ease-out group-data-[open]:rotate-90" />
+            {/* Yes, yes I yak shaved this settings icon */}
+            <MenuVerticalIcon className="h-8 w-8 transform-gpu transition-transform duration-300 ease-spring group-data-[open]:scale-y-75" />
           </Menu.Button>
         </Tooltip.Trigger>
         <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
@@ -87,6 +97,7 @@ export function Settings({ placement, tooltipPlacement }: SettingsProps) {
         <CaptionSubmenu />
         <PlaybackRateSubmenu />
         <QualitySubmenu />
+        <DownloadSubmenu customDownloadUrl={downloadUrl} />
       </Menu.Content>
     </Menu.Root>
   );
@@ -193,6 +204,68 @@ function QualitySubmenu() {
   );
 }
 
+function DownloadSubmenu({
+  customDownloadUrl,
+}: {
+  customDownloadUrl?: string;
+}) {
+  const [isDownloadingVideo, setIsDownloadingVideo] = useState(false);
+  const [isDownloadingAudio, setIsDownloadingAudio] = useState(false);
+
+  const source = useMediaState('source') as Src;
+  const title = useMediaState('title');
+  const mediaType = useMediaState('mediaType');
+  const srcString = typeof source.src === 'string' ? source.src : '';
+  const isYouTube = srcString.includes('youtube');
+  const downloadHref = isYouTube ? customDownloadUrl : srcString;
+
+  const onDownloadVideo = async () => {
+    if (!downloadHref || isDownloadingVideo || isDownloadingAudio) return;
+    setIsDownloadingVideo(true);
+    try {
+      await downloadMP4(downloadHref, `${title}.mp4`);
+    } finally {
+      setIsDownloadingVideo(false);
+    }
+  };
+
+  const onDownloadAudio = async () => {
+    if (!downloadHref || isDownloadingVideo || isDownloadingAudio) return;
+    setIsDownloadingAudio(true);
+    try {
+      await downloadMP3(downloadHref, `${title}.mp3`);
+    } finally {
+      setIsDownloadingAudio(false);
+    }
+  };
+
+  const getHint = () => {
+    if (mediaType === 'video') return 'Video';
+    if (mediaType === 'audio') return 'Audio';
+    return '';
+  };
+
+  const canDownload =
+    !!downloadHref && (mediaType === 'audio' || mediaType === 'video');
+  const isDownloading = isDownloadingVideo || isDownloadingAudio;
+
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="Download"
+        hint={getHint()}
+        disabled={!canDownload || isDownloading}
+        icon={isDownloading ? LoadingSpinner : DownloadIcon}
+        locked={true}
+        handleClick={mediaType === 'video' ? onDownloadVideo : onDownloadAudio}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.Item />
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
 export interface RadioProps extends Menu.RadioProps {}
 
 function Radio({ children, ...props }: RadioProps) {
@@ -213,7 +286,8 @@ export interface SubmenuButtonProps {
   hint: string;
   disabled?: boolean;
   locked?: boolean;
-  icon: React.ReactElement;
+  icon: React.ComponentType<{ className: string }>;
+  handleClick?: () => void;
 }
 
 function SubmenuButton({
@@ -222,11 +296,13 @@ function SubmenuButton({
   icon: Icon,
   disabled,
   locked = false,
+  handleClick,
 }: SubmenuButtonProps) {
   return (
     <Menu.Button
       className="ring-media-focus group flex w-full cursor-pointer select-none items-center justify-between gap-x-6 rounded-sm p-2.5 text-left outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[focus]:ring-[3px]"
       disabled={disabled}
+      onClick={handleClick}
     >
       {/* Left Group */}
       <div className="flex items-center gap-x-1.5">

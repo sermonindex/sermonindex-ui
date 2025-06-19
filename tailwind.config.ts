@@ -5,15 +5,6 @@ export default {
   future: {
     hoverOnlyWhenSupported: true,
   },
-  // If we want to define custom breakpoints for screen sizes, we need to
-  // define the `smallAudioLayoutQuery` hook for the vid stack media player
-  // screens: {
-  //   sm: "640px",
-  //   md: "768px",
-  //   lg: "1024px",
-  //   xl: "1280px",
-  //   "2xl": "1536px",
-  // },
   theme: {
     extend: {
       fontFamily: {
@@ -47,6 +38,9 @@ export default {
         'si-slate': '#242424',
         'media-brand': 'rgb(var(--media-brand) / <alpha-value>)',
         'media-focus': 'rgb(var(--media-focus) / <alpha-value>)',
+      },
+      transitionTimingFunction: {
+        spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
     },
   },

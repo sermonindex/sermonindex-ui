@@ -25,3 +25,38 @@ export const Spinner = () => {
     </div>
   );
 };
+
+// A generic spinner with a two-tone design for high contrast
+export function LoadingSpinner() {
+  return (
+    <svg
+      className="h-5 w-5 animate-spin"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      {/* Background Circle */}
+      <circle
+        className="opacity-50"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="black"
+        strokeWidth="3"
+        strokeOpacity="0.2"
+      ></circle>
+      {/* Spinner Arc (White) */}
+      <path
+        className="opacity-75"
+        fill="white"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+      ></path>
+      {/* Spinner Arc (Black) */}
+      <path
+        className="opacity-75"
+        fill="black"
+        d="M20 12a8 8 0 01-8 8v4c6.627 0 12-5.373 12-12h-4z"
+      ></path>
+    </svg>
+  );
+}
