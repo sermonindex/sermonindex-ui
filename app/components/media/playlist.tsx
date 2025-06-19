@@ -2,6 +2,7 @@ import { Sermon } from '~/api/interfaces';
 import { hasContent } from '~/common/sanitize';
 import { formatNumber } from '~/common/format-number';
 import { formatDuration } from '~/common/format-duration.fn';
+import { FiDownload } from 'react-icons/fi';
 
 interface SermonPlaylistProps {
   sermons: Sermon[];
@@ -53,7 +54,12 @@ export const SermonPlaylist = ({
                 </p>
               </div>
               <div className="text-right text-sm text-gray-600 dark:text-gray-400 flex-shrink-0 ml-4">
-                <p>{formatNumber(sermon.views)} views</p>
+                <p className="flex flex-row items-center gap-x-1">
+                  {formatNumber(sermon.views)}
+                  <span className="">
+                    <FiDownload />
+                  </span>
+                </p>
                 <p>{formatDuration(sermon.duration)}</p>
               </div>
             </li>
