@@ -2,7 +2,7 @@ import { hasContent, isNumber } from '~/common/sanitize';
 import { formatNumber } from '~/common/format-number';
 import React from 'react';
 import { FiDownload } from 'react-icons/fi';
-import { SearchButton } from '~/components/media/buttons';
+import { SearchButton, ShareButton } from '~/components/media/buttons';
 import { Controls } from '@vidstack/react';
 
 export const Cover = ({
@@ -26,14 +26,20 @@ export const Cover = ({
     <div className="w-full">
       <div className="w-full justify-start text-left font-light space-y-2 pb-1">
         <div className="flex w-full justify-between items-center">
-          <Title title={title} />
-          {!isSearchOpen && !isPlaylistMode && (
-            <button onClick={onSearchIconClick} aria-label="Open search panel">
-              <Controls.Group>
+          <Controls.Group className="flex items-center gap-x-3">
+            <Title title={title} />
+          </Controls.Group>
+          <Controls.Group className="flex items-center gap-x-2">
+            <ShareButton tooltipPlacement={'bottom end'} size={'md'} />
+            {!isSearchOpen && !isPlaylistMode && (
+              <button
+                onClick={onSearchIconClick}
+                aria-label="Open search panel"
+              >
                 <SearchButton tooltipPlacement={'bottom end'} size={'md'} />
-              </Controls.Group>
-            </button>
-          )}
+              </button>
+            )}
+          </Controls.Group>
         </div>
         <Author author={author} imageUrl={authorImageUrl} />
         <SermonViews views={hits} />

@@ -28,10 +28,13 @@ import {
   SearchIcon,
   SeekBackward10Icon,
   SeekForward10Icon,
+  ShareArrowIcon,
+  ShareIcon,
   VolumeHighIcon,
   VolumeLowIcon,
 } from '@vidstack/react/icons';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation } from '@remix-run/react';
 
 export interface MediaButtonProps {
   tooltipPlacement: TooltipPlacement;
@@ -191,6 +194,55 @@ export function SearchButton({
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {'Search Sermon'}
       </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export function ShareButton({
+  tooltipPlacement,
+  size = 'md',
+}: MediaButtonProps) {
+  const location = useLocation();
+  const [isCopied, setIsCopied] = useState(false);
+  const timeoutRef = useRef(null);
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    },
+    [],
+  );
+
+  const handleCopy = async () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    const url = window.location.origin + location.pathname;
+    if (typeof window === 'undefined') return;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy URL: ', err);
+    }
+  };
+
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        {isCopied ? (
+          <span className={tooltipClass}>Link Copied!</span>
+        ) : (
+          <button onClick={handleCopy} aria-label="Copy share link">
+            <ShareIcon className={`${buttonClass} ${getButtonSize(size)}`} />
+          </button>
+        )}
+      </Tooltip.Trigger>
+      {!isCopied && (
+        <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+          {'Share'}
+        </Tooltip.Content>
+      )}
     </Tooltip.Root>
   );
 }
