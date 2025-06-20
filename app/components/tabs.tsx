@@ -1,5 +1,9 @@
 import { useLocation } from '@remix-run/react';
+import React from 'react';
 
+export interface AboveTabsHeaderProps {
+  children?: React.ReactNode;
+}
 export interface TabListItemProps extends React.HTMLAttributes<HTMLLIElement> {
   title: string;
   active?: boolean;
@@ -53,11 +57,10 @@ export const TabListItem = ({
 export const TabList = ({ children, tabStyle = 'underline' }: TabListProps) => {
   const style =
     tabStyle === 'underline'
-      ? 'text-sm md:text-base font-semibold border-b border-neutral-200 dark:border-neutral-700'
-      : 'text-sm';
-
+      ? 'border-b border-b-2 border-neutral-200 dark:border-neutral-700'
+      : '';
   return (
-    <div className={`flex text-center ${style}`}>
+    <div className={`flex text-center text-lg md:text-xl ${style}`}>
       <ul className="flex flex-wrap transition-all duration-300 overflow-hidden">
         {children}
       </ul>
@@ -65,8 +68,12 @@ export const TabList = ({ children, tabStyle = 'underline' }: TabListProps) => {
   );
 };
 
+export const AboveTabsHeader = ({ children }: AboveTabsHeaderProps) => {
+  return <div className="p-3 md:p-10">{children}</div>;
+};
+
 export const TabContainer = ({ children }: TabContainerProps) => {
-  return <div className="m-2">{children}</div>;
+  return <div className="md:m-4 lg:m-10">{children}</div>;
 };
 
 export const TabContent = ({

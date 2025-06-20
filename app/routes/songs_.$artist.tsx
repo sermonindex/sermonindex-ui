@@ -6,7 +6,15 @@ import { useLoaderData } from '@remix-run/react';
 import { SiSection } from '~/components/section';
 import { Player } from '~/components/media/player';
 import { SpeakerBio } from '~/components/speaker-bio';
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  AboveTabsHeader,
+  TabContainer,
+  TabContent,
+  TabList,
+  TabListItem,
+} from '~/components/tabs';
+import { ContributorCard } from '~/components/contributor-card';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [songs, artist] = await Promise.all([
@@ -41,8 +49,20 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
+enum SongTabs {
+  Songs = 'Songs',
+  Bio = 'Bio',
+  Images = 'Images',
+}
+
 export default function Index() {
   const { songs, artist } = useLoaderData<typeof loader>();
+  const [activeTab, setActiveTab] = useState(SongTabs.Songs);
+
+  let availableTabs = Object.values(SongTabs);
+  if (artist.images.length === 0) {
+    availableTabs = availableTabs.filter((tab) => tab !== SongTabs.Images);
+  }
 
   // convert the songs to sermon type for the media player
   // we could make a custom prop for the media player or make it
@@ -65,12 +85,75 @@ export default function Index() {
 
   return (
     <SiPage>
-      <SiSection title={artist.fullName} sharesRightPadding={true}>
-        <SpeakerBio contributor={artist} seeAllLinkVisible={true} />
-      </SiSection>
-      <SiSection title={'Songs'}>
-        <Player sermons={sermons} />
-      </SiSection>
+      {/* Desktop-only Bio Header, hidden on mobile */}
+      <div className="hidden lg:block">
+        <SiSection title={artist.fullName} sharesRightPadding={true}>
+          <SpeakerBio contributor={artist} seeAllLinkVisible={true} />
+        </SiSection>
+        <SiSection title={'Songs'}>
+          <Player sermons={sermons} />
+        </SiSection>
+      </div>
+
+      {/* Mobile-only Contributor Card Header, hidden on desktop */}
+      <div className="block lg:hidden">
+        <AboveTabsHeader>
+          <ContributorCard contributor={artist} />
+        </AboveTabsHeader>
+        <TabContainer>
+          <TabList>
+            {availableTabs.map((tab, index) => (
+              <TabListItem
+                title={tab}
+                key={index}
+                active={tab === activeTab}
+                onClick={() => setActiveTab(tab)}
+              />
+            ))}
+          </TabList>
+
+          <TabContent
+            key={SongTabs.Songs}
+            active={activeTab === SongTabs.Songs}
+            className="md:px-1 lg:px-4 md:py-2"
+          >
+            <Player sermons={sermons} />
+          </TabContent>
+
+          <TabContent
+            key={SongTabs.Bio}
+            active={activeTab === SongTabs.Bio}
+            className="py-4 px-2 md:p-6"
+          >
+            <p className="text-sm md:text-base">
+              {artist.bio ??
+                'No biography available for this speaker. Check back soon!'}
+            </p>
+          </TabContent>
+
+          {artist.images.length > 0 && (
+            <TabContent
+              key={SongTabs.Images}
+              active={activeTab === SongTabs.Images}
+              className="p-2 md:p-6"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-x-4">
+                {artist.images.map((image, index) => (
+                  <div key={`image-${index}`} className="py-4">
+                    <a href={image.url} target="_blank">
+                      <img
+                        src={image.url}
+                        className="rounded-lg bg-slate-100 w-full"
+                        alt={image.title || ''}
+                      />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </TabContent>
+          )}
+        </TabContainer>
+      </div>
     </SiPage>
   );
 }

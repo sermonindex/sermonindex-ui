@@ -5,7 +5,7 @@ import {
   Contributor,
   ListPaginatedResponse,
   ListResponse,
-  SermonInfo
+  SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { BookList } from '~/components/book-list';
@@ -28,9 +28,7 @@ enum SpeakerTabs {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [contributor, sermons, books] = await Promise.all([
-    fetchApi<Contributor>(
-      `/contributors/slug/${params.name}`,
-    ),
+    fetchApi<Contributor>(`/contributors/slug/${params.name}`),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
       `/sermons?contributorSlug=${params.name}&offset=0&limit=50`,
     ),
@@ -39,7 +37,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   if (
     'statusCode' in contributor ||
-    'statusCode' in sermons || 
+    'statusCode' in sermons ||
     'statusCode' in books
   ) {
     throw new Response('Oh no! Something went wrong!', {
@@ -51,8 +49,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const { contributor, sermons: initialSermons, books } =
-    useLoaderData<typeof loader>();
+  const {
+    contributor,
+    sermons: initialSermons,
+    books,
+  } = useLoaderData<typeof loader>();
 
   const [activeTab, setActiveTab] = useState(SpeakerTabs.Sermons);
 
@@ -99,7 +100,7 @@ export default function Index() {
           active={activeTab === SpeakerTabs.Books}
           className="px-1 md:px-4 py-2"
         >
-          <BookList books={books.values}/>
+          <BookList books={books.values} />
         </TabContent>
 
         <TabContent
