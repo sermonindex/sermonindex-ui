@@ -24,7 +24,7 @@ export const Cover = ({
 }) => {
   return (
     <div className="w-full">
-      <div className="w-full justify-start text-left font-light space-y-2 pb-1">
+      <div className="w-full justify-start text-left font-light space-y-1 pb-1">
         <div className="flex w-full justify-between items-center">
           <Controls.Group className="flex items-center gap-x-3">
             <Title title={title} />

@@ -100,7 +100,9 @@ export const CustomLayout = ({
 
         {/* --- Captions --- */}
         <div className={`${viewType === 'audio' ? 'flex-1' : ''} relative`}>
-          {viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}
+          <AudioCaptions />
+          {/* todo: fix video sermons */}
+          {/*{viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}*/}
         </div>
 
         {/* --- Bottom Controls --- */}

@@ -158,7 +158,7 @@ export function CustomCaptionDisplay({
       aria-atomic="true"
     >
       <div
-        className="relative flex flex-col items-center overflow-hidden"
+        className="relative flex flex-col items-center"
         style={{
           // Adjusted multiplier slightly for potentially tighter lines
           maxHeight: `calc(${
@@ -252,14 +252,12 @@ export function AudioCaptions() {
   }
 
   return (
-    <div className="my-2">
-      {' '}
-      {/* Added margin for spacing */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[110%]">
       <CustomCaptionDisplay
-        numPrev={4}
-        numNext={4}
+        numPrev={1}
+        numNext={1}
         lineHeight="0.75em"
-        fontSize="0.9rem" // todo: fontsize and lineHeight need to scale with screen size
+        fontSize="1.0rem"
         textColor="text-black dark:text-white media-fullscreen:text-white"
       />
     </div>

@@ -28,9 +28,14 @@ import { SermonPlaylist } from '~/components/media/playlist';
 export interface PlayerProps {
   sermons: Sermon[];
   storageKey?: string;
+  showAuthorImage?: boolean;
 }
 
-export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
+export const Player = ({
+  sermons,
+  storageKey = '',
+  showAuthorImage = false,
+}: PlayerProps) => {
   const player = useRef<MediaPlayerInstance>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -227,7 +232,7 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
     viewType === 'video'
       ? `aspect-video`
       : `${
-          isPlaylistMode ? 'h-[300px]' : 'h-[400px]'
+          isPlaylistMode ? 'h-[250px]' : 'h-[300px]'
         } text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
 
   return (
@@ -296,7 +301,11 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
                   }
                   title={currentSermon.title}
                   author={currentSermon.contributorFullName}
-                  authorImageUrl={currentSermon.contributorImageUrl}
+                  authorImageUrl={
+                    showAuthorImage
+                      ? currentSermon.contributorImageUrl
+                      : undefined
+                  }
                   hits={currentSermon.views}
                   isSearchOpen={isSearchOpen}
                   toggleSearch={toggleSearch}
