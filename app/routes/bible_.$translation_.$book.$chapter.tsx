@@ -16,6 +16,7 @@ import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { formatBibleChapter } from '~/components/bible-chapter';
+import { CommentaryChapterData } from '~/components/commentary-chapter';
 import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
 import {
@@ -57,14 +58,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { chapter: chapterContent, sermons, translation };
+  return { chapter: chapterContent, sermons, translation, commentaries };
 }
 
 export default function Index() {
-  const { chapter, sermons, translation } = useLoaderData<typeof loader>();
+  const { chapter, commentaries, sermons, translation } =
+    useLoaderData<typeof loader>();
   const chapterText = JSON.parse(chapter.json);
 
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
+  const [activeCommentaryTab, setActiveCommentaryTab] = useState(
+    commentaries.values[0].id,
+  );
 
   return (
     <SiPage>
@@ -154,7 +159,28 @@ export default function Index() {
             active={activeTab === Tabs.Commentary}
             className="py-4 px-2 md:p-6"
           >
-            <p>#Todo</p>
+            <TabContainer>
+              <TabList tabStyle="pill">
+                {commentaries.values.map((commentary, index) => (
+                  <TabListItem
+                    title={commentary.author ?? commentary.name}
+                    tabStyle="pill"
+                    key={index}
+                    active={commentary.id === activeCommentaryTab}
+                    onClick={() => setActiveCommentaryTab(commentary.id)}
+                  />
+                ))}
+              </TabList>
+
+              {commentaries.values.map((commentary, index) => (
+                <TabContent
+                  key={index}
+                  active={commentary.id === activeCommentaryTab}
+                >
+                  <CommentaryChapterData commentary={commentary} />
+                </TabContent>
+              ))}
+            </TabContainer>
           </TabContent>
         </TabContainer>
       </div>

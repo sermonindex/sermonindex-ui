@@ -155,6 +155,16 @@ export interface Topic {
   createdAt: string;
 }
 
+export interface CommentaryChapter {
+  book: string;
+  chapter: number;
+  id: string;
+  name: string;
+  author: string;
+  introduction?: string;
+  contentJson: string;
+}
+
 // The following bible entities are subject to change
 export interface BiblePassage {
   text: string;
