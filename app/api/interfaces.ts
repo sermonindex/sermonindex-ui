@@ -155,16 +155,6 @@ export interface Topic {
   createdAt: string;
 }
 
-export interface CommentaryChapter {
-  book: string;
-  chapter: number;
-  id: string;
-  name: string;
-  author: string;
-  introduction?: string;
-  contentJson: string;
-}
-
 // The following bible entities are subject to change
 export interface BiblePassage {
   text: string;
@@ -184,6 +174,10 @@ export interface BibleBook {
   numberOfChapters: number;
 }
 
+export interface CommentaryBook extends BibleBook {
+  introduction?: string;
+}
+
 export interface BibleTranslation {
   id: string;
   name: string;
@@ -194,6 +188,18 @@ export interface BibleTranslation {
   textDirection: string;
   isComplete: boolean;
   books: BibleBook[];
+}
+
+export interface CommentaryTranslation {
+  id: string;
+  name: string;
+  shortName: string;
+  website: string;
+  licenseUrl: string;
+  language: string;
+  textDirection: string;
+  isComplete: boolean;
+  books: CommentaryBook[];
 }
 
 export interface BibleCommentary {
@@ -228,6 +234,16 @@ export interface BibleParallel {
 
   contextJson: string;
   summary?: string;
+}
+
+export interface CommentaryChapter {
+  book: string;
+  chapter: number;
+  id: string;
+  name: string;
+  author: string;
+  introduction?: string;
+  contentJson: string;
 }
 
 export interface CommentaryVerse {

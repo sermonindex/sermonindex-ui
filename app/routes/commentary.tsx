@@ -60,9 +60,8 @@ export default function Index() {
             getGroupKeyName={(key: string) => getLanguageName(key)}
             getItemId={(commentary: BibleCommentary) => commentary.id}
             getItemName={(commentary: BibleCommentary) => commentary.name}
-            getItemLink={
-              (commentary: BibleCommentary) => ''
-              // todo: something like `/commentary/${commentary.language}/${commentary.id}` ?
+            getItemLink={(commentary: BibleCommentary) =>
+              `/commentary/${commentary.language}/${commentary.id}`
             }
             columnsClassName="grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3"
           />
