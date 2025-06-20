@@ -81,7 +81,7 @@ export const Author = ({
           className="w-8 h-8 rounded-full object-cover"
         />
       )}
-      <div className="text-xs md:text-sm">{author}</div>
+      <div className="text-sm">{author}</div>
     </div>
   );
 };

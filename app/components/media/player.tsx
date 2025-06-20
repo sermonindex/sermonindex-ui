@@ -35,6 +35,10 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [errorDetail, setErrorDetail] = useState<MediaErrorDetail | null>(null);
+  const [shuffle, setShuffleState] = useState<'off' | 'on'>('off');
+  const [repeat, setRepeatState] = useState<
+    'none' | 'repeat-all' | 'repeat-one'
+  >('none');
   const [hasAttemptedFallback, setHasAttemptedFallback] = useState(false);
   const hasPlaybackStarted = useRef(false);
 
@@ -116,10 +120,51 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
     }
   }, [currentSermon.vttUrl]);
 
-  const handleNextSermon = () => {
+  const incrementSermonList = (loop: boolean) => {
+    if (loop && currentIndex === sermons.length - 1) {
+      if (currentIndex < sermons.length - 1) {
+        setCurrentIndex(currentIndex + 1);
+      } else {
+        setCurrentIndex(0);
+      }
+    }
     if (currentIndex < sermons.length - 1) {
       setCurrentIndex(currentIndex + 1);
     }
+  };
+
+  const shuffleIndex = () => {
+    const randomIndex = Math.floor(Math.random() * sermons.length);
+    setCurrentIndex(randomIndex);
+  };
+
+  const handleNextSermon = () => {
+    console.log(repeat, shuffle);
+    switch (repeat) {
+      case 'repeat-one':
+        player.current?.play();
+        return;
+      case 'repeat-all':
+        if (shuffle === 'on') {
+          shuffleIndex();
+          return;
+        } else {
+          incrementSermonList(true);
+          return;
+        }
+      default:
+        break;
+    }
+
+    switch (shuffle) {
+      case 'on':
+        shuffleIndex();
+        return;
+      default:
+        break;
+    }
+
+    incrementSermonList(false);
   };
 
   const handlePreviousSermon = () => {
@@ -260,6 +305,10 @@ export const Player = ({ sermons, storageKey = '' }: PlayerProps) => {
                   nextCallback={handleNextSermon}
                   prevCallback={handlePreviousSermon}
                   downloadUrl={currentSermon.downloadUrl}
+                  shuffleState={shuffle}
+                  onShuffleStateChange={setShuffleState}
+                  repeatState={repeat}
+                  onRepeatStateChange={setRepeatState}
                 />
               </div>
             </Allotment.Pane>

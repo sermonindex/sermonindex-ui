@@ -24,12 +24,14 @@ import {
   PictureInPictureIcon,
   PlayIcon,
   PreviousIcon,
+  RepeatIcon,
+  RepeatOnIcon,
   ReplayIcon,
   SearchIcon,
   SeekBackward10Icon,
   SeekForward10Icon,
-  ShareArrowIcon,
   ShareIcon,
+  ShuffleIcon,
   VolumeHighIcon,
   VolumeLowIcon,
 } from '@vidstack/react/icons';
@@ -311,6 +313,131 @@ export function Skip({
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {isBackward ? 'Play Previous' : 'Play Next'}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export interface RepeatButtonProps extends MediaButtonProps {
+  onRepeatStateChange: (state: 'none' | 'repeat-all' | 'repeat-one') => void;
+  state?: 'none' | 'repeat-all' | 'repeat-one';
+}
+
+export function Repeat({
+  onRepeatStateChange,
+  state = 'none',
+  tooltipPlacement,
+  size = 'md',
+}: RepeatButtonProps) {
+  const [repeatState, setRepeatState] = useState<
+    'none' | 'repeat-all' | 'repeat-one'
+  >(state);
+
+  const getNextState = (state: 'none' | 'repeat-all' | 'repeat-one') => {
+    if (state === 'none') return 'repeat-all';
+    if (state === 'repeat-all') return 'repeat-one';
+    return 'none';
+  };
+
+  const handleRepeatClick = () => {
+    const next = getNextState(repeatState);
+    setRepeatState(next);
+    onRepeatStateChange(next);
+  };
+
+  let icon;
+  let tooltipText;
+  let ariaLabel;
+
+  switch (repeatState) {
+    case 'repeat-one':
+      icon = (
+        <RepeatOnIcon className={`${buttonClass} ${getButtonSize(size)}`} />
+      );
+      tooltipText = 'Repeat One';
+      ariaLabel = 'Disable repeat'; // Next state is 'none'
+      break;
+    case 'repeat-all':
+      icon = <RepeatIcon className={`${buttonClass} ${getButtonSize(size)}`} />;
+      tooltipText = 'Repeat All';
+      ariaLabel = 'Enable repeat one'; // Next state is 'repeat-one'
+      break;
+    default: // 'none'
+      icon = (
+        <RepeatIcon
+          className={`${buttonClass} ${getButtonSize(size)} opacity-50`}
+        />
+      );
+      tooltipText = 'Repeat Off';
+      ariaLabel = 'Enable repeat all'; // Next state is 'repeat-all'
+      break;
+  }
+
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <button onClick={handleRepeatClick} aria-label={ariaLabel}>
+          {icon}
+        </button>
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {tooltipText}
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}
+
+export interface ShuffleButtonProps extends MediaButtonProps {
+  onShuffleStateChange: (state: 'off' | 'on') => void;
+  state?: 'off' | 'on';
+}
+
+export function Shuffle({
+  onShuffleStateChange,
+  state = 'off',
+  tooltipPlacement,
+  size = 'md',
+}: ShuffleButtonProps) {
+  const [shuffle, setShuffleState] = useState<'off' | 'on'>(state);
+
+  const handleShuffleClick = () => {
+    const next = shuffle === 'off' ? 'on' : 'off';
+    setShuffleState(next);
+    onShuffleStateChange(next);
+  };
+
+  let icon;
+  let tooltipText;
+  let ariaLabel;
+
+  switch (shuffle) {
+    case 'on':
+      icon = (
+        <ShuffleIcon className={`${buttonClass} ${getButtonSize(size)}`} />
+      );
+      tooltipText = 'Shuffle On';
+      ariaLabel = 'Disable shuffle'; // Next state is 'off'
+      break;
+    default: // 'off'
+      icon = (
+        <ShuffleIcon
+          className={`${buttonClass} ${getButtonSize(size)} opacity-50`}
+        />
+      );
+      tooltipText = 'Shuffle Off';
+      ariaLabel = 'Enable shuffle'; // Next state is 'on'
+      break;
+  }
+
+  return (
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <button onClick={handleShuffleClick} aria-label={ariaLabel}>
+          {icon}
+        </button>
+      </Tooltip.Trigger>
+      <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
+        {tooltipText}
       </Tooltip.Content>
     </Tooltip.Root>
   );

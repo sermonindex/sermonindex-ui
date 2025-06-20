@@ -26,6 +26,10 @@ export interface CustomLayoutProps {
   nextCallback?: () => void;
   prevCallback?: () => void;
   downloadUrl?: string;
+  shuffleState?: 'off' | 'on';
+  onShuffleStateChange: (state: 'off' | 'on') => void;
+  repeatState?: 'none' | 'repeat-all' | 'repeat-one';
+  onRepeatStateChange: (state: 'none' | 'repeat-all' | 'repeat-one') => void;
 }
 
 export const CustomLayout = ({
@@ -41,6 +45,10 @@ export const CustomLayout = ({
   nextCallback,
   prevCallback,
   downloadUrl,
+  shuffleState = 'off',
+  onShuffleStateChange,
+  repeatState = 'none',
+  onRepeatStateChange,
 }: CustomLayoutProps) => {
   const viewType = useMediaState('viewType');
   const hasError = errorDetail !== null;
@@ -108,11 +116,18 @@ export const CustomLayout = ({
             </Controls.Group>
             <Controls.Group className="flex items-center justify-center w-1/3 gap-x-1">
               {isPlaylistMode && (
-                <Buttons.Skip
-                  direction="backward"
-                  onSkipClick={prevCallback}
-                  tooltipPlacement="top"
-                />
+                <div className="flex items-center gap-x-2">
+                  <Buttons.Shuffle
+                    onShuffleStateChange={onShuffleStateChange}
+                    state={shuffleState}
+                    tooltipPlacement="top"
+                  />
+                  <Buttons.Skip
+                    direction="backward"
+                    onSkipClick={prevCallback}
+                    tooltipPlacement="top"
+                  />
+                </div>
               )}
               {!isPlaylistMode && (
                 <Buttons.Seek seconds={-10} tooltipPlacement="top" />
@@ -122,11 +137,18 @@ export const CustomLayout = ({
                 <Buttons.Seek seconds={10} tooltipPlacement="top" />
               )}
               {isPlaylistMode && (
-                <Buttons.Skip
-                  direction="forward"
-                  onSkipClick={nextCallback}
-                  tooltipPlacement="top"
-                />
+                <div className="flex items-center gap-x-2">
+                  <Buttons.Skip
+                    direction="forward"
+                    onSkipClick={nextCallback}
+                    tooltipPlacement="top"
+                  />
+                  <Buttons.Repeat
+                    onRepeatStateChange={onRepeatStateChange}
+                    state={repeatState}
+                    tooltipPlacement="top"
+                  />
+                </div>
               )}
             </Controls.Group>
             <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
