@@ -1,20 +1,19 @@
-import { SiPage } from '~/components/si-page';
 import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { fetchApi } from '~/api/sdk';
-import { Contributor, Hymn, ListResponse, Sermon } from '~/api/interfaces';
 import { useLoaderData } from '@remix-run/react';
-import { SiSection } from '~/components/section';
+import { useState } from 'react';
+import { Contributor, Hymn, ListResponse, Sermon } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
+import { ContributorCard } from '~/components/contributor-card';
 import { Player } from '~/components/media/player';
+import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
-import React, { useState } from 'react';
 import {
-  AboveTabsHeader,
   TabContainer,
   TabContent,
   TabList,
   TabListItem,
 } from '~/components/tabs';
-import { ContributorCard } from '~/components/contributor-card';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [songs, artist] = await Promise.all([
@@ -97,9 +96,9 @@ export default function Index() {
 
       {/* Mobile-only Contributor Card Header, hidden on desktop */}
       <div className="block lg:hidden">
-        <AboveTabsHeader>
+        <div className="p-3 md:p-10">
           <ContributorCard contributor={artist} />
-        </AboveTabsHeader>
+        </div>
         <TabContainer>
           <TabList>
             {availableTabs.map((tab, index) => (
