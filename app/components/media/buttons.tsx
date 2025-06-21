@@ -37,6 +37,7 @@ import {
 } from '@vidstack/react/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@remix-run/react';
+import { SiButton } from '~/components/button';
 
 export interface MediaButtonProps {
   tooltipPlacement: TooltipPlacement;
@@ -235,9 +236,9 @@ export function ShareButton({
         {isCopied ? (
           <span className={tooltipClass}>Link Copied!</span>
         ) : (
-          <button onClick={handleCopy} aria-label="Copy share link">
+          <SiButton onClick={handleCopy} aria-label="Copy share link">
             <ShareIcon className={`${buttonClass} ${getButtonSize(size)}`} />
-          </button>
+          </SiButton>
         )}
       </Tooltip.Trigger>
       {!isCopied && (
@@ -307,9 +308,9 @@ export function Skip({
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <button onClick={onSkipClick} aria-label={aria}>
+        <SiButton onClick={onSkipClick} aria-label={aria}>
           {icon}
-        </button>
+        </SiButton>
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {isBackward ? 'Play Previous' : 'Play Next'}
@@ -376,9 +377,9 @@ export function Repeat({
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <button onClick={handleRepeatClick} aria-label={ariaLabel}>
+        <SiButton onClick={handleRepeatClick} aria-label={ariaLabel}>
           {icon}
-        </button>
+        </SiButton>
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {tooltipText}
@@ -432,9 +433,9 @@ export function Shuffle({
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <button onClick={handleShuffleClick} aria-label={ariaLabel}>
+        <SiButton onClick={handleShuffleClick} aria-label={ariaLabel}>
           {icon}
-        </button>
+        </SiButton>
       </Tooltip.Trigger>
       <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
         {tooltipText}

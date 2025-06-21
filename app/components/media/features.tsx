@@ -4,6 +4,7 @@ import React from 'react';
 import { FiDownload } from 'react-icons/fi';
 import { SearchButton, ShareButton } from '~/components/media/buttons';
 import { Controls } from '@vidstack/react';
+import { SiButton } from '~/components/button';
 
 export const Cover = ({
   title,
@@ -32,12 +33,12 @@ export const Cover = ({
           <Controls.Group className="flex items-center gap-x-2">
             <ShareButton tooltipPlacement={'bottom end'} size={'md'} />
             {!isSearchOpen && !isPlaylistMode && (
-              <button
+              <SiButton
                 onClick={onSearchIconClick}
                 aria-label="Open search panel"
               >
                 <SearchButton tooltipPlacement={'bottom end'} size={'md'} />
-              </button>
+              </SiButton>
             )}
           </Controls.Group>
         </div>

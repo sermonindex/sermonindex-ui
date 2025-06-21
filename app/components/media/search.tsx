@@ -16,6 +16,7 @@ import {
 import { VTTCue } from 'media-captions';
 import { formatTime } from '~/common/format-number';
 import { tooltipClass } from '~/components/media/buttons';
+import { SiButton } from '~/components/button';
 
 export function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -431,14 +432,14 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
         </div>
         <Tooltip.Root>
           <Tooltip.Trigger asChild>
-            <button
+            <SiButton
               type="button"
               onClick={toggleSearch}
               aria-label="Close search panel"
               className="ml-2 p-1 rounded-full text-gray-500 dark:text-gray-400 media-fullscreen:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 media-fullscreen:hover:bg-gray-700 flex-shrink-0"
             >
               <XMarkIcon className="w-5 h-5" />
-            </button>
+            </SiButton>
           </Tooltip.Trigger>
           <Tooltip.Content className={tooltipClass} placement="left end">
             Close Search
