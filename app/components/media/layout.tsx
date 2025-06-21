@@ -119,11 +119,13 @@ export const CustomLayout = ({
             <Controls.Group className="flex items-center justify-center w-1/3 gap-x-1">
               {isPlaylistMode && (
                 <div className="flex items-center gap-x-2">
-                  <Buttons.Shuffle
-                    onShuffleStateChange={onShuffleStateChange}
-                    state={shuffleState}
-                    tooltipPlacement="top"
-                  />
+                  <div className="hidden sm:block">
+                    <Buttons.Shuffle
+                      onShuffleStateChange={onShuffleStateChange}
+                      state={shuffleState}
+                      tooltipPlacement="top"
+                    />
+                  </div>
                   <Buttons.Skip
                     direction="backward"
                     onSkipClick={prevCallback}
@@ -145,11 +147,13 @@ export const CustomLayout = ({
                     onSkipClick={nextCallback}
                     tooltipPlacement="top"
                   />
-                  <Buttons.Repeat
-                    onRepeatStateChange={onRepeatStateChange}
-                    state={repeatState}
-                    tooltipPlacement="top"
-                  />
+                  <div className="hidden sm:block">
+                    <Buttons.Repeat
+                      onRepeatStateChange={onRepeatStateChange}
+                      state={repeatState}
+                      tooltipPlacement="top"
+                    />
+                  </div>
                 </div>
               )}
             </Controls.Group>

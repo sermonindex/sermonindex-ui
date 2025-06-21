@@ -144,8 +144,7 @@ export function CustomCaptionDisplay({
   return (
     <div
       ref={containerRef}
-      className={`custom-caption-container w-auto flex justify-center pointer-events-none transition-opacity duration-300 ${
-        // w-auto allows parent to control width
+      className={`custom-caption-container w-full flex justify-center pointer-events-none transition-opacity duration-300 ${
         shouldShowCaptions ? 'opacity-100' : 'opacity-0'
       }`}
       style={
@@ -178,7 +177,7 @@ export function CustomCaptionDisplay({
             } else {
               const distance = Math.abs(relativePosition);
               // Slightly increase fade-out for potentially more lines displayed closely
-              opacity = Math.max(0, 1 - distance * 0.35);
+              opacity = Math.max(0, 1 - distance * 0.5);
             }
 
             const cueKey = `${cue.startTime}-${cue.text}`;
@@ -186,14 +185,14 @@ export function CustomCaptionDisplay({
             return (
               <p
                 key={cueKey}
-                className={`cue-item text-center select-none break-words transition-all duration-500 ease-in-out ${textColor}`}
+                className={`cue-item text-center select-none  transition-all duration-700 ease-in-out whitespace-nowrap text-ellipsis ${textColor}`}
                 style={{
                   fontSize: 'var(--cue-font-size)',
-                  // Using CSS var for line height directly affects spacing
                   lineHeight: 'var(--cue-line-height)',
                   fontWeight: isCurrent ? 'bold' : 'normal',
                   opacity: opacity,
                   transform: `translateY(calc(${relativePosition} * var(--cue-line-height)))`,
+                  willChange: 'transform, opacity',
                 }}
                 dangerouslySetInnerHTML={{ __html: cue.text }}
               />
@@ -252,10 +251,10 @@ export function AudioCaptions() {
   }
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[110%]">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50%] sm:-translate-y-[100%]">
       <CustomCaptionDisplay
-        numPrev={1}
-        numNext={1}
+        numPrev={2}
+        numNext={2}
         lineHeight="0.75em"
         fontSize="1.0rem"
         textColor="text-black dark:text-white media-fullscreen:text-white"
