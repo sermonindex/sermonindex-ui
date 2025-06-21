@@ -115,7 +115,7 @@ export const NavItemLi = ({
         <ul className="space-y-1">
           {item.subItems.map((subItem, index) => (
             <li key={index}>
-              <Link to={subItem.linkTo} className={linkClassName}>
+              <Link to={subItem.linkTo} className={`${linkClassName} pl-9`}>
                 {subItem.name}
               </Link>
             </li>

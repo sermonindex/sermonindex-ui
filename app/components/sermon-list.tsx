@@ -79,10 +79,7 @@ export const SermonList = ({
   };
 
   useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
+    if (initialRender.current) return;
 
     setLoadingAll(true);
     setSermons([]);
@@ -90,6 +87,15 @@ export const SermonList = ({
     if (debounceTimer) clearTimeout(debounceTimer);
     setDebounceTimer(setTimeout(() => fetchSermons(true), 750));
   }, [title, mediaTypes]);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
+    setSermons(initialSermons);
+  }, [initialSermons]);
 
   return (
     <div>
@@ -102,6 +108,7 @@ export const SermonList = ({
         />
         <DropdownCheckbox
           title="Filter Media"
+          shortTitle="Filter"
           options={Object.values(MediaType)}
           onFilterChange={(options: string[]) =>
             setMediaTypes(options as MediaType[])
@@ -116,18 +123,26 @@ export const SermonList = ({
           error={error}
         >
           <ul>
-            {sermons.map((sermon) => (
-              <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
-                <li className="pb-2 md:pb-4" key={sermon.id}>
-                  <SermonCard
-                    sermon={sermon}
-                    showContributor={showContributor}
-                    showMediaPlayer={false}
-                    className="hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-200 ease-in-out"
-                  />
-                </li>
-              </Link>
-            ))}
+            {!!sermons.length &&
+              sermons.map((sermon) => (
+                <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
+                  <li className="pb-2 md:pb-4" key={sermon.id}>
+                    <SermonCard
+                      sermon={sermon}
+                      showContributor={showContributor}
+                      showMediaPlayer={false}
+                      className="hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-200 ease-in-out"
+                    />
+                  </li>
+                </Link>
+              ))}
+            {!sermons.length && (
+              <li className="flex flex-col items-center justify-center h-36">
+                <span className="text-neutral-500 dark:text-neutral-400">
+                  No results found
+                </span>
+              </li>
+            )}
           </ul>
         </InfiniteScroll>
       )}

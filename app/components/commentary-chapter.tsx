@@ -13,7 +13,7 @@ export const CommentaryChapterData = ({
   const content = JSON.parse(commentary.contentJson).content as ChapterVerse[];
 
   return (
-    <div className="px-2 pt-2">
+    <div className="md:px-2 md:pt-2">
       {commentary.introduction && (
         <>
           <h2 className="pt-2 font-semibold">Introduction</h2>

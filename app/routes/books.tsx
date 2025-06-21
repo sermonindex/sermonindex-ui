@@ -59,8 +59,8 @@ export default function Index() {
         </div>
       </div>
       <SiSection title="Books">
-        <div className="px-2 md:px-4 pb-8">
-          <BookList books={books.values}/>
+        <div className="md:px-4 pb-8">
+          <BookList books={books.values} />
         </div>
       </SiSection>
     </SiPage>

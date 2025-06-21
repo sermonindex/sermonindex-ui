@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { IoMoon, IoSunny } from 'react-icons/io5';
+import { BibleBar } from '~/components/navigation/bible-bar';
+import { Midbar } from '~/components/navigation/mid-bar';
 import { SearchModal } from '../search-modal';
 import { Sidebar } from './sidebar';
-import { Midbar } from '~/components/navigation/mid-bar';
-import { BibleBar } from '~/components/navigation/bible-bar';
 
 interface NavbarProps {
   onEffectiveHeightChange: (height: number) => void;
@@ -17,6 +17,8 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLDivElement>(null);
 
   const darkModeHandler = (dark: boolean) => {
     setDark(dark);
@@ -71,6 +73,33 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
     };
   }, [onEffectiveHeightChange]);
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        sidebarOpen &&
+        sidebarRef.current &&
+        hamburgerRef.current &&
+        !sidebarRef.current.contains(event.target as Node) &&
+        !hamburgerRef.current.contains(event.target as Node)
+      ) {
+        setSidebarOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [sidebarOpen]);
+
+  // Prevent body scroll when sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }, [sidebarOpen]);
+
   return (
     <>
       <nav
@@ -86,6 +115,7 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
             <div className="flex items-center justify-between lg:p-2">
               <div
                 className="flex lg:hidden"
+                ref={hamburgerRef}
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 <IconContext.Provider
@@ -125,8 +155,12 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
 
       {/* Shows Sidebar on screens smaller than lg */}
       <div className="lg:hidden">
-        <Sidebar sidebarOpen={sidebarOpen} />
+        <Sidebar ref={sidebarRef} sidebarOpen={sidebarOpen} />
       </div>
+
+      {sidebarOpen && (
+        <div className="bg-neutral-600/60 dark:bg-neutral-500/60 fixed w-full h-screen z-20 top-0 left-0"></div>
+      )}
     </>
   );
 };

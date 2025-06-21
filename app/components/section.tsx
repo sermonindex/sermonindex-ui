@@ -41,15 +41,15 @@ export function SiSection({
 
   // This allows sections to be in columns beside each other without
   // double padding that looks like a big hold between the sections.
-  let paddingLeft = sharesLeftPadding ? 'pl-2 md:pl-4' : 'pl-4 md:pl-8';
-  let paddingRight = sharesRightPadding ? 'pr-2 md:pr-4' : 'pr-4 md:pr-8';
+  let paddingLeft = sharesLeftPadding ? 'pl-1 md:pl-4' : 'pl-1 md:pl-8';
+  let paddingRight = sharesRightPadding ? 'pr-1 md:pr-4' : 'pr-1 md:pr-8';
   let padding = `py-4 ${paddingLeft} ${paddingRight}`;
 
   const location = useLocation();
   const linkTo = `${location.pathname}#${tag}`;
 
   // const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 rounded-lg w-full text-black dark:text-white bg-neutral-200 dark:bg-neutral-600 shadow-lg ${className}`;
-  const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 w-full text-black dark:text-white border-b-2 border-b border-neutral-300 dark:border-neutral-700 pb-2 ${className}`;
+  const headingStyles = `text-lg md:text-xl mx-1 px-4 py-1 md:py-2 w-full text-black dark:text-white border-b-2 border-b border-neutral-300 dark:border-neutral-700 pb-2 ${className}`;
   const countStyles =
     'flex items-center justify-center w-12 h-5 ms-2 text-xs rounded-full text-black dark:text-white bg-neutral-300 dark:bg-neutral-700';
 

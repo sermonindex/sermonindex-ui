@@ -265,6 +265,7 @@ export interface BibleChapter {
   translationId: string;
   translationName: string;
   json: string;
+  streamUrl?: string;
   // verses: Verse[];
   // book: Book;
   // footnotes: Footnote[];

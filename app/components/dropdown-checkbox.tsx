@@ -3,12 +3,14 @@ import { FaChevronDown } from 'react-icons/fa6'; // Use fa6 for consistency
 
 interface DropdownCheckboxProps {
   title: string;
+  shortTitle?: string;
   options: string[];
   onFilterChange: (options: string[]) => void;
 }
 
 const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
   title,
+  shortTitle,
   options,
   onFilterChange,
 }) => {
@@ -55,11 +57,16 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className="relative inline-flex items-center justify-between min-w-[135px] p-3 rounded-lg text-black dark:text-white bg-neutral-200 dark:bg-neutral-600"
+        className="relative inline-flex items-center justify-between min-w-[90px] md:min-w-[135px] p-3 rounded-lg text-black dark:text-white bg-neutral-200 dark:bg-neutral-600"
         onClick={toggleDropdown}
         aria-expanded={isOpen}
       >
-        <span className="whitespace-nowrap pr-3 text-sm">{title}</span>{' '}
+        <span className="hidden md:inline whitespace-nowrap pr-3 text-sm">
+          {title}
+        </span>
+        <span className="inline md:hidden whitespace-nowrap pr-3 text-sm">
+          {shortTitle || title}
+        </span>
         {/* Prevent wrapping */}
         <div className="flex text-sm items-center justify-center">
           <FaChevronDown
@@ -71,12 +78,12 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
         </div>
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 min-w-[135px] mt-2 origin-top-right rounded-md bg-neutral-200 dark:bg-neutral-600 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
+        <div className="absolute right-0 z-10 min-w-[90px] md:min-w-[135px] mt-2 origin-top-right rounded-md bg-neutral-200 dark:bg-neutral-600 shadow-lg ring-1 ring-black ring-opacity-10 focus:outline-none">
           <div className="py-1" role="none">
             {options.map((option) => (
               <label
                 key={option}
-                className="flex items-center px-4 py-2 text-sm text-black dark:text-white hover:bg-neutral-300 hover:dark:bg-neutral-700"
+                className="flex items-center px-2 md:px-4 py-2 text-sm text-black dark:text-white hover:bg-neutral-300 hover:dark:bg-neutral-700"
                 role="menuitem"
               >
                 <div className="relative mr-2">

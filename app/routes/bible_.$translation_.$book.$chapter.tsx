@@ -10,6 +10,7 @@ import {
   BibleChapter,
   ListPaginatedResponse,
   ListResponse,
+  Sermon,
   SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
@@ -17,6 +18,7 @@ import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { formatBibleChapter } from '~/components/bible-chapter';
 import { CommentaryChapterData } from '~/components/commentary-chapter';
+import { MiniPlayer } from '~/components/media/player';
 import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
 import {
@@ -71,10 +73,14 @@ export default function Index() {
     commentaries.values[0].id,
   );
 
+  const reference = `${
+    OsisToBookName[chapter.bookId as keyof typeof OsisToBookName]
+  } ${chapter.number}`;
+
   return (
     <SiPage>
       <div className="flex flex-col">
-        <div className="flex w-full min-h-28 items-center justify-center space-x-14 md:space-x-24">
+        <div className="flex w-full min-h-24 items-center justify-center space-x-14 md:space-x-24">
           <Link
             to={`/bible/${translation}/${chapter.previousBookId}/${chapter.previousChapterNumber}`}
           >
@@ -87,9 +93,7 @@ export default function Index() {
               <FaRegArrowAltCircleLeft />
             </IconContext.Provider>
           </Link>
-          <span className="text-3xl md:text-4xl">{`${
-            OsisToBookName[chapter.bookId as keyof typeof OsisToBookName]
-          } ${chapter.number}`}</span>
+          <span className="text-3xl md:text-4xl">{reference}</span>
           <span className="hover:underline hover:cursor-pointer">
             <Link
               to={`/bible/${translation}/${chapter.nextBookId}/${chapter.nextChapterNumber}`}
@@ -105,6 +109,17 @@ export default function Index() {
             </Link>
           </span>
         </div>
+        {
+          <div className="flex items-center justify-center">
+            <div className="w-full md:w-3/4">
+              <MiniPlayer
+                sermon={
+                  { title: reference, streamUrl: chapter.streamUrl } as Sermon
+                }
+              />
+            </div>
+          </div>
+        }
 
         <TabContainer>
           <TabList>
@@ -157,7 +172,7 @@ export default function Index() {
           <TabContent
             key={Tabs.Commentary}
             active={activeTab === Tabs.Commentary}
-            className="py-4 px-2 md:p-6"
+            className="py-4 md:p-4"
           >
             <TabContainer>
               <TabList tabStyle="pill">
