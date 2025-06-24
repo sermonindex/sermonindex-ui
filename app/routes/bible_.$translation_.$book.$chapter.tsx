@@ -42,7 +42,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const [chapterContent, sermons, commentaries] = await Promise.all([
     fetchApi<BibleChapter>(`/bible/eng/${translation}/${bookId}/${chapter}`),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
-      `/sermons?book=${bookId}&chapter=${chapter}&offset=0&limit=50`,
+      `/sermons?book=${bookId}&chapter=${chapter}&offset=0&limit=25`,
     ),
     // TODO: Add a CommentaryChapter type
     fetchApi<ListResponse<any>>(
@@ -55,7 +55,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     'statusCode' in sermons ||
     'statusCode' in commentaries
   ) {
-    throw new Response('Oh no! Something went wrong!', {
+    throw new Response(`Oh no! Something went wrong!`, {
       status: 500,
     });
   }
