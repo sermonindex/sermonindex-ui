@@ -2,9 +2,9 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import {
+  BookInfo,
   Contributor,
   ListPaginatedResponse,
-  ListResponse,
   SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
@@ -30,9 +30,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const [contributor, sermons, books] = await Promise.all([
     fetchApi<Contributor>(`/contributors/slug/${params.name}`),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
-      `/sermons?contributorSlug=${params.name}&offset=0&limit=50`,
+      `/sermons?contributorSlug=${params.name}&offset=0&limit=25`,
     ),
-    fetchApi<ListResponse<any>>(`/books?contributorSlug=${params.name}`),
+    fetchApi<ListPaginatedResponse<BookInfo>>(
+      `/books?contributorSlug=${params.name}`,
+    ),
   ]);
 
   if (
@@ -49,11 +51,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Index() {
-  const {
-    contributor,
-    sermons: initialSermons,
-    books,
-  } = useLoaderData<typeof loader>();
+  const { contributor, sermons, books } = useLoaderData<typeof loader>();
 
   const [activeTab, setActiveTab] = useState(SpeakerTabs.Sermons);
 
@@ -88,9 +86,9 @@ export default function Index() {
           className="px-1 md:px-4 py-2"
         >
           <SermonList
-            sermons={initialSermons.values}
+            sermons={sermons.values}
             filters={{ contributorSlug: contributor.slug }}
-            nextPage={initialSermons.nextPage}
+            nextPage={sermons.nextPage}
             showContributor={false}
           />
         </TabContent>
@@ -100,7 +98,11 @@ export default function Index() {
           active={activeTab === SpeakerTabs.Books}
           className="px-1 md:px-4 py-2"
         >
-          <BookList books={books.values} />
+          <BookList
+            books={books.values}
+            filters={{ contributorSlug: contributor.slug }}
+            nextPage={books.nextPage}
+          />
         </TabContent>
 
         <TabContent

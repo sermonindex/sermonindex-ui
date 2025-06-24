@@ -1,14 +1,21 @@
 import { Link } from '@remix-run/react';
 import { useState } from 'react';
-import { MediaType } from '~/api/interfaces';
+import { BookInfo, MediaType } from '~/api/interfaces';
 import { BookCover } from './book-cover';
 import DropdownCheckbox from './dropdown-checkbox';
+import { DynamicList } from './dynamic-list';
 
 export interface BookListProps {
-  books: any[];
+  books: BookInfo[];
+  filters?: Record<string, string | number | null | undefined> | null;
+  nextPage?: number | null;
 }
 
-export const BookList = ({ books }: BookListProps) => {
+export const BookList = ({
+  books,
+  filters = {},
+  nextPage = null,
+}: BookListProps) => {
   const [title, setTitle] = useState<string>('');
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
     Object.values(MediaType),
@@ -32,21 +39,21 @@ export const BookList = ({ books }: BookListProps) => {
           }
         />
       </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-4 pt-4">
-        {books
-          .filter(
-            (b: any) =>
-              (b.title.toLowerCase().includes(title) ||
-                b.contributor.fullName.toLowerCase().includes(title)) &&
-              mediaTypes.includes(b.mediaType),
-          )
-          .map((book: any, index: number) => (
-            <Link to={`/books/${book.id}/1`} key={index}>
-              <BookCover book={book} />
-            </Link>
-          ))}
-      </div>
+      <DynamicList
+        items={books}
+        baseUrl={'/books'}
+        filters={{ ...filters, title, mediaTypes: mediaTypes.join(',') }}
+        nextPage={nextPage}
+        renderItems={(items) => (
+          <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-4 pt-4">
+            {items.map((book, index) => (
+              <Link to={`/books/${book.id}/1`} key={index}>
+                <BookCover book={book} />
+              </Link>
+            ))}
+          </ul>
+        )}
+      />
     </div>
   );
 };

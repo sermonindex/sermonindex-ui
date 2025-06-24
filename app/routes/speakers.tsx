@@ -1,17 +1,26 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
-import { Contributor, ListResponse } from '~/api/interfaces';
+import {
+  ContributorInfo,
+  ListPaginatedResponse,
+  ListResponse,
+} from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
+import { DynamicList } from '~/components/dynamic-list';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [featured, contributors] = await Promise.all([
-    fetchApi<ListResponse<Contributor>>('/contributors/featured/content/SERMONS'),
-    fetchApi<ListResponse<Contributor>>('/contributors?content=SERMONS'),
+    fetchApi<ListResponse<ContributorInfo>>(
+      '/contributors/featured/content/SERMONS',
+    ),
+    fetchApi<ListPaginatedResponse<ContributorInfo>>(
+      '/contributors?content=SERMONS&offset=0&limit=100',
+    ),
   ]);
 
   if ('statusCode' in featured || 'statusCode' in contributors) {
@@ -23,7 +32,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { featured, contributors };
 }
 
-const getContributorGroupedItems = (contributors: Contributor[]) => {
+const getContributorGroupedItems = (contributors: ContributorInfo[]) => {
   return contributors.reduce((grouped, contributor) => {
     const letter = contributor.fullName[0].toLowerCase();
     if (!grouped[letter]) {
@@ -31,12 +40,12 @@ const getContributorGroupedItems = (contributors: Contributor[]) => {
     }
     grouped[letter].push(contributor);
     return grouped;
-  }, {} as { [key: string]: Contributor[] });
+  }, {} as { [key: string]: ContributorInfo[] });
 };
 
 export default function Index() {
   const { featured, contributors } = useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<string>('');
+  const [fullName, setFullName] = useState<string>('');
 
   return (
     <SiPage>
@@ -63,25 +72,37 @@ export default function Index() {
           ))}
         </div>
       </SiSection>
-      <SiSection title="All Speakers" count={contributors.values.length}>
+      <SiSection title="All Speakers" count={contributors.total}>
         <input
           className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-black"
           placeholder="Find a speaker..."
-          onChange={(e) => setFilter(e.target.value.toLowerCase())}
+          onChange={(e) => setFullName(e.target.value.toLowerCase())}
           required
         />
-        <GenericList<Contributor>
-          items={contributors.values.filter((c) =>
-            c.fullName.toLowerCase().includes(filter),
+
+        <DynamicList<ContributorInfo>
+          items={contributors.values}
+          baseUrl="/contributors"
+          filters={{ fullName, content: 'SERMONS' }}
+          nextPage={contributors.nextPage}
+          limit={100}
+          renderItems={(items) => (
+            <GenericList<ContributorInfo>
+              items={items}
+              getGroupedItems={getContributorGroupedItems}
+              getGroupKeyName={(key: string) => key}
+              getItemId={(contributor: ContributorInfo) => contributor.slug}
+              getItemName={(contributor: ContributorInfo) =>
+                contributor.fullName
+              }
+              getItemLink={(contributor: ContributorInfo) =>
+                `/speakers/${contributor.slug}`
+              }
+              getItemCount={(contributor: ContributorInfo) =>
+                contributor.sermonCount
+              }
+            />
           )}
-          getGroupedItems={getContributorGroupedItems}
-          getGroupKeyName={(key: string) => key}
-          getItemId={(contributor: Contributor) => contributor.slug}
-          getItemName={(contributor: Contributor) => contributor.fullName}
-          getItemLink={(contributor: Contributor) =>
-            `/speakers/${contributor.slug}`
-          }
-          getItemCount={(contributor: Contributor) => contributor.sermonCount}
         />
       </SiSection>
     </SiPage>

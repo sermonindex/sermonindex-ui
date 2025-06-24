@@ -57,7 +57,7 @@ export const SermonList = ({
           title: title,
           mediaType: mediaTypes.join(','),
           offset: nextOffset,
-          limit: 50,
+          limit: 25,
         },
       );
 

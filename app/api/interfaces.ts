@@ -155,6 +155,17 @@ export interface Topic {
   createdAt: string;
 }
 
+export interface BookInfo {
+  id: string;
+
+  contributorSlug: string;
+  contributorFullName: string;
+  contributorImageUrl: string;
+
+  title: string;
+  mediaType: MediaType;
+}
+
 // The following bible entities are subject to change
 export interface BiblePassage {
   text: string;

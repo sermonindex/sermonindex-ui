@@ -1,14 +1,16 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
-import { ListResponse, MediaType } from '~/api/interfaces';
+import { BookInfo, ListPaginatedResponse, MediaType } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { BookList } from '~/components/book-list';
 import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const books = await fetchApi<ListResponse<any>>(`/books`);
+  const books = await fetchApi<ListPaginatedResponse<BookInfo>>(
+    `/books?offset=0&limit=25`,
+  );
 
   if ('statusCode' in books) {
     throw new Response('Oh no! Something went wrong!', {
@@ -21,7 +23,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Index() {
   const books = useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<string>('');
+
+  const [title, setTitle] = useState<string>('');
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
     Object.values(MediaType),
   );
@@ -60,7 +63,7 @@ export default function Index() {
       </div>
       <SiSection title="Books">
         <div className="md:px-4 pb-8">
-          <BookList books={books.values} />
+          <BookList books={books.values} nextPage={books.nextPage} />
         </div>
       </SiSection>
     </SiPage>
