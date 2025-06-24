@@ -23,6 +23,7 @@ import {
 
 import React from 'react';
 import { linkifyScripture } from '~/components/linkify-scripture';
+import { SiSection } from '~/components/section';
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -41,7 +42,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       `/bible/eng/parallel/${bookId}/${chapter}/${verse}?translations=BSB,eng_kjv,eng_asv,eng_webp,eng_ylt,eng_bbe,eng_drv,eng_gnv,eng_t4t,eng_our,eng_fbv,eng_pev,eng_ulb,eng_wbs,eng_lst`,
     ),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
-      `/sermons?book=${bookId}&chapter=${chapter}&verse=${verse}&offset=0&limit=50`,
+      `/sermons?book=${bookId}&chapter=${chapter}&verse=${verse}&offset=0&limit=25`,
     ),
     fetchApi<ListResponse<CommentaryVerse>>(
       `/commentary/eng/parallel/${bookId}/${chapter}/${verse}`,
@@ -72,7 +73,83 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div>
+      {/* Desktop View */}
+      <div className="w-full hidden lg:block">
+        <VerseContext
+          context={verseContext}
+          book={parallels.book}
+          chapter={parallels.chapter}
+          verse={parallels.verse}
+        />
+        <div className="w-full flex flex-row">
+          <SiSection sharesRightPadding={true} className="w-1/2">
+            <div>
+              {parallels.verses.map((verse, index) => {
+                return (
+                  <div key={index} className="py-1 px-2">
+                    <Link
+                      to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
+                    >
+                      <span className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer">
+                        {verse.translationName}
+                      </span>
+                    </Link>
+                    <div>{verse.text}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </SiSection>
+          <SiSection sharesRightPadding={true} className="w-1/2">
+            <TabContainer>
+              <TabList tabStyle="pill">
+                {commentaries.values.map((commentary, index) => (
+                  <TabListItem
+                    title={commentary.author ?? commentary.name}
+                    tabStyle="pill"
+                    key={index}
+                    active={commentary.id === activeCommentaryTab}
+                    onClick={() => setActiveCommentaryTab(commentary.id)}
+                  />
+                ))}
+              </TabList>
+
+              {commentaries.values.map((commentary, index) => (
+                <TabContent
+                  key={index}
+                  active={commentary.id === activeCommentaryTab}
+                >
+                  <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
+                  <p className="px-2 pt-2 whitespace-pre-line">
+                    <p className="whitespace-pre-line">
+                      {linkifyScripture(commentary.text).map((part, index) => (
+                        <React.Fragment key={index}>{part}</React.Fragment>
+                      ))}
+                    </p>
+                  </p>
+                </TabContent>
+              ))}
+            </TabContainer>
+          </SiSection>
+        </div>
+        <SiSection
+          title={`Sermons on ${parallels.book} ${parallels.chapter}:${parallels.verse}`}
+        >
+          <SermonList
+            sermons={sermons.values}
+            filters={{
+              book: parallels.book,
+              chapter: parallels.chapter,
+              verse: parallels.verse,
+            }}
+            nextPage={sermons.nextPage}
+            showContributor={true}
+          />
+        </SiSection>
+      </div>
+
+      {/* Mobile View */}
+      <div className="lg:hidden block">
         <VerseContext
           context={verseContext}
           book={parallels.book}
