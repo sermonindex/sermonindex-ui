@@ -1,6 +1,6 @@
 # Support
 
-<img src="https://img.sermonindex.net/give/thegcf-images2.png">
+<img src="https://sermonindex3.b-cdn.net/si-images/thegcf-images.png">
 
 Exciting News! After 22+ years, SermonIndex now has **tax-deductible** status for all giving in partnership with The Great Commission Foundation.
 

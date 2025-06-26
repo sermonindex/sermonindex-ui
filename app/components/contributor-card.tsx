@@ -8,7 +8,7 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
   return (
     <div className="flex space-x-2 md:space-x-12">
       <img
-        className="w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full object-cover flex-shrink-0"
+        className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-48 float-left rounded-lg bg-slate-100 object-cover mr-4 mb-2"
         src={contributor.imageUrl}
         alt={contributor.fullName}
       />
@@ -17,7 +17,7 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
           <h3 className="text-xl md:text-3xl font-semibold">
             {contributor.fullName}
           </h3>
-          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm text-neutral-600 dark:text-neutral-300">
+          <div className="flex items-center space-x-1 md:space-x-2 text-xs md:text-base text-neutral-600 dark:text-neutral-300">
             <span>{contributor.sermonCount} Sermons</span>
             {contributor.bookCount > 0 && (
               <>
@@ -32,7 +32,7 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
               </>
             )}
           </div>
-          <div className="flex pt-3 text-xs md:text-sm">
+          <div className="flex pt-3 text-xs md:text-base">
             <span className="line-clamp-3">{contributor.bio}</span>
           </div>
         </div>

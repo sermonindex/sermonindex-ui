@@ -230,7 +230,7 @@ export const Footer = () => {
             {/* Quote (Only shown if the screen size is medium or larger */}
             <div className="flex-1 flex-col relative text-si-light text-center hidden md:block">
               <img
-                src="/wesley-bg.png"
+                src="https://sermonindex3.b-cdn.net/si-images/wesley-bg.png"
                 alt="Wesley Quote"
                 className="w-3/4 h-auto ml-auto pb-3"
               />

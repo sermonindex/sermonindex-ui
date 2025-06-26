@@ -129,7 +129,7 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
               <Link to="/" className="ml-3 lg:ml-0">
                 <img
                   className="w-48 lg:w-60 h-auto items-center"
-                  src="/sermon-index-white.png"
+                  src="https://sermonindex3.b-cdn.net/si-images/sermon-index-white.png"
                   alt="sermon-index"
                 />
               </Link>

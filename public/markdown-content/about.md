@@ -36,7 +36,7 @@ by Leonard Ravenhill titled: _"[Christ Magnified In Our Bodies](/sermons/4882)."
 
 :::card-start
 
-![Founder Brother Greg Gordon](../greg-gordon.jpg)
+![Founder Brother Greg Gordon](https://sermonindex3.b-cdn.net/pdf/greggordon.png)
 
 :::card-middle
 
