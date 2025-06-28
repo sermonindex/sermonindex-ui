@@ -71,9 +71,15 @@ export const Player = ({
 
   useEffect(() => {
     const newSermon = sermons[currentIndex];
+    const newSrc = newSermon.streamUrl;
+
     setCurrentSrc(newSermon.streamUrl);
     setErrorDetail(null);
     setHasAttemptedFallback(false);
+
+    if (player.current) {
+      player.current.src = newSrc;
+    }
   }, [currentIndex, sermons]);
 
   // We fetch the vtt content so that the lazy loading strategy in the
@@ -180,6 +186,9 @@ export const Player = ({
 
   const handlePlaylistItemClick = (index: number) => {
     if (index !== currentIndex) {
+      if (!hasPlaybackStarted.current) {
+        hasPlaybackStarted.current = true;
+      }
       setCurrentIndex(index);
     }
   };
@@ -248,10 +257,10 @@ export const Player = ({
           }`}
           title={currentSermon.title}
           src={currentSrc}
-          key={currentSrc}
           playsInline
           crossOrigin
           viewType={viewType}
+          load={isPlaylistMode ? 'eager' : 'visible'}
           storage={
             isPlaylistMode
               ? undefined
