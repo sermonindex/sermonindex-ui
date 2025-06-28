@@ -240,9 +240,7 @@ export const Player = ({
   const mediaPlayerViewClasses =
     viewType === 'video'
       ? `aspect-video`
-      : `${
-          isPlaylistMode ? 'h-[250px]' : 'h-[300px]'
-        } text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
+      : `h-[300px] text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
 
   return (
     <div className="sm:py-4 md:py-6 sm:px-8">

@@ -92,6 +92,10 @@ export const CustomLayout = ({
               isSearchOpen={isSearchOpen}
               onSearchIconClick={toggleSearch}
               isPlaylistMode={isPlaylistMode}
+              onShuffleStateChange={onShuffleStateChange}
+              shuffleState={shuffleState}
+              onRepeatStateChange={onRepeatStateChange}
+              repeatState={repeatState}
             />
           </div>
         </Controls.Root>
@@ -117,7 +121,7 @@ export const CustomLayout = ({
               <Sliders.Time />
               <TimeGroup />
             </Controls.Group>
-            <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center justify-between mt-1 sm:mt-2">
               <Controls.Group className="flex items-center w-1/3">
                 <Buttons.Mute tooltipPlacement="top" />
                 <Sliders.Volume />

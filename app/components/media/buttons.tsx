@@ -45,7 +45,7 @@ export interface MediaButtonProps {
 }
 
 enum MediaButtonSize {
-  sm = 4,
+  sm = 6,
   md = 8,
   lg = 14,
   xl = 20,
