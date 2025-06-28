@@ -157,16 +157,6 @@ function PlaybackRateSubmenu() {
         `}
           />
         </SpeedSlider.Root>
-        <Menu.RadioGroup
-          className="w-full flex flex-col p-1"
-          value={options.selectedValue}
-        >
-          {options.map(({ label, value, select }) => (
-            <Radio value={value} onSelect={select} key={value}>
-              {label}
-            </Radio>
-          ))}
-        </Menu.RadioGroup>
       </Menu.Content>
     </Menu.Root>
   );
