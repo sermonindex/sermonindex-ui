@@ -54,14 +54,19 @@ export const CustomLayout = ({
   const hasError = errorDetail !== null;
 
   const controlBaseClasses = `opacity-0 transition-opacity duration-300 ease-in-out media-controls:opacity-100 media-paused:opacity-100`;
-  const controlStyleBottom =
+
+  const bottomControlsContainerClasses =
     viewType === 'video'
-      ? `absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-white sm:rounded-b-xl z-10 media-fullscreen:bottom-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
-      : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-10`;
-  const controlStyleVideoTop =
+      ? `absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent sm:rounded-b-xl z-10 ${controlBaseClasses} text-white`
+      : `flex flex-col group-data-[fullscreen]:text-white ${controlBaseClasses} z-10`;
+
+  const topControlsContainerClasses =
     viewType === 'video'
-      ? `absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 text-white sm:rounded-t-xl z-10 media-fullscreen:top-4 media-fullscreen:left-4 media-fullscreen:right-4 ${controlBaseClasses}`
-      : `flex flex-col p-4 media-fullscreen:text-white media-fullscreen:m-8 ${controlBaseClasses} z-20`;
+      ? `absolute top-0 left-0 right-0 bg-gradient-to-b from-black/90 to-transparent sm:rounded-t-xl z-10 ${controlBaseClasses} text-white`
+      : `flex flex-col group-data-[fullscreen]:text-white ${controlBaseClasses} z-10`;
+
+  const topPaddingWrapperClasses = `p-4 group-data-[fullscreen]:pt-6 group-data-[fullscreen]:px-6`;
+  const bottomPaddingWrapperClasses = `p-4 group-data-[fullscreen]:pb-6 group-data-[fullscreen]:px-6`;
 
   const outerDivBaseClass = `relative w-full h-full`; // Base styles for the container
 
@@ -73,16 +78,12 @@ export const CustomLayout = ({
       {/* Inner container for layout flow */}
       <div
         className={`w-full h-full ${
-          viewType === 'audio' ? 'flex flex-col' : ''
+          viewType === 'audio' ? 'flex flex-col' : 'flex flex-col'
         }`}
       >
         {/* --- Top Controls --- */}
-        <div className={''}>
-          <Controls.Root
-            className={`${controlStyleVideoTop} ${
-              viewType === 'video' ? 'flex flex-col w-full' : ''
-            }`}
-          >
+        <Controls.Root className={topControlsContainerClasses}>
+          <div className={topPaddingWrapperClasses}>
             <Cover
               title={title}
               author={author}
@@ -92,81 +93,87 @@ export const CustomLayout = ({
               onSearchIconClick={toggleSearch}
               isPlaylistMode={isPlaylistMode}
             />
-          </Controls.Root>
-        </div>
+          </div>
+        </Controls.Root>
 
         {/* Error Div */}
         {hasError && <SiMediaError detail={errorDetail} />}
 
         {/* --- Captions --- */}
-        <div className={`${viewType === 'audio' ? 'flex-1' : ''} relative`}>
-          <AudioCaptions />
-          {/* todo: fix video sermons */}
-          {/*{viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}*/}
+        <div
+          className={`relative ${
+            viewType === 'video'
+              ? 'flex-1 flex flex-col justify-end'
+              : 'flex-1 relative'
+          }`}
+        >
+          {viewType === 'video' ? <VideoCaptions /> : <AudioCaptions />}
         </div>
 
         {/* --- Bottom Controls --- */}
-        <Controls.Root className={controlStyleBottom}>
-          <Controls.Group>
-            <Sliders.Time />
-            <TimeGroup />
-          </Controls.Group>
-          <div className="flex items-center justify-between mt-2">
-            <Controls.Group className="flex items-center w-1/3">
-              <Buttons.Mute tooltipPlacement="top" />
-              <Sliders.Volume />
+        <Controls.Root className={bottomControlsContainerClasses}>
+          <div className={bottomPaddingWrapperClasses}>
+            <Controls.Group>
+              <Sliders.Time />
+              <TimeGroup />
             </Controls.Group>
-            <Controls.Group className="flex items-center justify-center w-1/3 gap-x-1">
-              {isPlaylistMode && (
-                <div className="flex items-center gap-x-2">
-                  <div className="hidden sm:block">
-                    <Buttons.Shuffle
-                      onShuffleStateChange={onShuffleStateChange}
-                      state={shuffleState}
+            <div className="flex items-center justify-between mt-2">
+              <Controls.Group className="flex items-center w-1/3">
+                <Buttons.Mute tooltipPlacement="top" />
+                <Sliders.Volume />
+              </Controls.Group>
+              <Controls.Group className="flex items-center justify-center w-1/3 gap-x-1">
+                {isPlaylistMode && (
+                  <div className="flex items-center gap-x-2">
+                    <div className="hidden sm:block">
+                      <Buttons.Shuffle
+                        onShuffleStateChange={onShuffleStateChange}
+                        state={shuffleState}
+                        tooltipPlacement="top"
+                      />
+                    </div>
+                    <Buttons.Skip
+                      direction="backward"
+                      onSkipClick={prevCallback}
                       tooltipPlacement="top"
                     />
                   </div>
-                  <Buttons.Skip
-                    direction="backward"
-                    onSkipClick={prevCallback}
-                    tooltipPlacement="top"
-                  />
-                </div>
-              )}
-              {!isPlaylistMode && (
-                <Buttons.Seek seconds={-10} tooltipPlacement="top" />
-              )}
-              <Buttons.Play tooltipPlacement="top" />
-              {!isPlaylistMode && (
-                <Buttons.Seek seconds={10} tooltipPlacement="top" />
-              )}
-              {isPlaylistMode && (
-                <div className="flex items-center gap-x-2">
-                  <Buttons.Skip
-                    direction="forward"
-                    onSkipClick={nextCallback}
-                    tooltipPlacement="top"
-                  />
-                  <div className="hidden sm:block">
-                    <Buttons.Repeat
-                      onRepeatStateChange={onRepeatStateChange}
-                      state={repeatState}
+                )}
+                {!isPlaylistMode && (
+                  <Buttons.Seek seconds={-10} tooltipPlacement="top" />
+                )}
+                <Buttons.Play tooltipPlacement="top" />
+                {!isPlaylistMode && (
+                  <Buttons.Seek seconds={10} tooltipPlacement="top" />
+                )}
+                {isPlaylistMode && (
+                  <div className="flex items-center gap-x-2">
+                    <Buttons.Skip
+                      direction="forward"
+                      onSkipClick={nextCallback}
                       tooltipPlacement="top"
                     />
+                    <div className="hidden sm:block">
+                      <Buttons.Repeat
+                        onRepeatStateChange={onRepeatStateChange}
+                        state={repeatState}
+                        tooltipPlacement="top"
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
-            </Controls.Group>
-            <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
-              <Buttons.Caption tooltipPlacement="top" />
-              <Buttons.Fullscreen tooltipPlacement="top" />
-              <Buttons.PIP tooltipPlacement="top" />
-              <Menus.Settings
-                placement="top end"
-                tooltipPlacement="top end"
-                downloadUrl={downloadUrl}
-              />
-            </Controls.Group>
+                )}
+              </Controls.Group>
+              <Controls.Group className="flex items-center justify-end w-1/3 gap-x-1">
+                <Buttons.Caption tooltipPlacement="top" />
+                <Buttons.Fullscreen tooltipPlacement="top" />
+                <Buttons.PIP tooltipPlacement="top" />
+                <Menus.Settings
+                  placement="top end"
+                  tooltipPlacement="top end"
+                  downloadUrl={downloadUrl}
+                />
+              </Controls.Group>
+            </div>
           </div>
         </Controls.Root>
       </div>

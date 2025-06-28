@@ -7,7 +7,6 @@ import {
 } from '@vidstack/react';
 import { VTTCue } from 'media-captions';
 
-// --- Component Props Interface ---
 interface CustomCaptionDisplayProps {
   /** Number of previous cues to display */
   numPrev?: number;
@@ -157,7 +156,7 @@ export function CustomCaptionDisplay({
       aria-atomic="true"
     >
       <div
-        className="relative flex flex-col items-center"
+        className="relative flex flex-col items-center justify-center"
         style={{
           // Adjusted multiplier slightly for potentially tighter lines
           maxHeight: `calc(${
@@ -185,7 +184,7 @@ export function CustomCaptionDisplay({
             return (
               <p
                 key={cueKey}
-                className={`cue-item text-center select-none  transition-all duration-700 ease-in-out whitespace-nowrap text-ellipsis ${textColor}`}
+                className={`cue-item text-center select-none transition-all duration-700 ease-in-out whitespace-nowrap text-ellipsis ${textColor}`}
                 style={{
                   fontSize: 'var(--cue-font-size)',
                   lineHeight: 'var(--cue-line-height)',
@@ -203,8 +202,36 @@ export function CustomCaptionDisplay({
   );
 }
 
+function useWindowWidthFontSize() {
+  const [fontSize, setFontSize] = useState('1rem');
+  const isFullScreen = useMediaState('fullscreen');
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        // Tailwind 'md' breakpoint
+        setFontSize('0.8rem');
+      } else if (width < 1280) {
+        // Tailwind 'xl' breakpoint
+        setFontSize(isFullScreen ? '1.25rem' : '1.0rem');
+      } else {
+        setFontSize(isFullScreen ? '2.0rem' : '1.25rem');
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isFullScreen]);
+
+  return fontSize;
+}
+
 export function VideoCaptions() {
   const track = useMediaState('textTrack');
+  const captionSize = useWindowWidthFontSize();
+
   // Check if a track is selected AND it's specifically a caption/subtitle track
   const captionsAreOn = track && isTrackCaptionKind(track);
 
@@ -216,24 +243,30 @@ export function VideoCaptions() {
   return (
     <div
       className="
-            absolute bottom-0 left-0 right-0
-            justify-center
+            absolute bottom-0 group-data-[fullscreen]:2xl:bottom-12
+            group-data-[fullscreen]:xl:bottom-8
+            group-data-[fullscreen]:lg:bottom-6
+            group-data-[fullscreen]:bottom-4
+            left-1/2 -translate-x-1/2
             pointer-events-none
             z-9
-            p-4
+            flex items-center justify-center
+            p-2 sm:p-4 md:p-6 lg:p-8 lg:media-fullscreen:p-6 xl:media-fullscreen:p-12
+            mb-1 sm:mb-2 md:mb-4 lg:media-fullscreen:mb-12 2xl:media-fullscreen:mb-24
             transition-[padding] duration-300
-            media-controls:pb-[200px]
+            media-controls:bottom-[130px]
+            media-paused:bottom-[130px]
             media-preview:opacity-0
-            bg-black/20
-            rounded-b-xl
+            bg-black/20 backdrop-blur-lg
+            rounded-xl
           "
-      aria-hidden="true" // Hide decorative wrapper from accessibility tree
+      aria-hidden="true"
     >
       <CustomCaptionDisplay
-        numPrev={4}
-        numNext={4}
-        lineHeight="1em"
-        fontSize="0.9rem"
+        numPrev={2}
+        numNext={2}
+        lineHeight="0.75em"
+        fontSize={captionSize}
         textColor="text-white"
       />
     </div>
@@ -242,6 +275,8 @@ export function VideoCaptions() {
 
 export function AudioCaptions() {
   const track = useMediaState('textTrack');
+  const captionSize = useWindowWidthFontSize();
+
   // Check if a track is selected AND it's specifically a caption/subtitle track
   const captionsAreOn = track && isTrackCaptionKind(track);
 
@@ -251,12 +286,15 @@ export function AudioCaptions() {
   }
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50%] sm:-translate-y-[100%]">
+    <div
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50%] sm:-translate-y-[90%] z-9"
+      aria-hidden="true"
+    >
       <CustomCaptionDisplay
         numPrev={2}
         numNext={2}
         lineHeight="0.75em"
-        fontSize="1.0rem"
+        fontSize={captionSize}
         textColor="text-black dark:text-white media-fullscreen:text-white"
       />
     </div>

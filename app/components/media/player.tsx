@@ -245,14 +245,14 @@ export const Player = ({
         } text-black dark:text-white bg-neutral-200 dark:bg-neutral-600`;
 
   return (
-    <div className="sm:py-4 md:py-6 sm:px-8 ">
+    <div className="sm:py-4 md:py-6 sm:px-8">
       <div
         className={`${
           isPlaylistMode ? 'sm:rounded-xl shadow-2xl overflow-hidden' : ''
         }`}
       >
         <MediaPlayer
-          className={`${mediaPlayerBaseClasses} ${mediaPlayerViewClasses} ${
+          className={`group ${mediaPlayerBaseClasses} ${mediaPlayerViewClasses} ${
             isPlaylistMode ? '' : 'sm:rounded-xl shadow-2xl overflow-hidden'
           }`}
           title={currentSermon.title}

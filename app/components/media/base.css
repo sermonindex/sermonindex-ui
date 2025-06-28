@@ -423,10 +423,6 @@ iframe.vds-youtube[data-no-controls] {
     word-break: break-word;
 }
 
-:where([data-fullscreen][data-orientation='portrait'] .vds-captions) {
-    --cue-default-font-size: var(--media-cue-font-size, calc(var(--overlay-width) / 100 * 4.5));
-}
-
 :where([data-view-type='audio'] .vds-captions) {
     position: relative;
     margin: 0;
@@ -631,21 +627,6 @@ iframe.vds-youtube[data-no-controls] {
  * Video Controls
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-
-:where([data-view-type='video'] .vds-controls) {
-    display: flex;
-    position: absolute;
-    flex-direction: column;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: auto;
-    padding: var(--media-controls-padding, 0px);
-    transition: var(--media-controls-out-transition, opacity 0.2s ease-out);
-}
 
 :where([data-view-type='video'] .vds-controls[data-visible]) {
     opacity: 1;
