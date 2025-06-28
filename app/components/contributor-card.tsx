@@ -8,7 +8,7 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
   return (
     <div className="flex space-x-2 md:space-x-12">
       <img
-        className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-48 float-left rounded-lg bg-slate-100 object-cover mr-4 mb-2"
+        className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-48 float-left rounded-lg bg-slate-100 object-cover mr-2 mb-2"
         src={contributor.imageUrl}
         alt={contributor.fullName}
       />

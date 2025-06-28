@@ -15,7 +15,7 @@ export const SpeakerBio = ({
     <>
       <div className={'flow-root'}>
         <img
-          className="float-left rounded-lg bg-slate-100 w-36 h-48 object-cover mr-4 mb-2"
+          className="float-left rounded-lg bg-slate-100 w-24 h-32 sm:w-36 sm:h-48 object-cover mr-4 mb-2"
           loading={'lazy'}
           src={contributor.imageUrl}
           alt={contributor.fullName}
