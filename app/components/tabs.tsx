@@ -53,8 +53,8 @@ export const TabListItem = ({
 export const TabList = ({ children, tabStyle = 'underline' }: TabListProps) => {
   const style =
     tabStyle === 'underline'
-      ? 'text-sm md:text-base font-semibold border-b border-neutral-200 dark:border-neutral-700'
-      : 'text-sm';
+      ? 'font-semibold border-b border-neutral-200 dark:border-neutral-700'
+      : '';
 
   return (
     <div className={`flex text-center ${style}`}>

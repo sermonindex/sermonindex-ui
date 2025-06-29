@@ -102,7 +102,7 @@ export default function Component() {
           {/* ... Scriptures content ... */}
           <SiSection title="Scriptures" sharesLeftPadding={true}>
             {Array.isArray(sermon.bibleReferences) &&
-              sermon.bibleReferences.length > 0 ? (
+            sermon.bibleReferences.length > 0 ? (
               sermon.bibleReferences.map((reference, index) => (
                 <div
                   key={index}

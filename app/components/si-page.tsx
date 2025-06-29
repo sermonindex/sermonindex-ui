@@ -33,8 +33,9 @@ export function SiPage({ children, sermon, contributor, post }: SiPageProps) {
       <SiMargins>
         <div
           className="
-          bg-si-light dark:bg-si-slate
-          text-si-slate dark:text-si-light"
+          text-si-slate dark:text-si-light
+          text-base
+          "
         >
           <div style={mainStyle} className="flex-grow">
             <Navbar onEffectiveHeightChange={setNavbarOffset} />

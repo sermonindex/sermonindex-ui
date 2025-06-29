@@ -86,11 +86,7 @@ export function SermonCard({
             alt={sermon.title}
           />
         )}
-        <p
-          className={
-            sermon.description ? 'text-xs md:text-sm line-clamp-6 mb-1' : ''
-          }
-        >
+        <p className={sermon.description ? 'line-clamp-5 mb-1' : ''}>
           {sermon.description}
         </p>
       </div>
