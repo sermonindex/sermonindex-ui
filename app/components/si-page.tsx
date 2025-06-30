@@ -34,7 +34,7 @@ export function SiPage({ children, sermon, contributor, post }: SiPageProps) {
         <div
           className="
           text-si-slate dark:text-si-light
-          text-base
+          text-sm md:text-base
           "
         >
           <div style={mainStyle} className="flex-grow">

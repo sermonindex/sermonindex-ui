@@ -6,12 +6,14 @@ import {
 } from '~/api/bible.types';
 import { OsisToBookName } from '~/common/bible-constants';
 import { constructVerseReference } from './bible-chapter';
+import React from 'react';
 
 export interface VerseContextProps {
   book: string;
   chapter: number;
   verse: number;
   context: ChapterData;
+  slim?: boolean;
 }
 
 export const VerseContext = ({
@@ -19,6 +21,7 @@ export const VerseContext = ({
   chapter: chapterNumber,
   verse: verseNumber,
   context: data,
+  slim = false,
 }: VerseContextProps) => {
   const headingContent = data.content.find(
     (item) => item.type === 'heading',
@@ -55,12 +58,9 @@ export const VerseContext = ({
 
       versesContent.push(
         reference,
-        // TODO: Highlight verse if it is the current verse
         <span
           key={`verse-${chapterNumber}-${verse.number}`}
-          className={`${
-            verse.number === verseNumber ? 'font-semibold' : 'text-sm'
-          }`}
+          className={`${verse.number === verseNumber ? 'font-semibold' : ''}`}
         >
           {verseText.join(' ')}
         </span>,
@@ -68,12 +68,16 @@ export const VerseContext = ({
     }
   }
 
+  const outerPadding = slim ? '' : 'p-4 md:p-8';
+
   return (
-    <div className="p-4 md:p-8">
-      <h1 className="text-2xl md:text-3xl">
-        {OsisToBookName[book as keyof typeof OsisToBookName]} {chapterNumber}:
-        {verseNumber}
-      </h1>
+    <div className={outerPadding}>
+      {!slim && (
+        <h1 className="text-2xl md:text-3xl">
+          {OsisToBookName[book as keyof typeof OsisToBookName]} {chapterNumber}:
+          {verseNumber}
+        </h1>
+      )}
       <h2
         id="context-heading"
         className="mb-1 text-neutral-500 dark:text-neutral-400"

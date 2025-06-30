@@ -22,8 +22,12 @@ import {
 } from '~/components/tabs';
 
 import React from 'react';
-import { linkifyScripture } from '~/components/linkify-scripture';
 import { SiSection } from '~/components/section';
+import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
+import { BibleVerseParallel } from '~/components/bible-verse-parallel';
+import { OsisToBookName } from '~/common/bible-constants';
+import { AuthorImage } from '~/components/image-author';
+import { formatNumber } from '~/common/format-number';
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -67,26 +71,23 @@ export default function Index() {
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
-  const [activeCommentaryTab, setActiveCommentaryTab] = useState(
-    commentaries.values[0].id,
-  );
 
   return (
     <SiPage>
       {/* Desktop View */}
-      <div className="w-full hidden lg:block">
-        <VerseContext
-          context={verseContext}
-          book={parallels.book}
-          chapter={parallels.chapter}
-          verse={parallels.verse}
-        />
-        <div className="w-full flex flex-row">
-          <SiSection sharesRightPadding={true} className="w-1/2">
-            <div>
+      <div className="w-full hidden lg:block pb-8">
+        <h1 className="flex w-full text-2xl md:text-3xl items-center justify-center">
+          {OsisToBookName[parallels.book as keyof typeof OsisToBookName]}{' '}
+          {parallels.chapter}:{parallels.verse}
+        </h1>
+
+        <div className="grid grid-cols-3">
+          <div className="col-span-2">
+            <SiSection title="Verse">
               {parallels.verses.map((verse, index) => {
                 return (
                   <div key={index} className="py-1 px-2">
+                    {/* TODO: LINK TRANSLATION NAME TO CHAPTER PAGE */}
                     <Link
                       to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
                     >
@@ -98,53 +99,52 @@ export default function Index() {
                   </div>
                 );
               })}
-            </div>
-          </SiSection>
-          <SiSection sharesRightPadding={true} className="w-1/2">
-            <TabContainer>
-              <TabList tabStyle="pill">
-                {commentaries.values.map((commentary, index) => (
-                  <TabListItem
-                    title={commentary.author ?? commentary.name}
-                    tabStyle="pill"
-                    key={index}
-                    active={commentary.id === activeCommentaryTab}
-                    onClick={() => setActiveCommentaryTab(commentary.id)}
-                  />
-                ))}
-              </TabList>
-
-              {commentaries.values.map((commentary, index) => (
-                <TabContent
-                  key={index}
-                  active={commentary.id === activeCommentaryTab}
-                >
-                  <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
-                  <p className="px-2 pt-2 whitespace-pre-line">
-                    <p className="whitespace-pre-line">
-                      {linkifyScripture(commentary.text).map((part, index) => (
-                        <React.Fragment key={index}>{part}</React.Fragment>
-                      ))}
-                    </p>
-                  </p>
-                </TabContent>
-              ))}
-            </TabContainer>
-          </SiSection>
+            </SiSection>
+          </div>
+          <div>
+            <SiSection title="Context">
+              <VerseContext
+                context={verseContext}
+                book={parallels.book}
+                chapter={parallels.chapter}
+                verse={parallels.verse}
+                slim={true}
+              />
+            </SiSection>
+            {sermons.values.length > 0 && (
+              <SiSection title="Sermons">
+                {sermons.values.slice(0, 7).map((sermon, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex  justify-between py-1 px-2"
+                    >
+                      <div className="flex flex-col ">
+                        <Link
+                          to={`/sermons/${sermon.id}`}
+                          className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer"
+                        >
+                          {sermon.title}
+                        </Link>
+                        <div className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
+                          <AuthorImage
+                            author={sermon.contributorFullName}
+                            imageUrl={sermon.contributorImageUrl}
+                          />
+                        </div>
+                      </div>
+                      <span className="pl-2 text-sm text-si-slate/80 dark:text-si-dim/80">
+                        {formatNumber(sermon.views)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </SiSection>
+            )}
+          </div>
         </div>
-        <SiSection
-          title={`Sermons on ${parallels.book} ${parallels.chapter}:${parallels.verse}`}
-        >
-          <SermonList
-            sermons={sermons.values}
-            filters={{
-              book: parallels.book,
-              chapter: parallels.chapter,
-              verse: parallels.verse,
-            }}
-            nextPage={sermons.nextPage}
-            showContributor={true}
-          />
+        <SiSection title="Commentary">
+          <CommentaryByVerseTabbed commentaries={commentaries} />
         </SiSection>
       </div>
 
@@ -174,22 +174,7 @@ export default function Index() {
             active={activeTab === Tabs.Scripture}
             className="py-4 px-2 md:p-4"
           >
-            <div>
-              {parallels.verses.map((verse, index) => {
-                return (
-                  <div key={index} className="py-1 px-2">
-                    <Link
-                      to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
-                    >
-                      <span className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer">
-                        {verse.translationName}
-                      </span>
-                    </Link>
-                    <div>{verse.text}</div>
-                  </div>
-                );
-              })}
-            </div>
+            <BibleVerseParallel parallels={parallels} />
           </TabContent>
 
           {/* <TabContent
@@ -222,35 +207,7 @@ export default function Index() {
             active={activeTab === Tabs.Commentary}
             className="pt-2"
           >
-            <TabContainer>
-              <TabList tabStyle="pill">
-                {commentaries.values.map((commentary, index) => (
-                  <TabListItem
-                    title={commentary.author ?? commentary.name}
-                    tabStyle="pill"
-                    key={index}
-                    active={commentary.id === activeCommentaryTab}
-                    onClick={() => setActiveCommentaryTab(commentary.id)}
-                  />
-                ))}
-              </TabList>
-
-              {commentaries.values.map((commentary, index) => (
-                <TabContent
-                  key={index}
-                  active={commentary.id === activeCommentaryTab}
-                >
-                  <h1 className="px-2 pt-2 font-semibold">{commentary.name}</h1>
-                  <p className="px-2 pt-2 whitespace-pre-line">
-                    <p className="whitespace-pre-line">
-                      {linkifyScripture(commentary.text).map((part, index) => (
-                        <React.Fragment key={index}>{part}</React.Fragment>
-                      ))}
-                    </p>
-                  </p>
-                </TabContent>
-              ))}
-            </TabContainer>
+            <CommentaryByVerseTabbed commentaries={commentaries} />
           </TabContent>
         </TabContainer>
       </div>

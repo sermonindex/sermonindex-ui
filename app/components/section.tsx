@@ -1,15 +1,12 @@
-import { Link, useLocation } from '@remix-run/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa6';
+import React from 'react';
 import { formatNumber } from '~/common/format-number';
 import { hasContent } from '~/common/sanitize';
+import { SiHeading1 } from '~/components/si-styles';
 
 interface SiSectionProps {
   title?: string;
   tag?: string;
   count?: number;
-  expandable?: boolean;
-  defaultExpanded?: boolean;
   sharesLeftPadding?: boolean;
   sharesRightPadding?: boolean;
   className?: string;
@@ -20,45 +17,29 @@ export function SiSection({
   title = '',
   tag = title,
   count,
-  expandable = false,
-  defaultExpanded = false,
   sharesLeftPadding = false,
   sharesRightPadding = false,
   className,
   children,
 }: SiSectionProps) {
-  const [open, setOpen] = useState(defaultExpanded);
-  const [contentHeight, setContentHeight] = useState<number | null>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (open && contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight);
-    } else {
-      setContentHeight(null); // Set to null when closed to avoid a flash of content
-    }
-  }, [open, children]);
-
   // This allows sections to be in columns beside each other without
   // double padding that looks like a big hold between the sections.
   let paddingLeft = sharesLeftPadding ? 'pl-1 md:pl-4' : 'pl-1 md:pl-8';
   let paddingRight = sharesRightPadding ? 'pr-1 md:pr-4' : 'pr-1 md:pr-8';
-  let padding = `py-4 ${paddingLeft} ${paddingRight}`;
+  let padding = `py-2 ${paddingLeft} ${paddingRight}`;
 
-  const location = useLocation();
-  const linkTo = `${location.pathname}#${tag}`;
-
-  // const headingStyles = `text-lg md:text-xl px-4 py-1 md:py-2 rounded-lg w-full text-black dark:text-white bg-neutral-200 dark:bg-neutral-600 shadow-lg ${className}`;
-  const headingStyles = `text-lg md:text-xl mx-1 px-4 py-1 md:py-2 w-full text-black dark:text-white border-b-2 border-b border-neutral-300 dark:border-neutral-700 pb-2 ${className}`;
   const countStyles =
     'flex items-center justify-center w-12 h-5 ms-2 text-xs rounded-full text-black dark:text-white bg-neutral-300 dark:bg-neutral-700';
 
   const getSectionTitle = () => {
     return (
-      <h1 className="flex items-center space-x-4">
+      <SiHeading1
+        className={`flex flex-row w-full items-center space-x-4 ${className}`}
+        customId={tag}
+      >
         <span>{title}</span>
         {count && <span className={countStyles}>{formatNumber(count)}</span>}
-      </h1>
+      </SiHeading1>
     );
   };
 
@@ -68,50 +49,13 @@ export function SiSection({
 
   // Determine the class for the children container based on whether children exist
   const childrenContainerClass =
-    React.Children.count(children) > 0 ? 'px-2 py-3 md:px-4 md:py-4' : '';
+    React.Children.count(children) > 0 ? 'px-1 py-1 md:px-2 md:py-2' : '';
 
   return (
-    <div className="flex flex-col" id={tag}>
-      <div className={`flex flex-col w-full ${padding}`}>
-        {expandable ? (
-          <>
-            <button
-              className={`flex items-center justify-between ${headingStyles}`}
-              onClick={() => setOpen(!open)}
-            >
-              <div className="flex">
-                <span className="text-left text-lg md:text-xl font-light">
-                  <Link to={linkTo}>{getSectionTitle()}</Link>
-                </span>
-              </div>
-              <div className="flex text-sm items-center justify-center">
-                <FaChevronDown
-                  className={`${
-                    open ? 'rotate-180' : ''
-                  } shrink-0 transition-transform duration-500`}
-                  aria-hidden="true"
-                />
-              </div>
-            </button>
-
-            <div
-              ref={contentRef}
-              className="overflow-hidden transition-max-height duration-500"
-              style={{
-                maxHeight: contentHeight ? `${contentHeight}px` : '0px',
-              }}
-            >
-              <div className={childrenContainerClass}>{children}</div>
-            </div>
-          </>
-        ) : (
-          <>
-            <Link to={linkTo} className={headingStyles}>
-              {getSectionTitle()}
-            </Link>
-            <div className={childrenContainerClass}>{children}</div>
-          </>
-        )}
+    <div className={`flex flex-col w-full ${padding}`}>
+      {getSectionTitle()}
+      <div className={`flex flex-col w-full`}>
+        <div className={childrenContainerClass}>{children}</div>
       </div>
     </div>
   );

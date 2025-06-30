@@ -52,6 +52,9 @@ You can read other [commendations](/md/commendations) from pastors and ministry 
     border-radius: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   ">
     USA Donations
   </button>
@@ -74,6 +77,9 @@ Friends of the Great Commission PO Box 6305 Colorado Springs, CO 80934
     border-radius: 0.5rem;
     font-size: 1rem;
     cursor: pointer;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   ">
     Canada Donations
   </button>

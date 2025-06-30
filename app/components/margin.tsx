@@ -13,7 +13,7 @@ export const SiMargins = ({ children }: SiMarginProps) => {
   return (
     <div className="lg:w-full">
       <div className="lg:px-16">
-        <div className="lg:mx-auto lg:max-w-6xl lg:border-x-2 lg:border-si-gray lg:dark:border-si-rock">
+        <div className="lg:mx-auto lg:max-w-7xl lg:border-x-2 lg:border-si-gray lg:dark:border-si-rock">
           {children}
         </div>
       </div>
