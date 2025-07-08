@@ -58,7 +58,6 @@ export const DynamicList = <T,>({
         return;
       }
 
-      console.log('Fetched items: ' + nextOffset);
       offsetRef.current = result.nextPage;
       setItems((prevItems) =>
         loadFirstPage ? result.values : [...prevItems, ...result.values],

@@ -109,7 +109,7 @@ export default function Index() {
             </Link>
           </span>
         </div>
-        {
+        {translation === 'BSB' && (
           <div className="flex items-center justify-center">
             <div className="w-full md:w-3/4">
               <MiniPlayer
@@ -119,7 +119,7 @@ export default function Index() {
               />
             </div>
           </div>
-        }
+        )}
 
         <TabContainer>
           <TabList>
