@@ -6,6 +6,7 @@ const SI_API_URL = 'http://localhost:3000/v1';
 export async function fetchApi<T>(
   path: string,
   queries?: Record<string, string | number | undefined | null>,
+  method?: 'GET' | 'POST',
 ): Promise<T | IErrorResponse> {
   const url = new URL(`${SI_API_URL}${path}`);
 
@@ -25,7 +26,7 @@ export async function fetchApi<T>(
     }
   }
 
-  const response = await fetch(url.toString());
+  const response = await fetch(url.toString(), { method: method || 'GET' });
   const data = (await response.json()) as T;
 
   if (response.status >= 300) {

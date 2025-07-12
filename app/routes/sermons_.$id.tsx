@@ -7,7 +7,7 @@ import { ClickableText, SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { linkifyScripture } from '~/components/linkify-scripture';
 import { Player } from '~/components/media/player';
 import { SermonDownload } from '~/components/sermon-download';
@@ -39,6 +39,22 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Component() {
   const { sermon, contributor } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    if (!sermon || sermon.mediaType != MediaType.Text) return;
+
+    const incrementViewCount = async () => {
+      try {
+        await fetchApi(`/sermons/viewed/id/${sermon.id}`, {}, 'POST');
+      } catch (error) {
+        console.error('Failed to increment sermon view count:', error);
+      }
+    };
+    const timer = setTimeout(incrementViewCount, 30_000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <SiPage sermon={sermon}>
       {/* Only show this div if MediaType is Audio or Video */}
