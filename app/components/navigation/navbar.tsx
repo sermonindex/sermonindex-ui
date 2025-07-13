@@ -8,15 +8,12 @@ import { Midbar } from '~/components/navigation/mid-bar';
 import { SearchModal } from '../search-modal';
 import { Sidebar } from './sidebar';
 
-interface NavbarProps {
-  onEffectiveHeightChange: (height: number) => void;
-}
+interface NavbarProps {}
 
-export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
+export const Navbar = ({}: NavbarProps) => {
   const [dark, setDark] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const navRef = useRef<HTMLElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLDivElement>(null);
 
@@ -46,32 +43,6 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
       darkModeHandler(prefersDarkMode); // Use system preference
     }
   }, []);
-
-  // Effect to set top of page
-  useEffect(() => {
-    const calculateAndReportHeight = () => {
-      if (navRef.current) {
-        const height = navRef.current.offsetHeight;
-        onEffectiveHeightChange(height);
-      } else {
-        onEffectiveHeightChange(0);
-      }
-    };
-    calculateAndReportHeight();
-    const observer = new ResizeObserver(calculateAndReportHeight);
-    if (navRef.current) {
-      observer.observe(navRef.current);
-    }
-    window.addEventListener('resize', calculateAndReportHeight);
-
-    return () => {
-      if (navRef.current) {
-        observer.unobserve(navRef.current);
-      }
-      observer.disconnect();
-      window.removeEventListener('resize', calculateAndReportHeight);
-    };
-  }, [onEffectiveHeightChange]);
 
   // Close sidebar when clicking outside
   useEffect(() => {
@@ -103,7 +74,6 @@ export const Navbar = ({ onEffectiveHeightChange }: NavbarProps) => {
   return (
     <>
       <nav
-        ref={navRef}
         className="
         fixed top-0 left-0 right-0 z-50
         lg:relative lg:z-auto

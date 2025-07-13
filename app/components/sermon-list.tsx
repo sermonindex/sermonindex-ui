@@ -1,11 +1,9 @@
 import { Link } from '@remix-run/react';
-import { useEffect, useRef, useState } from 'react';
-import { ListPaginatedResponse, MediaType, SermonInfo } from '~/api/interfaces';
-import { fetchApi } from '~/api/sdk';
+import { useState } from 'react';
+import { MediaType, SermonInfo } from '~/api/interfaces';
 import DropdownCheckbox from './dropdown-checkbox';
-import { InfiniteScroll } from './infinite-scroll';
+import { DynamicList } from './dynamic-list';
 import { SermonCard } from './sermon-card';
-import { Spinner } from './spinner';
 
 export interface SermonListProps {
   sermons: SermonInfo[];
@@ -17,87 +15,16 @@ export interface SermonListProps {
 }
 
 export const SermonList = ({
-  sermons: initialSermons,
+  sermons,
   baseUrl = '/sermons',
   filters = {},
   nextPage = null,
   showContributor,
 }: SermonListProps) => {
-  const [sermons, setSermons] = useState<SermonInfo[]>(initialSermons);
   const [title, setTitle] = useState<string>();
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
     Object.values(MediaType),
   );
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-    null,
-  );
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [loadingAll, setLoadingAll] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const offsetRef = useRef<number | null>(nextPage);
-  const initialRender = useRef(true);
-
-  const setLoading = (loading: boolean, loadFirstPage: boolean) => {
-    if (loadFirstPage) setLoadingAll(loading);
-    else setLoadingMore(loading);
-  };
-
-  const fetchSermons = async (loadFirstPage: boolean = false) => {
-    try {
-      if (!loadFirstPage && offsetRef.current === null) {
-        setLoading(false, loadFirstPage);
-        return;
-      }
-      setLoading(true, loadFirstPage);
-
-      const nextOffset = loadFirstPage ? 0 : offsetRef.current;
-      const result = await fetchApi<ListPaginatedResponse<SermonInfo>>(
-        baseUrl,
-        {
-          ...filters,
-          title: title,
-          mediaType: mediaTypes.join(','),
-          offset: nextOffset,
-          limit: 25,
-        },
-      );
-
-      if ('statusCode' in result) {
-        setError(result.message);
-        setLoading(false, loadFirstPage);
-        return;
-      }
-
-      offsetRef.current = result.nextPage;
-      setSermons((prevSermons) =>
-        loadFirstPage ? result.values : [...prevSermons, ...result.values],
-      );
-    } catch (error) {
-      setError('Failed to load sermons');
-    } finally {
-      setLoading(false, loadFirstPage);
-    }
-  };
-
-  useEffect(() => {
-    if (initialRender.current) return;
-
-    setLoadingAll(true);
-    setSermons([]);
-
-    if (debounceTimer) clearTimeout(debounceTimer);
-    setDebounceTimer(setTimeout(() => fetchSermons(true), 750));
-  }, [title, mediaTypes]);
-
-  useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
-
-    setSermons(initialSermons);
-  }, [initialSermons]);
 
   return (
     <div>
@@ -117,38 +44,28 @@ export const SermonList = ({
           }
         />
       </div>
-      {/* TODO: Replace with <DynamicList/> */}
-      {loadingAll && <Spinner />}
-      {!loadingAll && (
-        <InfiniteScroll
-          fetchData={fetchSermons}
-          loading={loadingMore}
-          error={error}
-        >
+      <DynamicList
+        items={sermons}
+        baseUrl={baseUrl}
+        filters={{ ...filters, title, mediaTypes: mediaTypes.join(',') }}
+        nextPage={nextPage}
+        renderItems={(items) => (
           <ul>
-            {!!sermons.length &&
-              sermons.map((sermon) => (
-                <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
-                  <li className="pb-2 md:pb-4" key={sermon.id}>
-                    <SermonCard
-                      sermon={sermon}
-                      showContributor={showContributor}
-                      showMediaPlayer={false}
-                      className="hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-200 ease-in-out"
-                    />
-                  </li>
-                </Link>
-              ))}
-            {!sermons.length && (
-              <li className="flex flex-col items-center justify-center h-36">
-                <span className="text-neutral-500 dark:text-neutral-400">
-                  No results found
-                </span>
-              </li>
-            )}
+            {items.map((sermon) => (
+              <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
+                <li className="pb-2 md:pb-4" key={sermon.id}>
+                  <SermonCard
+                    sermon={sermon}
+                    showContributor={showContributor}
+                    showMediaPlayer={false}
+                    className="hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-200 ease-in-out"
+                  />
+                </li>
+              </Link>
+            ))}
           </ul>
-        </InfiniteScroll>
-      )}
+        )}
+      />
     </div>
   );
 };
