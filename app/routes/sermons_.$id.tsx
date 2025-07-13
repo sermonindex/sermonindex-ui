@@ -50,7 +50,7 @@ export default function Component() {
         console.error('Failed to increment sermon view count:', error);
       }
     };
-    const timer = setTimeout(incrementViewCount, 30_000);
+    const timer = setTimeout(incrementViewCount, 15_000);
 
     return () => clearTimeout(timer);
   }, []);

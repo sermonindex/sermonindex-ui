@@ -22,9 +22,9 @@ export const mainNavItems: NavItem[] = [
     linkTo: '/speakers',
   },
   {
-    name: 'Top 100',
+    name: 'Sermons',
     icon: <RiFilePaper2Fill />,
-    linkTo: '/top-100',
+    linkTo: '/sermons',
   },
   {
     name: 'Bible',

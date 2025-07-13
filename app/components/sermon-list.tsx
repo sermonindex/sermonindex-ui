@@ -9,6 +9,7 @@ import { Spinner } from './spinner';
 
 export interface SermonListProps {
   sermons: SermonInfo[];
+  baseUrl?: string;
   filters?: Record<string, string | number | null | undefined> | null;
   nextPage?: number | null;
   showTopic?: boolean;
@@ -17,6 +18,7 @@ export interface SermonListProps {
 
 export const SermonList = ({
   sermons: initialSermons,
+  baseUrl = '/sermons',
   filters = {},
   nextPage = null,
   showContributor,
@@ -51,7 +53,7 @@ export const SermonList = ({
 
       const nextOffset = loadFirstPage ? 0 : offsetRef.current;
       const result = await fetchApi<ListPaginatedResponse<SermonInfo>>(
-        '/sermons',
+        baseUrl,
         {
           ...filters,
           title: title,
@@ -115,6 +117,7 @@ export const SermonList = ({
           }
         />
       </div>
+      {/* TODO: Replace with <DynamicList/> */}
       {loadingAll && <Spinner />}
       {!loadingAll && (
         <InfiniteScroll
