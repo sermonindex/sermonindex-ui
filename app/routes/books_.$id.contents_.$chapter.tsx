@@ -1,10 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import {
-  Link,
-  useLoaderData,
-  useMatches,
-  useOutletContext,
-} from '@remix-run/react';
+import { Link, useLoaderData, useOutletContext } from '@remix-run/react';
 import { IconContext } from 'react-icons';
 import {
   FaRegArrowAltCircleLeft,
@@ -34,8 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Index() {
   const { chapter } = useLoaderData<typeof loader>();
   const { book } = useOutletContext<{ book: any }>();
-  const matches = useMatches();
-  // console.log(matches);
+  // const matches = useMatches();
 
   const isAudioBook = !!chapter.streamUrl;
 
@@ -46,11 +40,11 @@ export default function Index() {
 
   return (
     <SiPage>
-      <div className="flex pt-6">
-        <div className="flex-1 px-4">
+      <div className="flex py-6">
+        <div className="flex-1 px-2 md:px-4">
           <div className="flex w-full items-center justify-between space-x-4 md:space-x-12 pb-4 md:pb-8">
             <span className="hover:underline hover:cursor-pointer md:pl-4">
-              <Link to={`/books/${book.id}/${previousChapter}`}>
+              <Link to={`/books/${book.id}/contents/${previousChapter}`}>
                 <IconContext.Provider
                   value={{
                     className:
@@ -66,10 +60,10 @@ export default function Index() {
               <h1 className="text-lg md:text-2xl font-semibold text-center">
                 {book.title}
               </h1>
-              <h3 className="">By {book.contributor.fullName}</h3>
+              <h3>By {book.contributor.fullName}</h3>
             </div>
             <span className="hover:underline hover:cursor-pointer md:pr-4">
-              <Link to={`/books/${book.id}/${nextChapter}`}>
+              <Link to={`/books/${book.id}/contents/${nextChapter}`}>
                 <IconContext.Provider
                   value={{
                     className:
@@ -81,7 +75,7 @@ export default function Index() {
               </Link>
             </span>
           </div>
-          <div className="pt-4 pb-8 px-4">
+          <div className="pt-2 md:pt-4 md:px-4">
             {isAudioBook && <MiniPlayer sermon={chapter as Sermon} />}
             <h3 className="text-lg font-semibold pb-2">{chapter.title}</h3>
             <div
@@ -90,24 +84,6 @@ export default function Index() {
             />
           </div>
         </div>
-
-        {/* Uncomment this section if you want to display the table of contents */}
-        {/* Unfortunetly, the margins are much too large for this to look good. 😞 */}
-        {/* <aside className="w-80 pl-4 pb-8 bg-si-light hidden xl:block">
-          <h2 className="font-semibold mb-4">Table of Contents</h2>
-          <ul className="space-y-3">
-            {book.chapters.map((chapter: any, index: number) => (
-              <li key={index}>
-                <Link
-                  to={`/books/${book.id}/${index + 1}`}
-                  className="over:underline"
-                >
-                  {chapter.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside> */}
       </div>
     </SiPage>
   );

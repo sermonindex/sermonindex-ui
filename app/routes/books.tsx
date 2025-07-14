@@ -24,11 +24,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Index() {
   const books = useLoaderData<typeof loader>();
 
-  const [title, setTitle] = useState<string>('');
-  const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
-    Object.values(MediaType),
-  );
-
   return (
     <SiPage>
       <div className="p-3 md:p-8">

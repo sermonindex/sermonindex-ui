@@ -47,7 +47,7 @@ export const BookList = ({
         renderItems={(items) => (
           <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-4 pt-4">
             {items.map((book, index) => (
-              <Link to={`/books/${book.id}/1`} key={index}>
+              <Link to={`/books/${book.id}/contents`} key={index}>
                 <BookCover book={book} />
               </Link>
             ))}

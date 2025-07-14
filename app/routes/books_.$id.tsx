@@ -3,7 +3,7 @@ import { Outlet, useLoaderData } from '@remix-run/react';
 import { fetchApi } from '~/api/sdk';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const { id, chapter } = params;
+  const { id } = params;
 
   const book = await fetchApi<any>(`/books/id/${id}`);
 
