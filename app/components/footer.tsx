@@ -38,7 +38,7 @@ const AboutLinks: { [key: string]: FooterAboutLink } = {
 
 export const Footer = () => {
   return (
-    <footer className="flex flex-col">
+    <footer className="flex flex-col pt-4 md:pt-8">
       <div className="h-8 bg-si-olive border-t-2 border-si-gray dark:border-si-rock"></div>
       <div className="bg-si-dark p-4 dark:bg-gradient-to-t dark:from-black/40">
         <div className="mx-10">
