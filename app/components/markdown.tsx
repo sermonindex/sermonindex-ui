@@ -97,11 +97,11 @@ const SiBlockQuoteWrapper = ({ children }: { children: ReactNode }) => {
 export default function MarkdownRenderer({
   markdownContent,
 }: MarkdownRendererProps) {
-  // To use [[_TOC_]], replace it with a heading that remark-toc can find.
+  // To use :::table-of-contents, replace it with a heading that remark-toc can find.
   // The 'heading' option in remarkToc below should match this.
   const processedText = markdownContent
     .replace(
-      /\[\[_TOC_\]\]/g,
+      /:::table-of-contents/g,
       `\n## ${TOC_MARKER_HEADING_TEXT}\n`, // Using H2 for TOC heading, can be any level
     )
     .replace(
@@ -122,65 +122,59 @@ export default function MarkdownRenderer({
     );
 
   return (
-    <div className={`markdown-container my-2 pb-8`}>
-      <SiSection>
-        <ReactMarkdown
-          children={processedText}
-          remarkPlugins={[
-            remarkGfm,
-            remarkSlug, // For some reason this must come BEFORE remark-toc.
-            [
-              remarkToc,
-              {
-                heading: TOC_MARKER_HEADING_TEXT,
-                tight: true,
-                maxDepth: 5,
-              },
-            ],
-          ]}
-          rehypePlugins={[rehypeRaw]}
-          components={{
-            h1: SiHeading1Wrapper,
-            h2: CustomH2Renderer,
-            h3: SiHeading3Wrapper,
-            h4: SiHeading4Wrapper,
-            h5: SiHeading5Wrapper,
-            h6: SiHeading6Wrapper,
-            p: SiParagraphWrapper,
-            a: SiLink,
-            blockquote: SiBlockQuoteWrapper,
-            // Updated code component handling:
-            code: ({ node, inline, className, children, ...props }) => {
-              if (inline) {
-                return (
-                  <SiInlineCode {...props}>{String(children)}</SiInlineCode>
-                );
-              }
-              const match = /language-(\w+)/.exec(className || '');
-              return (
-                <SiCodeBlock
-                  language={match ? match[1] : null}
-                  value={String(children).trimEnd()}
-                />
-              );
-            },
-            em: SiEmphasis,
-            strong: SiStrong,
-            hr: SiThematicBreak,
-            img: SiImage,
-            li: SiListItem,
-            ol: SiOrderedList,
-            ul: SiUnorderedList,
-            del: SiDelete,
-            input: SiInput,
-            table: SiTable,
-            thead: SiTableHeader,
-            tbody: SiTableBody,
-            tr: SiTableRow,
-            td: SiTableCell,
-          }}
-        />
-      </SiSection>
-    </div>
+    <ReactMarkdown
+      children={processedText}
+      remarkPlugins={[
+        remarkGfm,
+        remarkSlug, // For some reason this must come BEFORE remark-toc.
+        [
+          remarkToc,
+          {
+            heading: TOC_MARKER_HEADING_TEXT,
+            tight: true,
+            maxDepth: 5,
+          },
+        ],
+      ]}
+      rehypePlugins={[rehypeRaw]}
+      components={{
+        h1: SiHeading1Wrapper,
+        h2: CustomH2Renderer,
+        h3: SiHeading3Wrapper,
+        h4: SiHeading4Wrapper,
+        h5: SiHeading5Wrapper,
+        h6: SiHeading6Wrapper,
+        p: SiParagraphWrapper,
+        a: SiLink,
+        blockquote: SiBlockQuoteWrapper,
+        // Updated code component handling:
+        code: ({ node, inline, className, children, ...props }) => {
+          if (inline) {
+            return <SiInlineCode {...props}>{String(children)}</SiInlineCode>;
+          }
+          const match = /language-(\w+)/.exec(className || '');
+          return (
+            <SiCodeBlock
+              language={match ? match[1] : null}
+              value={String(children).trimEnd()}
+            />
+          );
+        },
+        em: SiEmphasis,
+        strong: SiStrong,
+        hr: SiThematicBreak,
+        img: SiImage,
+        li: SiListItem,
+        ol: SiOrderedList,
+        ul: SiUnorderedList,
+        del: SiDelete,
+        input: SiInput,
+        table: SiTable,
+        thead: SiTableHeader,
+        tbody: SiTableBody,
+        tr: SiTableRow,
+        td: SiTableCell,
+      }}
+    />
   );
 }

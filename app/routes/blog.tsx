@@ -1,35 +1,11 @@
 import { json, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import path from 'path';
 import fs from 'fs/promises';
 import { SiPage } from '~/components/si-page';
 import { SiSection } from '~/components/section';
 import { useState } from 'react';
 import { GenericList } from '~/components/generic-list';
-import matter from 'gray-matter';
-
-// Blog posts must all be in this folder. In the future,
-// they should be part of the sermon index api, but for
-// now they live here.
-const BLOG_POSTS_DIR = path.resolve(
-  process.cwd(),
-  'public',
-  'markdown-content',
-  'blog',
-);
-
-// Create a URL-friendly slug from a title string
-const createSlugFromFilename = (filename: string) => {
-  return filename.replace(/\.md$/, '');
-};
-
-interface Post {
-  slug: string;
-  title: string;
-  date: string;
-  year: string;
-  description?: string;
-}
+import { BLOG_POSTS_DIR, getBlogPost, Post } from '~/api/blog';
 
 export async function loader() {
   const files = await fs.readdir(BLOG_POSTS_DIR);
@@ -37,26 +13,8 @@ export async function loader() {
   const posts = await Promise.all(
     files
       .filter((file) => file.endsWith('.md'))
-      .map(async (filename) => {
-        const filePath = path.join(BLOG_POSTS_DIR, filename);
-        const fileContents = await fs.readFile(filePath, 'utf-8');
-        const { data } = matter(fileContents);
-
-        if (!data.title || !data.date) {
-          console.warn(`Skipping ${filename} due to missing frontmatter.`);
-          return null;
-        }
-
-        const slug = createSlugFromFilename(filename);
-        const year = String(new Date(data.date).getUTCFullYear());
-
-        return {
-          slug,
-          title: data.title,
-          date: data.date,
-          year,
-          description: data.description || '',
-        } as Post;
+      .map(async (filename): Promise<Post | null> => {
+        return await getBlogPost(filename);
       }),
   );
 

@@ -179,7 +179,13 @@ export const SiHeading6 = (props: SiHeadingProps) => {
   );
 };
 
-export const SiParagraph = ({ children }: { children: ReactNode }) => {
+export const SiParagraph = ({
+  children,
+  className = '',
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   const renderableChildren: ReactNode[] = [];
 
   React.Children.forEach(children, (child, index) => {
@@ -209,7 +215,9 @@ export const SiParagraph = ({ children }: { children: ReactNode }) => {
     }
   });
 
-  return <p className={`${baseText} pt-2 pb-1`}>{renderableChildren}</p>;
+  return (
+    <p className={`${baseText} pt-2 pb-1 ${className}`}>{renderableChildren}</p>
+  );
 };
 
 export const SiLink = ({

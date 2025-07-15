@@ -1,6 +1,6 @@
 # About
 
-[[_TOC_]]
+:::table-of-contents
 
 ## Overview
 

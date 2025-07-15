@@ -11,6 +11,7 @@ import invariant from 'tiny-invariant';
 import { SiPage } from '~/components/si-page';
 import MarkdownRenderer from '~/components/markdown';
 import fs from 'fs/promises';
+import { SiSection } from '~/components/section';
 
 const MARKDOWN_FILES_DIR = path.resolve(
   process.cwd(),
@@ -77,7 +78,9 @@ export default function MarkdownSlugPage() {
 
   return (
     <SiPage>
-      <MarkdownRenderer markdownContent={markdownContent} />
+      <SiSection>
+        <MarkdownRenderer markdownContent={markdownContent} />
+      </SiSection>
     </SiPage>
   );
 }

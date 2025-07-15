@@ -12,21 +12,9 @@ import matter from 'gray-matter';
 
 import { SiPage } from '~/components/si-page';
 import MarkdownRenderer from '~/components/markdown';
-
-export interface PostFrontmatter {
-  title: string;
-  date: string;
-  author?: string;
-  description?: string;
-  [key: string]: any;
-}
-
-const BLOG_POSTS_DIR = path.resolve(
-  process.cwd(),
-  'public',
-  'markdown-content',
-  'blog',
-);
+import { BLOG_POSTS_DIR, Post } from '~/api/blog';
+import { SiSection } from '~/components/section';
+import { hasContent } from '~/common/sanitize';
 
 const createSlugFromFilename = (filename: string) => {
   return filename.replace(/\.md$/, '');
@@ -68,7 +56,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     );
 
     return json({
-      frontmatter: data as PostFrontmatter,
+      frontmatter: data as Post,
       content,
     });
   } catch (error) {
@@ -96,9 +84,18 @@ export default function BlogPostPage() {
 
   return (
     <SiPage post={frontmatter}>
-      <article className="prose dark:prose-invert lg:prose-xl max-w-none">
-        <MarkdownRenderer markdownContent={content} />
-      </article>
+      <SiSection>
+        <article className="prose dark:prose-invert lg:prose-xl max-w-none flow-root">
+          {hasContent(frontmatter.imgUrl) && (
+            <img
+              src={frontmatter.imgUrl}
+              alt={frontmatter.title}
+              className="h-64 md:h-96 float-right ml-6 mr-4 my-4 rounded-lg shadow-lg"
+            />
+          )}
+          <MarkdownRenderer markdownContent={content} />
+        </article>
+      </SiSection>
     </SiPage>
   );
 }
