@@ -1,5 +1,5 @@
 import { Link } from '@remix-run/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { BookInfo, MediaType } from '~/api/interfaces';
 import { BookCover } from './book-cover';
 import DropdownCheckbox from './dropdown-checkbox';
@@ -20,6 +20,10 @@ export const BookList = ({
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
     Object.values(MediaType),
   );
+
+  const memoizedFilters = useMemo(() => {
+    return { ...filters, title, mediaTypes: mediaTypes.join(',') };
+  }, [title, mediaTypes]);
 
   return (
     <div>
@@ -42,7 +46,7 @@ export const BookList = ({
       <DynamicList
         items={books}
         baseUrl={'/books'}
-        filters={{ ...filters, title, mediaTypes: mediaTypes.join(',') }}
+        filters={memoizedFilters}
         nextPage={nextPage}
         renderItems={(items) => (
           <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-4 pt-4">

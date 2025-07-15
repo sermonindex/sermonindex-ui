@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ContributorInfo,
   ListPaginatedResponse,
@@ -47,6 +47,10 @@ export default function Index() {
   const { featured, contributors } = useLoaderData<typeof loader>();
   const [fullName, setFullName] = useState<string>('');
 
+  const memoizedFilters = useMemo(() => {
+    return { fullName, content: 'SERMONS' };
+  }, [fullName]);
+
   return (
     <SiPage>
       <SiSection title="Featured Speakers">
@@ -83,7 +87,7 @@ export default function Index() {
         <DynamicList<ContributorInfo>
           items={contributors.values}
           baseUrl="/contributors"
-          filters={{ fullName, content: 'SERMONS' }}
+          filters={memoizedFilters}
           nextPage={contributors.nextPage}
           limit={100}
           renderItems={(items) => (

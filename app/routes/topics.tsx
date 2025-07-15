@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ListPaginatedResponse, TopicInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { DynamicList } from '~/components/dynamic-list';
@@ -41,6 +41,8 @@ export default function Index() {
   const { topics, popular } = useLoaderData<typeof loader>();
   const [filter, setFilter] = useState<string>('');
 
+  const memoizedFilters = useMemo(() => ({ name: filter }), [filter]);
+
   return (
     <SiPage>
       <SiSection title="Popular Topics">
@@ -56,7 +58,7 @@ export default function Index() {
         <DynamicList<TopicInfo>
           items={topics.values}
           baseUrl="/topics"
-          filters={{ name: filter }}
+          filters={memoizedFilters}
           nextPage={topics.nextPage}
           limit={100}
           renderItems={(items) => (

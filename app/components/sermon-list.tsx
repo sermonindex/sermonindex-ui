@@ -1,5 +1,5 @@
 import { Link } from '@remix-run/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MediaType, SermonInfo } from '~/api/interfaces';
 import DropdownCheckbox from './dropdown-checkbox';
 import { DynamicList } from './dynamic-list';
@@ -26,6 +26,10 @@ export const SermonList = ({
     Object.values(MediaType),
   );
 
+  const memoizedFilters = useMemo(() => {
+    return { ...filters, title, mediaTypes: mediaTypes.join(',') };
+  }, [title, mediaTypes]);
+
   return (
     <div>
       <div className="flex items-center space-x-4">
@@ -47,7 +51,7 @@ export const SermonList = ({
       <DynamicList
         items={sermons}
         baseUrl={baseUrl}
-        filters={{ ...filters, title, mediaTypes: mediaTypes.join(',') }}
+        filters={memoizedFilters}
         nextPage={nextPage}
         renderItems={(items) => (
           <ul>
