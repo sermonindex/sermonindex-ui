@@ -1,7 +1,7 @@
 import { IErrorResponse } from './interfaces';
 
 // TODO: Add SI_API_URL to .env
-const SI_API_URL = 'http://localhost:3000/v1';
+const SI_API_URL = 'https://seashell-app-y6s3t.ondigitalocean.app/v1';
 
 export async function fetchApi<T>(
   path: string,

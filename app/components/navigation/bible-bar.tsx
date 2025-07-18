@@ -1,5 +1,5 @@
-import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 import { Link, useLocation } from '@remix-run/react';
+import { getBibleBookId } from '~/common/get-bible-book-id.fn';
 
 interface BibleLink {
   name: string;
@@ -8,8 +8,7 @@ interface BibleLink {
 }
 
 function getBibleLinks(pathname: string): { [key: string]: BibleLink } {
-  let book = 'GEN';
-  let chapter = 1;
+  let book, chapter;
 
   // If they are on a bible page already, then they should go to the same book/chapter
   if (pathname.includes('bible')) {
@@ -25,20 +24,22 @@ function getBibleLinks(pathname: string): { [key: string]: BibleLink } {
     }
   }
 
+  const referencePath = book && chapter ? `/${book}/${chapter}` : '';
+
   return {
-    bsb: { name: 'BSB', linkTo: `bible/BSB/${book}/${chapter}` },
-    kjv: { name: 'KJV', linkTo: `bible/KJV/${book}/${chapter}` },
-    web: { name: 'WEB', linkTo: `bible/WEBP/${book}/${chapter}` },
-    ylt: { name: 'YLT', linkTo: `bible/YLT/${book}/${chapter}` },
-    asv: { name: 'ASV', linkTo: `bible/ASV/${book}/${chapter}` },
-    bbe: { name: 'BBE', linkTo: `bible/BBE/${book}/${chapter}` },
-    gnv: { name: 'GNV', linkTo: `bible/GNV/${book}/${chapter}` },
-    t4t: { name: 'T4T', linkTo: `bible/T4T/${book}/${chapter}` },
-    our: { name: 'OUR', linkTo: `bible/OUR/${book}/${chapter}` },
-    fbv: { name: 'FBV', linkTo: `bible/FBV/${book}/${chapter}` },
-    ulb: { name: 'ULB', linkTo: `bible/ULB/${book}/${chapter}` },
-    wbs: { name: 'WBS', linkTo: `bible/WBS/${book}/${chapter}` },
-    lst: { name: 'LSV', linkTo: `bible/LSV/${book}/${chapter}` },
+    bsb: { name: 'BSB', linkTo: `bible/BSB${referencePath}` },
+    kjv: { name: 'KJV', linkTo: `bible/KJV${referencePath}` },
+    web: { name: 'WEB', linkTo: `bible/WEBP${referencePath}` },
+    ylt: { name: 'YLT', linkTo: `bible/YLT${referencePath}` },
+    asv: { name: 'ASV', linkTo: `bible/ASV${referencePath}` },
+    bbe: { name: 'BBE', linkTo: `bible/BBE${referencePath}` },
+    gnv: { name: 'GNV', linkTo: `bible/GNV${referencePath}` },
+    t4t: { name: 'T4T', linkTo: `bible/T4T${referencePath}` },
+    our: { name: 'OUR', linkTo: `bible/OUR${referencePath}` },
+    fbv: { name: 'FBV', linkTo: `bible/FBV${referencePath}` },
+    ulb: { name: 'ULB', linkTo: `bible/ULB${referencePath}` },
+    wbs: { name: 'WBS', linkTo: `bible/WBS${referencePath}` },
+    lst: { name: 'LSV', linkTo: `bible/LSV${referencePath}` },
   };
 }
 

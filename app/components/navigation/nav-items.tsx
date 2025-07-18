@@ -33,15 +33,15 @@ export const mainNavItems: NavItem[] = [
     subItems: [
       {
         name: 'Berean Standard',
-        linkTo: '/bible/eng/BSB',
+        linkTo: '/bible/BSB',
       },
       {
         name: 'King James',
-        linkTo: '/bible/eng/KJV',
+        linkTo: '/bible/KJV',
       },
       {
         name: 'World English',
-        linkTo: '/bible/eng/WEBP',
+        linkTo: '/bible/WEBP',
       },
     ],
   },

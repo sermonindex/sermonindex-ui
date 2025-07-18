@@ -8,10 +8,8 @@ import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const { _, language, translation } = params;
-  const bible = await fetchApi<BibleTranslation>(
-    `/bible/${language}/${translation}`,
-  );
+  const { translation } = params;
+  const bible = await fetchApi<BibleTranslation>(`/bible/eng/${translation}`);
 
   if ('statusCode' in bible) {
     throw new Response('Oh no! Something went wrong!', {
