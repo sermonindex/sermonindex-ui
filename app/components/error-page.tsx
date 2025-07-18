@@ -31,6 +31,17 @@ export function ErrorDisplay({ status, heading, message }: ErrorDisplayProps) {
       >
         Go to Homepage
       </Link>
+
+      <p className="text-sm md:text-base text-si-rock dark:text-si-gray pt-6">
+        If this seems like a mistake, feel free to{' '}
+        <Link
+          to="/md/contact"
+          className="font-semibold text-si-main underline decoration-si-main/50 transition hover:text-si-olive hover:decoration-si-olive dark:text-si-official-light dark:hover:text-si-accent"
+        >
+          contact us
+        </Link>
+        .
+      </p>
     </div>
   );
 }
