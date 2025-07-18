@@ -189,7 +189,7 @@ function buildBookCrumbs(
     .toLowerCase()
     .replaceAll(' ', '-')
     .replaceAll('.', '');
-  console.log(crumbs);
+
   nav.push({
     name: 'Books',
     linkTo: '/books',

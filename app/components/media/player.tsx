@@ -150,7 +150,6 @@ export const Player = ({
   };
 
   const handleNextSermon = () => {
-    console.log(repeat, shuffle);
     switch (repeat) {
       case 'repeat-one':
         player.current?.play();
