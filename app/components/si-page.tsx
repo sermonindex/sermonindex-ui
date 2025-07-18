@@ -18,9 +18,16 @@ interface SiPageProps {
   sermon?: Sermon;
   contributor?: Contributor;
   post?: PostFrontmatter;
+  showBreadCrumb?: boolean;
 }
 
-export function SiPage({ children, sermon, contributor, post }: SiPageProps) {
+export function SiPage({
+  children,
+  sermon,
+  contributor,
+  post,
+  showBreadCrumb = true,
+}: SiPageProps) {
   const location = useLocation();
 
   return (
@@ -34,12 +41,14 @@ export function SiPage({ children, sermon, contributor, post }: SiPageProps) {
         >
           <div className="flex-grow mt-[65px] lg:mt-0">
             <Navbar />
-            <Breadcrumbs
-              location={location.pathname}
-              sermon={sermon}
-              contributor={contributor}
-              post={post}
-            />
+            {showBreadCrumb && (
+              <Breadcrumbs
+                location={location.pathname}
+                sermon={sermon}
+                contributor={contributor}
+                post={post}
+              />
+            )}
             <div className={`min-h-screen`}>
               <main className=" min-h-[calc(100vh-90px)]">{children}</main>
               <Footer />

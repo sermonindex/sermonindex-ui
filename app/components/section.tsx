@@ -9,6 +9,7 @@ interface SiSectionProps {
   count?: number;
   sharesLeftPadding?: boolean;
   sharesRightPadding?: boolean;
+  headingClassName?: string;
   className?: string;
   children?: React.ReactNode;
 }
@@ -19,6 +20,7 @@ export function SiSection({
   count,
   sharesLeftPadding = false,
   sharesRightPadding = false,
+  headingClassName,
   className,
   children,
 }: SiSectionProps) {
@@ -34,7 +36,7 @@ export function SiSection({
   const getSectionTitle = () => {
     return (
       <SiHeading1
-        className={`flex flex-row w-full items-center space-x-4 ${className}`}
+        className={`flex flex-row w-full items-center space-x-4 ${headingClassName}`}
         customId={tag}
       >
         <span>{title}</span>
@@ -44,7 +46,11 @@ export function SiSection({
   };
 
   if (!hasContent(title)) {
-    return <div className={`flex flex-col w-full ${padding}`}>{children}</div>;
+    return (
+      <div className={`flex flex-col w-full ${padding} ${className}`}>
+        {children}
+      </div>
+    );
   }
 
   // Determine the class for the children container based on whether children exist
