@@ -10,7 +10,7 @@ export default function Index() {
   const { book } = useOutletContext<{ book: any }>();
 
   return (
-    <SiPage>
+    <SiPage book={book}>
       <div className="flex py-6">
         <div className="flex-1 px-2 md:px-4">
           <div className="flex w-full items-center justify-between space-x-4 md:space-x-12 pb-4 md:pb-8">

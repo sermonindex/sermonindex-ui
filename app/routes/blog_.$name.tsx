@@ -1,10 +1,5 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import {
-  isRouteErrorResponse,
-  useLoaderData,
-  useParams,
-  useRouteError,
-} from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import path from 'path';
 import invariant from 'tiny-invariant';
 import fs from 'fs/promises';

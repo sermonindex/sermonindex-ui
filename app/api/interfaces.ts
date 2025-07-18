@@ -155,6 +155,18 @@ export interface Topic {
   createdAt: string;
 }
 
+export interface BookChapter {
+  number: number;
+  title: string;
+}
+
+export interface Book {
+  id: string;
+  title: string;
+  chapters: BookChapter[];
+  contributor: Contributor;
+}
+
 export interface BookInfo {
   id: string;
 

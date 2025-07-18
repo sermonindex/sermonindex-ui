@@ -1,11 +1,11 @@
 import { Link } from '@remix-run/react';
 import { IoIosArrowForward } from 'react-icons/io';
-import { Contributor, Sermon } from '~/api/interfaces';
-import { hasContent, isNumber } from '~/common/sanitize';
+import { Book, Contributor, Sermon } from '~/api/interfaces';
+import { hasContent, isNumber, safeParseInt } from '~/common/sanitize';
 import { OsisToBookName } from '~/common/bible-constants';
 import { isValidLanguage } from '~/common/languages';
-import { PostFrontmatter } from '~/routes/blog_.$name';
 import { format } from 'date-fns';
+import { Post } from '~/api/blog';
 
 interface NavCrumb {
   name: string;
@@ -14,11 +14,7 @@ interface NavCrumb {
 
 /// Check if a split location string array resembles a sermon splat
 function isSermonCrumb(crumbs: string[]): boolean {
-  return (
-    crumbs.length > 1 &&
-    crumbs[0] === 'sermons' &&
-    isNumber(parseInt(crumbs[1]))
-  );
+  return crumbs.length > 1 && crumbs[0] === 'sermons' && hasContent(crumbs[1]);
 }
 
 function isSpeakerCrumb(crumbs: string[]): boolean {
@@ -39,6 +35,14 @@ function isBlogPost(crumbs: string[]): boolean {
 
 function isMarkdownPage(crumbs: string[]): boolean {
   return crumbs.length > 1 && crumbs[0].toLowerCase() === 'md';
+}
+
+function isBookPage(crumbs: string[]): boolean {
+  return (
+    crumbs.length > 1 &&
+    crumbs[0].toLowerCase() === 'books' &&
+    hasContent(crumbs[1])
+  );
 }
 
 function buildSermonCrumbs(
@@ -142,7 +146,7 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
 
 function buildBlogCrumbs(
   crumbs: string[],
-  post: PostFrontmatter | undefined,
+  post: Post | undefined,
   nav: NavCrumb[],
 ): NavCrumb[] {
   nav.push({
@@ -176,11 +180,45 @@ function buildMarkdownCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
   return nav;
 }
 
+function buildBookCrumbs(
+  crumbs: string[],
+  book: Book,
+  nav: NavCrumb[],
+): NavCrumb[] {
+  let contributorSlug = book.contributor.fullName
+    .toLowerCase()
+    .replaceAll(' ', '-')
+    .replaceAll('.', '');
+  console.log(crumbs);
+  nav.push({
+    name: 'Books',
+    linkTo: '/books',
+  });
+  nav.push({
+    name: book.contributor.fullName,
+    linkTo: `/speakers/${contributorSlug}`,
+  });
+  nav.push({
+    name: book.title,
+    linkTo: `/books/${book.id}/contents`,
+  });
+  if (crumbs.length > 3) {
+    let chapter = safeParseInt(crumbs[3]);
+    let name = chapter !== null ? book.chapters[chapter].title : 'unknown';
+    nav.push({
+      name: name,
+      linkTo: `/books/${book.id}/contents/${crumbs[3]}`,
+    });
+  }
+  return nav;
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
   contributor?: Contributor;
-  post?: PostFrontmatter;
+  post?: Post;
+  book?: Book;
 }
 
 /// Note that some breadcrumbs can be inferred directly from the url path (location)
@@ -193,6 +231,7 @@ export default function Breadcrumbs({
   sermon,
   contributor,
   post,
+  book,
 }: BreadcrumbProps) {
   const crumbs = location.substring(1).split('/');
   let nav: NavCrumb[] = [{ name: 'Home', linkTo: '/' }];
@@ -207,6 +246,8 @@ export default function Breadcrumbs({
     nav = buildBlogCrumbs(crumbs, post, nav);
   } else if (isMarkdownPage(crumbs)) {
     nav = buildMarkdownCrumbs(crumbs, nav);
+  } else if (isBookPage(crumbs) && book !== undefined) {
+    nav = buildBookCrumbs(crumbs, book, nav);
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({

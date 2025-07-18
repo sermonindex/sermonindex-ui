@@ -4,12 +4,12 @@
 
 import { useLocation } from '@remix-run/react';
 import React from 'react';
-import { Contributor, Sermon } from '~/api/interfaces';
+import { Book, Contributor, Sermon } from '~/api/interfaces';
 import Breadcrumbs from '~/components/breadcrumbs';
 import { SiMargins } from '~/components/margin';
-import { PostFrontmatter } from '~/routes/blog_.$name';
 import { Footer } from './footer';
 import { Navbar } from './navigation/navbar';
+import { Post } from '~/api/blog';
 
 interface SiPageProps {
   children: React.ReactNode;
@@ -17,7 +17,8 @@ interface SiPageProps {
   // to re-fetch it from the API for the SermonIndex Page breadcrumbs
   sermon?: Sermon;
   contributor?: Contributor;
-  post?: PostFrontmatter;
+  post?: Post;
+  book?: Book;
   showBreadCrumb?: boolean;
 }
 
@@ -26,6 +27,7 @@ export function SiPage({
   sermon,
   contributor,
   post,
+  book,
   showBreadCrumb = true,
 }: SiPageProps) {
   const location = useLocation();
@@ -47,6 +49,7 @@ export function SiPage({
                 sermon={sermon}
                 contributor={contributor}
                 post={post}
+                book={book}
               />
             )}
             <div className={`min-h-screen`}>

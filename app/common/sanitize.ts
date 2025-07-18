@@ -20,3 +20,18 @@ export function isNumber(num: number | undefined): boolean {
   }
   return false;
 }
+
+/// Safely converts a string to an integer.
+export function safeParseInt(value: string): number | null {
+  if (value.trim() === '') {
+    return null;
+  }
+
+  const num = Number(value);
+
+  if (Number.isNaN(num) || !Number.isInteger(num)) {
+    return null;
+  }
+
+  return num;
+}
