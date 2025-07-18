@@ -219,7 +219,7 @@ export default function Breadcrumbs({
   }
 
   return (
-    <div className="lg:p-3 lg:flex items-center h-0 lg:h-auto hidden">
+    <div className="p-3 flex items-center h-auto">
       <ul className="flex items-center space-x-1">
         {nav.map((crumb, index) => (
           <li className="flex items-center" key={`breadcrumb-${index}`}>
