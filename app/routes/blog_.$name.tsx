@@ -99,35 +99,3 @@ export default function BlogPostPage() {
     </SiPage>
   );
 }
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  const params = useParams();
-  let errorTitle = 'Oh no! Something went wrong.';
-  let errorMessage =
-    'There was an error loading this post. Please try again later.';
-  if (isRouteErrorResponse(error)) {
-    errorTitle = `${error.status} - ${error.statusText || 'Page Error'}`;
-    errorMessage =
-      error.data?.message || `Could not load the post for "${params.id}".`;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-    console.error('ErrorBoundary caught an error:', error);
-  }
-
-  return (
-    <SiPage>
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
-          {errorTitle}
-        </h1>
-        <p className="text-lg">{errorMessage}</p>
-        <p className="mt-4">
-          <a href="/blog" className="text-blue-500 hover:underline">
-            Back to Blog
-          </a>
-        </p>
-      </div>
-    </SiPage>
-  );
-}

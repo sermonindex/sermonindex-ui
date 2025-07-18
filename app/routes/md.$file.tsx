@@ -84,38 +84,3 @@ export default function MarkdownSlugPage() {
     </SiPage>
   );
 }
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  const params = useParams();
-
-  let errorTitle = 'Oh no! Something went wrong.';
-  let errorMessage =
-    'There was an error loading this page. Please try again later.';
-
-  if (isRouteErrorResponse(error)) {
-    errorTitle = `${error.status} - ${error.statusText || 'Page Error'}`;
-    errorMessage =
-      error.data?.message || `Could not load the page for "${params.file}".`;
-  } else if (error instanceof Error) {
-    errorMessage = error.message;
-    // Log the stack trace for server-side errors during development/debugging
-    console.error('ErrorBoundary caught an error:', error);
-  }
-
-  return (
-    <SiPage>
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
-          {errorTitle}
-        </h1>
-        <p className="text-lg">{errorMessage}</p>
-        <p className="mt-4">
-          <a href="/" className="text-blue-500 hover:underline">
-            Go back to Homepage
-          </a>
-        </p>
-      </div>
-    </SiPage>
-  );
-}
