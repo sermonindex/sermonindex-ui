@@ -219,7 +219,7 @@ export function ShareButton({
   const handleCopy = async () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     const url = window.location.origin + location.pathname;
-    if (typeof window === 'undefined') return;
+    if (typeof document === 'undefined') return;
 
     try {
       await navigator.clipboard.writeText(url);

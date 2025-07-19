@@ -40,7 +40,7 @@ const HeadingRenderer = ({
 
   const handleCopyLink = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!id || typeof window === 'undefined') return;
+    if (!id || typeof document === 'undefined') return;
 
     const url = `${window.location.origin}${window.location.pathname}#${id}`;
     try {
