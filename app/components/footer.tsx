@@ -19,6 +19,7 @@ import {
   RiVimeoLine,
   RiYoutubeLine,
 } from 'react-icons/ri';
+import { SI_API_URL } from '~/api/sdk';
 
 interface FooterAboutLink {
   name: string;
@@ -28,7 +29,10 @@ interface FooterAboutLink {
 const AboutLinks: { [key: string]: FooterAboutLink } = {
   about: { name: 'About Us', linkTo: '/md/about' },
   contact: { name: 'Contact', linkTo: '/md/contact' },
-  api: { name: 'API', linkTo: 'http://localhost:3000/v1/api' },
+  api: {
+    name: 'API',
+    linkTo: `${SI_API_URL}/api`,
+  },
   commendations: { name: 'Commendations', linkTo: '/md/commendations' },
   support: { name: 'Support', linkTo: '/md/support' },
   brand: { name: 'Brand Guidelines', linkTo: '/md/brand-guidelines' },
