@@ -116,7 +116,7 @@ export default function Index() {
             active={activeTab === SongTabs.Songs}
             className="md:px-1 lg:px-4 md:py-2"
           >
-            <Player sermons={sermons} />
+            <Player sermons={sermons} type={'hymns'} />
           </TabContent>
 
           <TabContent

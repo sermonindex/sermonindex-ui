@@ -22,17 +22,20 @@ import { MediaSearch } from '~/components/media/search';
 
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
+import { fetchApi } from '~/api/sdk';
 import { getMediaFallbackUrl } from '~/common/hacky';
 import { SermonPlaylist } from '~/components/media/playlist';
 
 export interface PlayerProps {
   sermons: Sermon[];
+  type?: 'sermons' | 'hymns';
   storageKey?: string;
   showAuthorImage?: boolean;
 }
 
 export const Player = ({
   sermons,
+  type = 'sermons',
   storageKey = '',
   showAuthorImage = false,
 }: PlayerProps) => {
@@ -46,6 +49,7 @@ export const Player = ({
   >('none');
   const [hasAttemptedFallback, setHasAttemptedFallback] = useState(false);
   const hasPlaybackStarted = useRef(false);
+  const hasRecordedView = useRef(false);
 
   if (sermons.length < 1) {
     return (
@@ -72,6 +76,7 @@ export const Player = ({
   useEffect(() => {
     const newSermon = sermons[currentIndex];
     const newSrc = newSermon.streamUrl;
+    hasRecordedView.current = false;
 
     setCurrentSrc(newSermon.streamUrl);
     setErrorDetail(null);
@@ -130,6 +135,18 @@ export const Player = ({
       setIsLoadingVtt(false);
     }
   }, [currentSermon.vttUrl]);
+
+  const recordView = async () => {
+    if (!hasRecordedView.current) {
+      try {
+        await fetchApi(`/${type}/viewed/id/${currentSermon.id}`, {}, 'POST');
+      } catch (error) {
+        console.warn('Failed to increment sermon view count:', error);
+      } finally {
+        hasRecordedView.current = true;
+      }
+    }
+  };
 
   const incrementSermonList = (loop: boolean) => {
     if (loop && currentIndex === sermons.length - 1) {
@@ -196,6 +213,10 @@ export const Player = ({
     if (!hasPlaybackStarted.current) {
       hasPlaybackStarted.current = true;
     }
+
+    console.log('Playback started for sermon:', currentSermon.title);
+    // Record the view after playback has started
+    recordView();
   };
 
   const handleCanPlay = () => {

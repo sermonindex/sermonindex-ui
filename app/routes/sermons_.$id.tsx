@@ -47,7 +47,7 @@ export default function Component() {
       try {
         await fetchApi(`/sermons/viewed/id/${sermon.id}`, {}, 'POST');
       } catch (error) {
-        console.error('Failed to increment sermon view count:', error);
+        console.warn('Failed to increment sermon view count:', error);
       }
     };
     const timer = setTimeout(incrementViewCount, 15_000);

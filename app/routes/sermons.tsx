@@ -125,7 +125,7 @@ export default function Index() {
           className="py-4 px-2 md:p-6"
         >
           <SermonList
-            sermons={recentViews.values.slice(1)}
+            sermons={recentViews.values}
             baseUrl="/sermons/viewed"
             nextPage={recentViews.nextPage}
             showContributor={true}
