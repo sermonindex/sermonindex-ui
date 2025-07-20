@@ -109,13 +109,14 @@ export default function Index() {
         <TabContent
           key={SermonTabs.Featured}
           active={activeTab === SermonTabs.Featured}
-          className="px-1 md:px-4 py-2"
+          className="py-4 px-2 md:p-6"
         >
           <SermonList
             sermons={featured.values}
             baseUrl="/sermons/featured"
             nextPage={featured.nextPage}
             showContributor={true}
+            showSearch={false}
           />
         </TabContent>
 
@@ -129,6 +130,7 @@ export default function Index() {
             baseUrl="/sermons/viewed"
             nextPage={recentViews.nextPage}
             showContributor={true}
+            showSearch={false}
           />
         </TabContent>
 
@@ -142,6 +144,7 @@ export default function Index() {
             filters={{ sortBy: 'createdAt', sortOrder: 'desc' }}
             nextPage={recentUploads.nextPage}
             showContributor={true}
+            showSearch={false}
           />
         </TabContent>
       </TabContainer>

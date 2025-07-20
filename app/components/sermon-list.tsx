@@ -12,6 +12,7 @@ export interface SermonListProps {
   nextPage?: number | null;
   showTopic?: boolean;
   showContributor?: boolean;
+  showSearch?: boolean;
 }
 
 export const SermonList = ({
@@ -20,19 +21,22 @@ export const SermonList = ({
   filters = {},
   nextPage = null,
   showContributor,
+  showSearch = true,
 }: SermonListProps) => {
   const [title, setTitle] = useState<string>();
-  const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
+  const [mediaType, setMediaType] = useState<MediaType[]>(
     Object.values(MediaType),
   );
 
   const memoizedFilters = useMemo(() => {
-    return { ...filters, title, mediaTypes: mediaTypes.join(',') };
-  }, [title, mediaTypes]);
+    return { ...filters, title, mediaType: mediaType.join(',') };
+  }, [title, mediaType]);
 
   return (
     <div>
-      <div className="flex items-center space-x-4">
+      <div
+        className={`${showSearch ? 'flex' : 'hidden'} items-center space-x-4`}
+      >
         <input
           className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
           placeholder="Find a sermon..."
@@ -44,7 +48,7 @@ export const SermonList = ({
           shortTitle="Filter"
           options={Object.values(MediaType)}
           onFilterChange={(options: string[]) =>
-            setMediaTypes(options as MediaType[])
+            setMediaType(options as MediaType[])
           }
         />
       </div>
