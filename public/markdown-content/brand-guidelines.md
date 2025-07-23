@@ -1,6 +1,6 @@
 # Brand Guidelines
 
-[[_TOC_]]
+:::table-of-contents
 
 As per our Open Source Permissions page, we have a policy to allow for the free distribution of
 sermon materials on SermonIndex. Our logo and branding can be copied also for referencing our site
