@@ -14,7 +14,7 @@ export const BLOG_POSTS_DIR = path.resolve(
 
 // Create a URL-friendly slug from a title string
 export const createBlogSlugFromFilename = (filename: string) => {
-  return filename.replace(/\.md$/, '');
+  return filename.replace(/\.md$/, '').replace(/ /g, '_').toLowerCase();
 };
 
 export interface Post {

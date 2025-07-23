@@ -7,13 +7,9 @@ import matter from 'gray-matter';
 
 import { SiPage } from '~/components/si-page';
 import MarkdownRenderer from '~/components/markdown';
-import { BLOG_POSTS_DIR, Post } from '~/api/blog';
+import { BLOG_POSTS_DIR, createBlogSlugFromFilename, Post } from '~/api/blog';
 import { SiSection } from '~/components/section';
 import { hasContent } from '~/common/sanitize';
-
-const createSlugFromFilename = (filename: string) => {
-  return filename.replace(/\.md$/, '');
-};
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.name, 'Expected params.name to be defined');
@@ -23,7 +19,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   // Find the filename that matches the requested slug
   const matchingFilename = files.find(
-    (filename) => createSlugFromFilename(filename) === requestedSlug,
+    (filename) => createBlogSlugFromFilename(filename) === requestedSlug,
   );
 
   if (!matchingFilename) {
