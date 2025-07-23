@@ -43,6 +43,7 @@ export const SermonPlaylist = ({
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                   }}
+                  loading="lazy"
                 />
               )}
               <div className="flex-grow">

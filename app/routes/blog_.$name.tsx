@@ -82,6 +82,7 @@ export default function BlogPostPage() {
               src={frontmatter.imgUrl}
               alt={frontmatter.title}
               className="h-64 md:h-96 float-right ml-6 mr-4 my-4 rounded-lg shadow-lg"
+              loading="lazy"
             />
           )}
           <MarkdownRenderer markdownContent={content} />

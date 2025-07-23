@@ -314,6 +314,7 @@ export const SiImage = ({
         });
         target.alt = `Error loading image: ${alt || 'untitled'}`;
       }}
+      loading="lazy"
     />
   );
 };

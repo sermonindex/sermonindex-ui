@@ -63,6 +63,7 @@ export default function Index() {
             className="w-28 h-28 md:w-44 md:h-44 rounded-full object-cover flex-shrink-0"
             src={'https://sermonindex3.b-cdn.net/pdf/dlmoody.png'}
             alt={'D.L. Moody'}
+            loading="lazy"
           />
           <div className="flex flex-col mb-2">
             <h3 className="md:text-2xl font-bold">The preaching </h3>

@@ -63,6 +63,7 @@ export default function Index() {
                     className="w-16 h-16 rounded-full object-cover group-hover:scale-125 transition-transform duration-200"
                     src={contributor.imageUrl}
                     alt={contributor.fullName}
+                    loading="lazy"
                   />
                   <span className="flex items-center justify-center bottom-0 left-12 absolute w-7 h-7 text-[10px] rounded-full text-black dark:text-white bg-neutral-300 dark:bg-neutral-600 border-2 border-si-light dark:border-si-slate">
                     {formatNumber(contributor.sermonCount)}

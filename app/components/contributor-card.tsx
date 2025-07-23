@@ -11,6 +11,7 @@ export const ContributorCard = ({ contributor }: ContributorCardProps) => {
         className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-48 float-left rounded-full md:rounded-lg flex-shrink-0 object-cover mr-2 mb-2"
         src={contributor.imageUrl}
         alt={contributor.fullName}
+        loading="lazy"
       />
       <div className="flex items-center space-x-6">
         <div className="flex flex-col mb-6">

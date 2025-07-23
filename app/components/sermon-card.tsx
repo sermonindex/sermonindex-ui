@@ -32,6 +32,7 @@ export function SermonCard({
               className="w-8 h-8 md:w-12 md:h-12 rounded-full object-cover flex-shrink-0"
               src={sermon.contributorImageUrl}
               alt={sermon.contributorFullName}
+              loading="lazy"
             />
           )}
           <div className="flex flex-col">
@@ -84,6 +85,7 @@ export function SermonCard({
             className="w-32 h-24 md:w-48 md:h-32 rounded-lg"
             src={sermon.thumbnailUrl}
             alt={sermon.title}
+            loading="lazy"
           />
         )}
         <p className={sermon.description ? 'line-clamp-5 mb-1' : ''}>

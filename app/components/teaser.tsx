@@ -48,6 +48,7 @@ export const Teaser = ({
                   className="object-cover max-h-64 rounded-lg"
                   src={imageUrl}
                   alt={title}
+                  loading="lazy"
                 />
               </div>
             )}

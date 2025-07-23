@@ -32,6 +32,7 @@ export default function Index() {
             className="w-28 h-28 md:w-44 md:h-44 mb-6 md:mb-0 rounded-full object-cover flex-shrink-0"
             src={'https://sermonindex3.b-cdn.net/pdf/cslewis.png'}
             alt={'C.S. Lewis'}
+            loading="lazy"
           />
           <div className="flex flex-col mb-2">
             <h3 className="md:text-xl">The world does not need more</h3>

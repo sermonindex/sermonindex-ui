@@ -123,6 +123,7 @@ export const Author = ({
           src={imageUrl}
           alt={`Image of ${author || 'author'}`}
           className="w-8 h-8 rounded-full object-cover"
+          loading="lazy"
         />
       )}
       <div className="text-sm media-fullscreen:text-base">{author}</div>

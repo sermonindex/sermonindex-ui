@@ -130,6 +130,7 @@ export default function Index() {
                       src={image.url}
                       className="rounded-lg bg-slate-100 w-full"
                       alt={image.title || ''}
+                      loading="lazy"
                     />
                   </a>
                 </div>

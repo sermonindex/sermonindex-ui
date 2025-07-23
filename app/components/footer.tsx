@@ -233,6 +233,7 @@ export const Footer = () => {
                 src="https://sermonindex3.b-cdn.net/si-images/wesley-bg.png"
                 alt="Wesley Quote"
                 className="w-3/4 h-auto ml-auto pb-3"
+                loading="lazy"
               />
               <div className="bg-si-olive bg-opacity-10 rounded-lg shadow-2xl">
                 <h2 className="text-md font-bold text-balance px-2 pt-2">

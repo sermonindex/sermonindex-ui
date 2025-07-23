@@ -57,6 +57,7 @@ export default function Index() {
                   src={sermon.contributorImageUrl}
                   alt={sermon.title}
                   className="w-15 h-20 rounded-2xl object-cover absolute top-4 left-20"
+                  loading="lazy"
                 />
                 <div className="pl-36 items-center text-md">
                   {sermon.title.length > 50

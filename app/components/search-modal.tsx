@@ -225,6 +225,7 @@ export const SearchModal = ({}) => {
                             className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                             src={contributor.imageUrl}
                             alt={contributor.fullName}
+                            loading="lazy"
                           />
                           <div>
                             <div className="text-xs">
@@ -251,6 +252,7 @@ export const SearchModal = ({}) => {
                               className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                               src={sermon.contributorImageUrl}
                               alt={sermon.contributorFullName}
+                              loading="lazy"
                             />
                             <div>
                               <div className="text-xs">{sermon.title}</div>
