@@ -45,6 +45,10 @@ function isBookPage(crumbs: string[]): boolean {
   );
 }
 
+function isCommentariesCrumb(crumbs: string[]): boolean {
+  return crumbs.length > 1 && crumbs[0].toLowerCase() === 'commentary';
+}
+
 function buildSermonCrumbs(
   crumbs: string[],
   sermon: Sermon,
@@ -213,6 +217,43 @@ function buildBookCrumbs(
   return nav;
 }
 
+function buildCommentariesCrumbs(
+  crumbs: string[],
+  nav: NavCrumb[],
+): NavCrumb[] {
+  if (crumbs.length > 1) {
+    nav.push({
+      name: 'Commentary',
+      linkTo: '/commentary',
+    });
+  }
+  if (crumbs.length > 2) {
+    nav.push({
+      name: crumbs[2]
+        .replace(/%20/g, ' ')
+        .replace(/-/g, ' ')
+        .replace(/(?<!')\b\w/g, (l) => l.toUpperCase()),
+      linkTo: `/commentary/${crumbs[1]}/${crumbs[2]}`,
+    });
+  }
+  if (crumbs.length > 3) {
+    nav.push({
+      name: OsisToBookName[crumbs[3] as keyof typeof OsisToBookName],
+      // todo: this link does not route currently
+      linkTo: '',
+    });
+  }
+  if (crumbs.length > 4) {
+    // chapter
+    nav.push({
+      name: `Chapter ${crumbs[4]}`,
+      linkTo: `/commentary/${crumbs[1]}/${crumbs[2]}/${crumbs[3]}/${crumbs[4]}`,
+    });
+  }
+
+  return nav;
+}
+
 interface BreadcrumbProps {
   location: string;
   sermon?: Sermon;
@@ -248,6 +289,8 @@ export default function Breadcrumbs({
     nav = buildMarkdownCrumbs(crumbs, nav);
   } else if (isBookPage(crumbs) && book !== undefined) {
     nav = buildBookCrumbs(crumbs, book, nav);
+  } else if (isCommentariesCrumb(crumbs)) {
+    nav = buildCommentariesCrumbs(crumbs, nav);
   } else {
     for (let i = 0; i < crumbs.length; i++) {
       nav.push({
@@ -270,11 +313,14 @@ export default function Breadcrumbs({
               </span>
             )}
             {index < nav.length - 1 && hasContent(crumb.linkTo) ? (
-              <Link to={crumb.linkTo} className="text-sm hover:underline">
+              <Link
+                to={crumb.linkTo}
+                className="text-sm hover:underline block max-w-[120px] truncate md:max-w-none"
+              >
                 {crumb.name}
               </Link>
             ) : (
-              <span className="text-sm italic">
+              <span className="text-sm italic block max-w-[120px] truncate md:max-w-none">
                 {crumb.name
                   .replace('-', ' ')
                   .replace('%20', ' ')
