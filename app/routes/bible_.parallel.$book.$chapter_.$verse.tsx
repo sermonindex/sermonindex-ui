@@ -21,13 +21,12 @@ import {
   TabListItem,
 } from '~/components/tabs';
 
-import React from 'react';
-import { SiSection } from '~/components/section';
-import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
-import { BibleVerseParallel } from '~/components/bible-verse-parallel';
 import { OsisToBookName } from '~/common/bible-constants';
-import { AuthorImage } from '~/components/image-author';
 import { formatNumber } from '~/common/format-number';
+import { BibleVerseParallel } from '~/components/bible-verse-parallel';
+import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
+import { AuthorImage } from '~/components/image-author';
+import { SiSection } from '~/components/section';
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -143,6 +142,7 @@ export default function Index() {
             )}
           </div>
         </div>
+        <SiSection title="Summary">{parallels.summary}</SiSection>
         <SiSection title="Commentary">
           <CommentaryByVerseTabbed commentaries={commentaries} />
         </SiSection>
