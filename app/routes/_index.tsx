@@ -10,7 +10,22 @@ import { Teaser } from '~/components/teaser';
 export const meta: MetaFunction = () => {
   return [
     { title: 'SermonIndex' },
-    { name: 'description...', content: 'This is a PoC...' },
+    {
+      name: 'description',
+      content:
+        "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.",
+    },
+    { property: 'og:title', content: 'SermonIndex' },
+    {
+      property: 'og:description',
+      content:
+        "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.",
+    },
+    {
+      property: 'og:image',
+      content: 'https://www.sermonindex.net/sermonindexlogonew2.jpg',
+    },
+    { property: 'og:url', content: 'https://sermonindex.net' },
   ];
 };
 
