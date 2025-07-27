@@ -41,7 +41,7 @@ export function SiPage({
           text-sm md:text-base
           "
         >
-          <div className="flex-grow mt-[65px] lg:mt-0">
+          <div className="flex-grow mt-[64px] lg:mt-0">
             <Navbar />
             {showBreadCrumb && (
               <Breadcrumbs
