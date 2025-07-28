@@ -1,7 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
-import { BookInfo, ListPaginatedResponse, MediaType } from '~/api/interfaces';
+import { BookInfo, ListPaginatedResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { BookList } from '~/components/book-list';
 import { SiSection } from '~/components/section';

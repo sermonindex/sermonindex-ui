@@ -1,7 +1,7 @@
 import { Link } from '@remix-run/react';
+import { formatNumber } from '~/common/format-number';
 import { hasContent } from '~/common/sanitize';
 import { SiParagraph } from '~/components/si-styles';
-import { formatNumber } from '~/common/format-number';
 
 export interface TeaserProps {
   type: string;
@@ -27,8 +27,12 @@ export const Teaser = ({
   views,
 }: TeaserProps) => {
   return (
-    <Link to={link} key={title} className="block h-full group">
-      <div className="h-full flex flex-col max-w-96 bg-white/50 dark:bg-black/30 rounded-md border border-gray-200 border-t-4 border-t-si-accent shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+    <Link
+      to={link}
+      key={title}
+      className="block flex-shrink md:w-[380px] w-full h-[480px] group"
+    >
+      <div className="h-full w-full flex flex-col bg-white/50 dark:bg-black/30 rounded-md border border-gray-200 border-t-4 border-t-si-accent shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
         <div className="p-5 flex flex-col flex-grow">
           {/* Top Section */}
           <div>

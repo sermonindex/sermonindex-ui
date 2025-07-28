@@ -69,7 +69,7 @@ export default function Index() {
                     {formatNumber(contributor.sermonCount)}
                   </span>
                 </div>
-                <p className="text-center mt-2 text-sm">
+                <p className="text-center mt-2 text-sm group-hover:underline">
                   {contributor.fullName}
                 </p>
               </div>
