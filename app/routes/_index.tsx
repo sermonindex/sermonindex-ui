@@ -94,24 +94,13 @@ const Teasers = ({
       />
 
       <Teaser
-        type={'Featured Book'}
-        title={'Abandonment To Divine Providence'}
-        link={'/books/68b5a420-e7df-4412-8048-e37ae5c76c68/contents'}
-        text={
-          'The Rev. Jean Pierre de Caussade was one of the most remarkable spiritual writers of the Society of Jesus in France in the 18th Century. His death took place at Toulouse in 1751. His works have gone through many editions and have been republished, and translated into several foreign languages.'
-        }
-        author={'Jean-Pierre de Caussade'}
-        mediaType={'book'}
-      />
-
-      <Teaser
         type={'Featured Blog'}
-        title={'How to Cultivate Humility'}
-        link={`/blog/2025-06-07%20How%20to%20cultivate%20humility`}
-        imageUrl={
-          'https://www.orthodoxphotos.com/Orthodox_Elders/Greek/Fr._Paisios/2.jpg'
+        title={'Mercy Must Triumph Over Judgment in Our Hearts'}
+        link={`/blog/an_old_blog`}
+        text={
+          '“Blessed are the merciful, for they shall receive mercy” (Matthew 5:7).Jesus taught us to pray, “Our Father in Heaven, forgive us our sins in exactly the same way as we forgive others for their sins against us” (Matthew 6:12, Luke 11:4).'
         }
-        author={'Elder Paisios'}
+        author={'Zac Poonen'}
         mediaType={'blog'}
       />
     </div>
@@ -272,7 +261,7 @@ export default function Index() {
       <div className="hidden lg:flex">
         <div className="flex w-2/3">
           <div className="flex-col w-full space-y-2">
-            <SiSection title="Featured Sermon" sharesRightPadding={true}>
+            <SiSection title="Featured Audio Sermon" sharesRightPadding={true}>
               <Link to={`/sermons/${featured.id}`} key={featured.id}>
                 <SermonCard
                   sermon={featured}
@@ -327,7 +316,7 @@ export default function Index() {
             <div className="relative w-full">
               <img
                 src="https://sermonindex3.b-cdn.net/si-images/home-preacher.jpg"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover" alt="SermonIndex Preacher" fetchpriority="high"
               />
               <div className="absolute inset-0 flex items-center justify-center pt-32">
                 <div className="flex flex-col items-center text-white">
@@ -341,7 +330,7 @@ export default function Index() {
                   </div>
                   <div>
                     <span className="lg:text-xs 2xl:text-lg">
-                      of Biblical and Sermon content for free use
+                      of Biblical and Sermon content for free use.
                     </span>
                   </div>
                   <div className="mt-6">
@@ -378,7 +367,7 @@ export default function Index() {
               </div>
               <Link to="/speakers">
                 <div className="flex items-center justify-end font-semibold text-si-main dark:text-si-olive hover:underline">
-                  <span className="">See More Speakers</span>
+                  <span className="">Browse all speakers</span>
                   <span className="ml-2 mt-1">
                     <FaArrowAltCircleRight />
                   </span>
@@ -388,13 +377,13 @@ export default function Index() {
             <SiSection title="Sermons By Topic" sharesLeftPadding={true}>
               <ItemsGroup
                 items={featuredTopics}
-                showMore={{ text: 'See More Topics', route: '/topics' }}
+                showMore={{ text: 'Browse all topics', route: '/topics' }}
               />
             </SiSection>
-            <SiSection title="Sermons By Verse" sharesLeftPadding={true}>
+            <SiSection title="Sermons By Bible Verse" sharesLeftPadding={true}>
               <ItemsGroup
                 items={featuredVerses}
-                showMore={{ text: 'See More Verses', route: '/bible/eng/BSB' }}
+                showMore={{ text: 'Browse all Bible Verses', route: '/bible/eng/BSB' }}
               />
             </SiSection>
           </div>
@@ -403,7 +392,7 @@ export default function Index() {
 
       {/* Mobile View */}
       <div className="flex flex-col lg:hidden">
-        <SiSection title="Featured Sermon">
+        <SiSection title="Featured Audio Sermon">
           <Link to={`/sermons/${featured.id}`} key={featured.id}>
             <SermonCard
               sermon={featured}
@@ -444,19 +433,19 @@ export default function Index() {
         <SiSection title="Sermons By Topic">
           <ItemsGroup
             items={featuredTopics}
-            showMore={{ text: 'See More Topics', route: '/topics' }}
+            showMore={{ text: 'Browse all Topics', route: '/topics' }}
           />
         </SiSection>
-        <SiSection title="Sermons By Verse">
+        <SiSection title="Sermons By Bible Verse">
           <ItemsGroup
             items={featuredVerses}
-            showMore={{ text: 'See More Verses', route: '/bible/eng/BSB' }}
+            showMore={{ text: 'Browse all Bible Verses', route: '/bible/eng/BSB' }}
           />
         </SiSection>
         <SiSection title="Online Bibles" sharesRightPadding={true}>
           <ItemsGroup
             items={featuredBibles}
-            showMore={{ text: 'See More Bibles', route: '/bible' }}
+            showMore={{ text: 'Browse all Online Bibles', route: '/bible' }}
           />
         </SiSection>
         <SiSection title="Other Featured Content" sharesRightPadding={true}>
