@@ -56,13 +56,13 @@ You can read other [commendations](/md/commendations) from pastors and ministry 
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   ">
-    USA Donations
+    USA Donations - Donate Now
   </button>
 </a>
 
 Mailing Address For Donations (put in memo on cheque: **SermonIndex / F1640**)
 
-Friends of the Great Commission PO Box 6305 Colorado Springs, CO 80934
+FGC LOCKBOX P.O. Box 739336, Dallas, TX 75373-9336
 
 <br/>
 
@@ -81,7 +81,7 @@ Friends of the Great Commission PO Box 6305 Colorado Springs, CO 80934
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   ">
-    Canada Donations
+    Canada Donations - Donate Now
   </button>
 </a>
 
