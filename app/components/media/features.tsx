@@ -45,7 +45,7 @@ export const Cover = ({
 
         {/* --- Right Column --- */}
         <div className="flex flex-col items-end gap-y-2 sm:flex-row sm:items-center sm:gap-x-1">
-          <Controls.Group className="flex items-center gap-x-1">
+          <Controls.Group className="flex items-baseline gap-x-1">
             <ShareButton tooltipPlacement={'bottom end'} size={'md'} />
 
             {/* Search Button: Hidden by default, shown on 'sm' screens and up */}
