@@ -10,6 +10,7 @@ import {
   BibleChapter,
   ListPaginatedResponse,
   ListResponse,
+  MediaType,
   Sermon,
   SermonInfo,
 } from '~/api/interfaces';
@@ -114,7 +115,11 @@ export default function Index() {
             <div className="w-full md:w-3/4">
               <MiniPlayer
                 sermon={
-                  { title: reference, streamUrl: chapter.streamUrl } as Sermon
+                  {
+                    title: reference,
+                    mediaType: MediaType.Audio,
+                    audio: { streamUrl: chapter.streamUrl },
+                  } as Sermon
                 }
               />
             </div>

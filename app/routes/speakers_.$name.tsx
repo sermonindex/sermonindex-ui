@@ -53,8 +53,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export default function Index() {
   const { contributor, sermons, books } = useLoaderData<typeof loader>();
 
-  const [activeTab, setActiveTab] = useState(SpeakerTabs.Sermons);
-
   let availableTabs = Object.values(SpeakerTabs);
   if (contributor.images.length === 0) {
     availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Images);
@@ -62,6 +60,15 @@ export default function Index() {
   if (contributor.bookCount === 0) {
     availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Books);
   }
+  if (contributor.sermonCount === 0) {
+    availableTabs = availableTabs.filter((tab) => tab !== SpeakerTabs.Sermons);
+  }
+
+  const [activeTab, setActiveTab] = useState(
+    availableTabs.includes(SpeakerTabs.Sermons)
+      ? SpeakerTabs.Sermons
+      : availableTabs[0],
+  );
 
   return (
     <SiPage>
@@ -80,30 +87,34 @@ export default function Index() {
           ))}
         </TabList>
 
-        <TabContent
-          key={SpeakerTabs.Sermons}
-          active={activeTab === SpeakerTabs.Sermons}
-          className="px-1 md:px-4 py-2"
-        >
-          <SermonList
-            sermons={sermons.values}
-            filters={{ contributorSlug: contributor.slug }}
-            nextPage={sermons.nextPage}
-            showContributor={false}
-          />
-        </TabContent>
+        {contributor.sermonCount > 0 && (
+          <TabContent
+            key={SpeakerTabs.Sermons}
+            active={activeTab === SpeakerTabs.Sermons}
+            className="px-1 md:px-4 py-2"
+          >
+            <SermonList
+              sermons={sermons.values}
+              filters={{ contributorSlug: contributor.slug }}
+              nextPage={sermons.nextPage}
+              showContributor={false}
+            />
+          </TabContent>
+        )}
 
-        <TabContent
-          key={SpeakerTabs.Books}
-          active={activeTab === SpeakerTabs.Books}
-          className="px-1 md:px-4 py-2"
-        >
-          <BookList
-            books={books.values}
-            filters={{ contributorSlug: contributor.slug }}
-            nextPage={books.nextPage}
-          />
-        </TabContent>
+        {contributor.bookCount > 0 && (
+          <TabContent
+            key={SpeakerTabs.Books}
+            active={activeTab === SpeakerTabs.Books}
+            className="px-1 md:px-4 py-2"
+          >
+            <BookList
+              books={books.values}
+              filters={{ contributorSlug: contributor.slug }}
+              nextPage={books.nextPage}
+            />
+          </TabContent>
+        )}
 
         <TabContent
           key={SpeakerTabs.Bio}

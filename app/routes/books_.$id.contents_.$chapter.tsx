@@ -5,7 +5,7 @@ import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
 } from 'react-icons/fa';
-import { Sermon } from '~/api/interfaces';
+import { Book, BookChapter, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { MiniPlayer } from '~/components/media/player';
 import { SiPage } from '~/components/si-page';
@@ -13,7 +13,7 @@ import { SiPage } from '~/components/si-page';
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id, chapter: chapterNumber } = params;
 
-  const chapter = await fetchApi<any>(
+  const chapter = await fetchApi<BookChapter>(
     `/books/id/${id}/chapter/${chapterNumber}`,
   );
 
@@ -28,8 +28,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function Index() {
   const { chapter } = useLoaderData<typeof loader>();
-  const { book } = useOutletContext<{ book: any }>();
-  // const matches = useMatches();
+  const { book } = useOutletContext<{ book: Book }>();
 
   const isAudioBook = !!chapter.streamUrl;
 
@@ -60,7 +59,7 @@ export default function Index() {
               <h1 className="text-lg md:text-2xl font-semibold text-center">
                 {book.title}
               </h1>
-              <h3>By {book.contributor.fullName}</h3>
+              <h3>By {book.contributorFullName}</h3>
             </div>
             <span className="hover:underline hover:cursor-pointer md:pr-4">
               <Link to={`/books/${book.id}/contents/${nextChapter}`}>
@@ -76,7 +75,17 @@ export default function Index() {
             </span>
           </div>
           <div className="pt-2 md:pt-4 md:px-4">
-            {isAudioBook && <MiniPlayer sermon={chapter as Sermon} />}
+            {isAudioBook && (
+              <MiniPlayer
+                sermon={
+                  {
+                    title: chapter.title,
+                    mediaType: MediaType.Audio,
+                    audio: { streamUrl: chapter.streamUrl },
+                  } as Sermon
+                }
+              />
+            )}
             <h3 className="text-lg font-semibold pb-2">{chapter.title}</h3>
             <div
               className="custom-html whitespace-pre-line"

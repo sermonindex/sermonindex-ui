@@ -1,11 +1,11 @@
 import { Link } from '@remix-run/react';
+import { format } from 'date-fns';
 import { IoIosArrowForward } from 'react-icons/io';
+import { Post } from '~/api/blog';
 import { Book, Contributor, Sermon } from '~/api/interfaces';
-import { hasContent, isNumber, safeParseInt } from '~/common/sanitize';
 import { OsisToBookName } from '~/common/bible-constants';
 import { isValidLanguage } from '~/common/languages';
-import { format } from 'date-fns';
-import { Post } from '~/api/blog';
+import { hasContent, isNumber, safeParseInt } from '~/common/sanitize';
 
 interface NavCrumb {
   name: string;
@@ -112,12 +112,12 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
         language = crumbs[1];
         crumbs.splice(1, 1);
       }
-      // This index exists because we don't route to /bible/${language}, we
-      // always route to the full /bible/${language}/${translation} or deeper
+      // This index exists because we don't route to /bible/, we
+      // always route to the full /bible/${translation} or deeper
       translation = crumbs[1];
       nav.push({
         name: translation,
-        linkTo: `/bible/${language}/${crumbs[1]}`,
+        linkTo: `/bible/${crumbs[1]}`,
       });
     }
     // book
@@ -189,7 +189,7 @@ function buildBookCrumbs(
   book: Book,
   nav: NavCrumb[],
 ): NavCrumb[] {
-  let contributorSlug = book.contributor.fullName
+  let contributorSlug = book.contributorFullName
     .toLowerCase()
     .replaceAll(' ', '-')
     .replaceAll('.', '');
@@ -199,7 +199,7 @@ function buildBookCrumbs(
     linkTo: '/books',
   });
   nav.push({
-    name: book.contributor.fullName,
+    name: book.contributorFullName,
     linkTo: `/speakers/${contributorSlug}`,
   });
   nav.push({
@@ -229,25 +229,26 @@ function buildCommentariesCrumbs(
   }
   if (crumbs.length > 2) {
     nav.push({
-      name: crumbs[2]
+      name: crumbs[1]
         .replace(/%20/g, ' ')
         .replace(/-/g, ' ')
         .replace(/(?<!')\b\w/g, (l) => l.toUpperCase()),
-      linkTo: `/commentary/${crumbs[1]}/${crumbs[2]}`,
+      linkTo: `/commentary/${crumbs[1]}`,
     });
   }
   if (crumbs.length > 3) {
     nav.push({
-      name: OsisToBookName[crumbs[3] as keyof typeof OsisToBookName],
+      name: OsisToBookName[crumbs[2] as keyof typeof OsisToBookName],
       // todo: this link does not route currently
       linkTo: '',
     });
   }
-  if (crumbs.length > 4) {
+  if (crumbs.length > 3) {
     // chapter
     nav.push({
-      name: `Chapter ${crumbs[4]}`,
-      linkTo: `/commentary/${crumbs[1]}/${crumbs[2]}/${crumbs[3]}/${crumbs[4]}`,
+      name: `Chapter ${crumbs[3]}`,
+      // todo: this link does not route currently
+      linkTo: '',
     });
   }
 

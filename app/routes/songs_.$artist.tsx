@@ -75,8 +75,10 @@ export default function Index() {
     mediaType: song.mediaType,
     duration: song.duration,
     views: song.views,
-    streamUrl: song.streamUrl,
-    downloadUrl: song.downloadUrl,
+    audio: {
+      streamUrl: song.audio.streamUrl,
+      downloadUrl: song.audio.downloadUrl,
+    },
     bibleReferences: [],
     topics: [],
     createdAt: '',

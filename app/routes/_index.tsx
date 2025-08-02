@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
     },
     {
       property: 'og:image',
-      content: 'https://www.sermonindex.net/og-image.png',
+      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
     },
     { property: 'og:url', content: 'https://sermonindex.net' },
   ];
@@ -34,6 +34,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const [featuredSermons] = await Promise.all([
     fetchApi<ListResponse<SermonInfo>>('/sermons/featured?offset=0&limit=2'),
   ]);
+
   if ('statusCode' in featuredSermons || !(featuredSermons.values.length > 1)) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
@@ -316,7 +317,8 @@ export default function Index() {
             <div className="relative w-full">
               <img
                 src="https://sermonindex3.b-cdn.net/si-images/home-preacher.jpg"
-                className="w-full h-full object-cover" alt="SermonIndex Preacher" fetchpriority="high"
+                className="w-full h-full object-cover"
+                alt="SermonIndex Preacher"
               />
               <div className="absolute inset-0 flex items-center justify-center pt-32">
                 <div className="flex flex-col items-center text-white">
@@ -383,7 +385,10 @@ export default function Index() {
             <SiSection title="Sermons By Bible Verse" sharesLeftPadding={true}>
               <ItemsGroup
                 items={featuredVerses}
-                showMore={{ text: 'Browse all Bible Verses', route: '/bible/eng/BSB' }}
+                showMore={{
+                  text: 'Browse all Bible Verses',
+                  route: '/bible/BSB',
+                }}
               />
             </SiSection>
           </div>
@@ -439,7 +444,10 @@ export default function Index() {
         <SiSection title="Sermons By Bible Verse">
           <ItemsGroup
             items={featuredVerses}
-            showMore={{ text: 'Browse all Bible Verses', route: '/bible/eng/BSB' }}
+            showMore={{
+              text: 'Browse all Bible Verses',
+              route: '/bible/BSB',
+            }}
           />
         </SiSection>
         <SiSection title="Online Bibles" sharesRightPadding={true}>

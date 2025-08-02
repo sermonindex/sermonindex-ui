@@ -12,10 +12,10 @@ import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const { language, id, book, chapter } = params;
+  const { id, book, chapter } = params;
 
   const commentary = await fetchApi<any>(
-    `/commentary/${language}/${id}/${book}/${chapter}`,
+    `/commentary/eng/${id}/${book}/${chapter}`,
   );
 
   if ('statusCode' in commentary) {
@@ -34,7 +34,7 @@ export default function Index() {
     <SiPage>
       <div className="flex w-full min-h-28 items-center justify-center space-x-14 md:space-x-24">
         <Link
-          to={`/commentary/eng/${commentary.id}/${commentary.book}/${commentary.previousChapter}`}
+          to={`/commentary/${commentary.id}/${commentary.book}/${commentary.previousChapter}`}
         >
           <IconContext.Provider
             value={{
@@ -50,7 +50,7 @@ export default function Index() {
         } ${commentary.chapter}`}</span>
         <span className="hover:underline hover:cursor-pointer">
           <Link
-            to={`/commentary/eng/${commentary.id}/${commentary.book}/${commentary.nextChapter}`}
+            to={`/commentary/${commentary.id}/${commentary.book}/${commentary.nextChapter}`}
           >
             <IconContext.Provider
               value={{

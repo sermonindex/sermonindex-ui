@@ -4,10 +4,11 @@ import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
 } from 'react-icons/fa';
+import { Book } from '~/api/interfaces';
 import { SiPage } from '~/components/si-page';
 
 export default function Index() {
-  const { book } = useOutletContext<{ book: any }>();
+  const { book } = useOutletContext<{ book: Book }>();
 
   return (
     <SiPage book={book}>
@@ -33,7 +34,7 @@ export default function Index() {
               <h1 className="text-lg md:text-2xl font-semibold text-center">
                 {book.title}
               </h1>
-              <h3 className="">By {book.contributor.fullName}</h3>
+              <h3 className="">By {book.contributorFullName}</h3>
             </div>
             <span className="hover:underline hover:cursor-pointer md:pr-4">
               <Link to={`/books/${book.id}/contents/1`}>
@@ -59,7 +60,7 @@ export default function Index() {
                   <Link
                     to={`/books/${book.id}/contents/${index + 1}`}
                     className="hover:underline"
-                    content={book}
+                    content={book as any}
                   >
                     {chapter.title}
                   </Link>

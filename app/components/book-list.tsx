@@ -17,13 +17,13 @@ export const BookList = ({
   nextPage = null,
 }: BookListProps) => {
   const [title, setTitle] = useState<string>('');
-  const [mediaTypes, setMediaTypes] = useState<MediaType[]>(
+  const [mediaType, setMediaType] = useState<MediaType[]>(
     Object.values(MediaType),
   );
 
   const memoizedFilters = useMemo(() => {
-    return { ...filters, title, mediaTypes: mediaTypes.join(',') };
-  }, [title, mediaTypes]);
+    return { ...filters, title, mediaType: mediaType.join(',') };
+  }, [title, mediaType]);
 
   return (
     <div>
@@ -39,7 +39,7 @@ export const BookList = ({
           shortTitle="Filter"
           options={[MediaType.Text, MediaType.Audio]}
           onFilterChange={(options: string[]) =>
-            setMediaTypes(options as MediaType[])
+            setMediaType(options as MediaType[])
           }
         />
       </div>

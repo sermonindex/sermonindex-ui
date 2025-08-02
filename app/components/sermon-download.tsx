@@ -16,6 +16,7 @@ import {
   downloadPlainText,
   downloadUrl,
 } from '~/common/download';
+import { getMedia } from '~/common/get-media';
 import { hasContent } from '~/common/sanitize';
 import { ClickableText } from '~/components/section';
 
@@ -93,32 +94,33 @@ export const DownloadItem = ({
 
 export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
   // Check if any download options are available
+  const media = getMedia(sermon);
   const hasDownloads =
-    hasContent(sermon.downloadUrl) ||
+    hasContent(media.downloadUrl) ||
     hasContent(sermon.transcript) ||
-    hasContent(sermon.srtUrl) ||
-    hasContent(sermon.vttUrl);
+    hasContent(media.srtUrl) ||
+    hasContent(media.vttUrl);
 
   return (
     <div>
       {hasDownloads ? (
         <ul className="list-none space-y-2">
           {/* Download MP3 */}
-          {sermon.mediaType === MediaType.Audio && sermon.downloadUrl && (
+          {sermon.mediaType === MediaType.Audio && media.downloadUrl && (
             <DownloadItem
               displayText={'Download as MP3'}
               downloadCallback={downloadMP3}
-              data={sermon.downloadUrl}
+              data={media.downloadUrl}
               filename={'S' + sermon.id + '.mp3'}
               icon={<FaRegFileAudio />}
             />
           )}
           {/* Download MP4 */}
-          {sermon.mediaType === MediaType.Video && sermon.downloadUrl && (
+          {sermon.mediaType === MediaType.Video && media.downloadUrl && (
             <DownloadItem
               displayText={'Download as MP4'}
               downloadCallback={downloadMP4}
-              data={sermon.downloadUrl}
+              data={media.downloadUrl}
               filename={'S' + sermon.id + '.mp4'}
               icon={<FaRegFileVideo />}
             />
@@ -140,21 +142,21 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
             icon={<FaRegFileLines />}
           />
           {/* Download SRT */}
-          {sermon.mediaType != MediaType.Text && sermon.srtUrl && (
+          {sermon.mediaType != MediaType.Text && media.srtUrl && (
             <DownloadItem
               displayText={'Download as SRT'}
               downloadCallback={downloadUrl}
-              data={sermon.srtUrl}
+              data={media.srtUrl}
               filename={'S' + sermon.id + '.srt'}
               icon={<FaRegClosedCaptioning />}
             />
           )}
           {/* Download VTT */}
-          {sermon.mediaType != MediaType.Text && sermon.vttUrl && (
+          {sermon.mediaType != MediaType.Text && media.vttUrl && (
             <DownloadItem
               displayText={'Download as VTT'}
               downloadCallback={downloadUrl}
-              data={sermon.vttUrl}
+              data={media.vttUrl}
               filename={'S' + sermon.id + '.vtt'}
               icon={<FaRegClosedCaptioning />}
             />

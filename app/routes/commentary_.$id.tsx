@@ -8,8 +8,8 @@ import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const { language, id } = params;
-  const commentary = await fetchApi<any>(`/commentary/${language}/${id}`);
+  const { id } = params;
+  const commentary = await fetchApi<any>(`/commentary/eng/${id}`);
 
   if ('statusCode' in commentary) {
     throw new Response('Oh no! Something went wrong!', {
@@ -44,7 +44,7 @@ export default function Index() {
           getItemId={(book: CommentaryBook) => book.id}
           getItemName={(book: CommentaryBook) => book.name}
           getItemLink={(book: CommentaryBook) =>
-            `/commentary/${commentary.language}/${commentary.id}/${book.id}/1`
+            `/commentary/${commentary.id}/${book.id}/1`
           }
           getItemCount={(book: BibleBook) => book.numberOfChapters}
           columnsClassName="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"

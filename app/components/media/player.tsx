@@ -23,6 +23,7 @@ import { MediaSearch } from '~/components/media/search';
 import { Allotment } from 'allotment';
 import 'allotment/dist/style.css';
 import { fetchApi } from '~/api/sdk';
+import { getMedia } from '~/common/get-media';
 import { getMediaFallbackUrl } from '~/common/hacky';
 import { SermonPlaylist } from '~/components/media/playlist';
 
@@ -60,8 +61,9 @@ export const Player = ({
   }
 
   const currentSermon = sermons[currentIndex];
+  const currentMedia = getMedia(currentSermon);
   const isPlaylistMode = sermons.length > 1;
-  const [currentSrc, setCurrentSrc] = useState(currentSermon.streamUrl);
+  const [currentSrc, setCurrentSrc] = useState(currentMedia.streamUrl);
 
   const viewType: MediaViewType =
     currentSermon.mediaType === MediaType.Video ? 'video' : 'audio';
@@ -75,10 +77,11 @@ export const Player = ({
 
   useEffect(() => {
     const newSermon = sermons[currentIndex];
-    const newSrc = newSermon.streamUrl;
+    const newMedia = getMedia(newSermon);
+    const newSrc = newMedia.streamUrl;
     hasRecordedView.current = false;
 
-    setCurrentSrc(newSermon.streamUrl);
+    setCurrentSrc(newMedia.streamUrl);
     setErrorDetail(null);
     setHasAttemptedFallback(false);
 
@@ -91,7 +94,7 @@ export const Player = ({
   // vidstack media player tracks element doesn't starve the vtt data
   // from the MediaSearch, which also needs the vtt data upfront.
   useEffect(() => {
-    const vttUrl = currentSermon.vttUrl;
+    const vttUrl = currentMedia.vttUrl;
     if (hasContent(vttUrl)) {
       let isCancelled = false;
       setVttContent(undefined);
@@ -134,7 +137,7 @@ export const Player = ({
       setVttContent(undefined);
       setIsLoadingVtt(false);
     }
-  }, [currentSermon.vttUrl]);
+  }, [currentMedia.vttUrl]);
 
   const recordView = async () => {
     if (!hasRecordedView.current) {
@@ -235,7 +238,7 @@ export const Player = ({
     // and archive.org src and try to infer the bunny cdn url
     if (!hasAttemptedFallback && player.current) {
       console.log('Original source failed. Attempting fallback...');
-      const originalUrl = currentSermon.streamUrl;
+      const originalUrl = currentMedia.streamUrl;
       const fallbackUrl = getMediaFallbackUrl(originalUrl);
 
       if (fallbackUrl) {
@@ -308,11 +311,11 @@ export const Player = ({
                       alt={currentSermon.description ?? currentSermon.title}
                     />
                   )}
-                  {hasContent(currentSermon.vttUrl) && (
+                  {hasContent(currentMedia.vttUrl) && (
                     <Track
                       kind="subtitles"
                       content={vttContent}
-                      key={currentSermon.vttUrl}
+                      key={currentMedia.vttUrl}
                       language="en-US"
                       label="English"
                       type="vtt"
@@ -340,7 +343,7 @@ export const Player = ({
                   errorDetail={errorDetail}
                   nextCallback={handleNextSermon}
                   prevCallback={handlePreviousSermon}
-                  downloadUrl={currentSermon.downloadUrl}
+                  downloadUrl={currentMedia.downloadUrl}
                   shuffleState={shuffle}
                   onShuffleStateChange={setShuffleState}
                   repeatState={repeat}
@@ -394,6 +397,7 @@ export const MiniPlayer = ({
 }: MiniPlayerProps) => {
   let player = useRef<MediaPlayerInstance>(null);
   const { duration } = useMediaStore(player);
+  const media = getMedia(sermon);
 
   // Effect to report duration changes back to the parent
   useEffect(() => {
@@ -407,7 +411,7 @@ export const MiniPlayer = ({
       <MediaPlayer
         className="w-full items-center select-none overflow-hidden"
         title={sermon.title}
-        src={sermon.streamUrl}
+        src={media.streamUrl}
         playsInline
         crossOrigin
         viewType={'audio'}

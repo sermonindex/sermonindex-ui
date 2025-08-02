@@ -1,11 +1,12 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
+import { Book } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
 
-  const book = await fetchApi<any>(`/books/id/${id}`);
+  const book = await fetchApi<Book>(`/books/id/${id}`);
 
   if ('statusCode' in book) {
     throw new Response('Oh no! Something went wrong!', {

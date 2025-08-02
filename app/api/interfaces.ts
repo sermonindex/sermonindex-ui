@@ -70,7 +70,13 @@ export interface Contributor {
   hymnCount: number;
   sermonCount: number;
   images: ContributorImage[];
-  createdAt: string;
+}
+
+export interface MediaElement {
+  downloadUrl?: string;
+  streamUrl?: string;
+  srtUrl?: string;
+  vttUrl?: string;
 }
 
 export interface Sermon {
@@ -87,12 +93,10 @@ export interface Sermon {
   mediaType: MediaType;
   duration: number;
   views: number;
-
-  streamUrl?: string;
-  downloadUrl?: string;
   thumbnailUrl?: string;
-  srtUrl?: string;
-  vttUrl?: string;
+
+  audio?: MediaElement;
+  video?: MediaElement;
 
   bibleReferences: BiblePassage[];
   topics: Omit<TopicInfo, 'sermonCount'>[];
@@ -113,9 +117,6 @@ export interface SermonInfo {
   mediaType: MediaType;
   duration: number;
   views: number;
-
-  streamUrl?: string;
-  downloadUrl?: string;
   thumbnailUrl?: string;
 
   bibleReferences: BiblePassage[];
@@ -132,13 +133,11 @@ export interface Hymn {
   contributorImageUrl?: string;
 
   title: string;
-  views: number;
-
   mediaType: MediaType;
   duration: number;
+  views: number;
 
-  streamUrl?: string;
-  downloadUrl?: string;
+  audio: MediaElement;
 }
 
 export interface TopicInfo {
@@ -155,18 +154,6 @@ export interface Topic {
   createdAt: string;
 }
 
-export interface BookChapter {
-  number: number;
-  title: string;
-}
-
-export interface Book {
-  id: string;
-  title: string;
-  chapters: BookChapter[];
-  contributor: Contributor;
-}
-
 export interface BookInfo {
   id: string;
 
@@ -176,6 +163,26 @@ export interface BookInfo {
 
   title: string;
   mediaType: MediaType;
+}
+
+export interface Book {
+  id: string;
+
+  contributorSlug: string;
+  contributorFullName: string;
+  contributorImageUrl: string;
+
+  title: string;
+  mediaType: MediaType;
+
+  chapters: Omit<BookChapter, 'text' | 'streamUrl'>[];
+}
+
+export interface BookChapter {
+  number: number;
+  title: string;
+  text: string;
+  streamUrl?: string;
 }
 
 // The following bible entities are subject to change

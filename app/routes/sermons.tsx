@@ -28,7 +28,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       `/sermons/viewed?offset=0&limit=25`,
     ),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
-      `/sermons?sortBy=createdAt&sortOrder=desc&offset=0&limit=25`,
+      `/sermons/uploaded?offset=0&limit=25`,
     ),
     fetchApi<ListPaginatedResponse<SermonInfo>>(
       `/sermons/featured?offset=1&limit=25`,
@@ -142,7 +142,7 @@ export default function Index() {
         >
           <SermonList
             sermons={recentUploads.values}
-            filters={{ sortBy: 'createdAt', sortOrder: 'desc' }}
+            baseUrl="/sermons/uploaded"
             nextPage={recentUploads.nextPage}
             showContributor={true}
             showSearch={false}
