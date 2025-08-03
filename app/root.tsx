@@ -6,13 +6,20 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
   useRouteError,
 } from '@remix-run/react';
 
-import './tailwind.css';
-import { SiPage } from '~/components/si-page';
-import { SiSection } from '~/components/section';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { useEffect } from 'react';
 import { ErrorDisplay } from '~/components/error-page';
+import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
+import './tailwind.css';
+
+// Set up NProgress
+NProgress.configure({ showSpinner: false });
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -79,6 +86,16 @@ export function ErrorBoundary() {
 }
 
 export default function App() {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (navigation.state === 'loading') {
+      NProgress.start();
+    } else if (navigation.state === 'idle') {
+      NProgress.done();
+    }
+  }, [navigation.state]);
+
   return (
     <html lang="en">
       <head>
