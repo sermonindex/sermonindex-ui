@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SiSection } from '~/components/section';
@@ -24,9 +23,34 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { topic };
 }
 
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `${data?.topic.name} | Sermons & Teachings | SermonIndex`;
+  const description = `Explore sermons and teachings on the topic of ${data?.topic.name} on SermonIndex.`;
+
+  return [
+    { title },
+    {
+      name: 'description',
+      content: description,
+    },
+    { property: 'og:title', content: title },
+    {
+      property: 'og:description',
+      content: description,
+    },
+    {
+      property: 'og:image',
+      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
+    },
+    {
+      property: 'og:url',
+      content: `https://sermonindex.net/topics/${params.name}`,
+    },
+  ];
+};
+
 export default function Index() {
   const { topic } = useLoaderData<typeof loader>();
-  const [filter, setFilter] = useState<string>('');
 
   return (
     <SiPage>

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import {
   BookInfo,
@@ -49,6 +49,32 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { contributor, sermons, books };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `${data?.contributor.fullName} | Sermons & Teachings | SermonIndex`;
+  const description = `Explore sermons and teachings by ${data?.contributor.fullName} on SermonIndex.`;
+
+  return [
+    { title },
+    {
+      name: 'description',
+      content: description,
+    },
+    { property: 'og:title', content: title },
+    {
+      property: 'og:description',
+      content: description,
+    },
+    {
+      property: 'og:image',
+      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
+    },
+    {
+      property: 'og:url',
+      content: `https://sermonindex.net/speakers/${params.name}`,
+    },
+  ];
+};
 
 export default function Index() {
   const { contributor, sermons, books } = useLoaderData<typeof loader>();

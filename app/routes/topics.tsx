@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import { ListPaginatedResponse, TopicInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
@@ -25,6 +25,30 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { topics, popular };
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = 'Biblical Topics | Sermon Topics | SermonIndex';
+  const description =
+    'Explore a variety of biblical topics and teachings on SermonIndex. Dive deep into sermons that address everything from theology to practical Christian living.';
+
+  return [
+    { title },
+    {
+      name: 'description',
+      content: description,
+    },
+    { property: 'og:title', content: title },
+    {
+      property: 'og:description',
+      content: description,
+    },
+    {
+      property: 'og:image',
+      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
+    },
+    { property: 'og:url', content: 'https://sermonindex.net/topics' },
+  ];
+};
 
 const getTopicGroupedItems = (topics: TopicInfo[]) => {
   return topics.reduce((grouped, topic) => {

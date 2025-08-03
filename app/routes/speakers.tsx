@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import {
   ContributorInfo,
@@ -31,6 +31,30 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { featured, contributors };
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = 'Speakers | Preachers | SermonIndex';
+  const description =
+    'Discover a wide range of speakers and preachers on SermonIndex. Explore their teachings, sermons, and contributions to the Christian faith.';
+
+  return [
+    { title },
+    {
+      name: 'description',
+      content: description,
+    },
+    { property: 'og:title', content: title },
+    {
+      property: 'og:description',
+      content: description,
+    },
+    {
+      property: 'og:image',
+      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
+    },
+    { property: 'og:url', content: 'https://sermonindex.net/speakers' },
+  ];
+};
 
 const getContributorGroupedItems = (contributors: ContributorInfo[]) => {
   return contributors.reduce((grouped, contributor) => {
