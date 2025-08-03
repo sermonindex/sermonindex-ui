@@ -1,7 +1,7 @@
 import { LoaderFunction, redirect } from '@remix-run/node';
 
 export const loader: LoaderFunction = () => {
-  return redirect('/md/support'); // or '/md/support' for absolute path
+  return redirect('/md/support');
 };
 
 export default function Index() {

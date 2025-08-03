@@ -33,7 +33,7 @@ import { VideoSermonRouteMap } from '~/common/route-maps/video-sermons';
  * /myvideo/photo.php?lid=3061 -> /sermon/$id
  *
  * /myalbum/index.php -> /speakers
- * /myalbum/photo.php?lid=4562 -> /speakers/$slug#images
+ * /myalbum/photo.php?lid=75 -> /speakers/$slug#images
  *
  * /newbb/viewforum.php -> /
  * /newbb/viewtopic.php -> /
@@ -147,7 +147,7 @@ export const loader: LoaderFunction = ({
       if (!slug) return redirect('/speakers');
 
       // TODO: Add anchor to images tab
-      return redirect(`/speakers/${slug}#images`);
+      return redirect(`/speakers/${slug}`);
     }
   }
 

@@ -96,10 +96,10 @@ export const SermonDownload = ({ sermon }: SermonDownloadProps) => {
   // Check if any download options are available
   const media = getMedia(sermon);
   const hasDownloads =
-    hasContent(media.downloadUrl) ||
+    hasContent(media?.downloadUrl) ||
     hasContent(sermon.transcript) ||
-    hasContent(media.srtUrl) ||
-    hasContent(media.vttUrl);
+    hasContent(media?.srtUrl) ||
+    hasContent(media?.vttUrl);
 
   return (
     <div>

@@ -83,6 +83,8 @@ export const loader: LoaderFunction = ({
 
       return redirect(chapterRoute);
     }
+
+    return redirect('/bible/BSB/GEN/1');
   }
 
   return redirect('/');
