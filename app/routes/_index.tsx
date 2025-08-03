@@ -3,31 +3,23 @@ import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { FaArrowAltCircleRight } from 'react-icons/fa';
 import { ListResponse, SermonInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { SiSection } from '~/components/section';
 import { SermonCard } from '~/components/sermon-card';
 import { SiPage } from '~/components/si-page';
 import { Teaser } from '~/components/teaser';
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: 'SermonIndex' },
-    {
-      name: 'description',
-      content:
-        "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.",
-    },
-    { property: 'og:title', content: 'SermonIndex' },
-    {
-      property: 'og:description',
-      content:
-        "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.",
-    },
-    {
-      property: 'og:image',
-      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
-    },
-    { property: 'og:url', content: 'https://sermonindex.net' },
-  ];
+  const title = 'SermonIndex';
+  const description =
+    "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.";
+  const url = 'https://sermonindex.net';
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export async function loader({ params }: LoaderFunctionArgs) {

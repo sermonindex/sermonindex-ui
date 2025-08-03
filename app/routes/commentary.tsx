@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { BibleCommentary, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { getLanguageName } from '~/common/languages';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
@@ -21,6 +22,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return commentaries;
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = 'Bible Commentaries';
+  const description =
+    'Explore a wide range of Bible commentaries on SermonIndex. Discover insights and teachings from various authors.';
+  const url = 'https://sermonindex.net/commentary';
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 const getCommentaryGroupedItems = (commentaries: BibleCommentary[]) => {
   return commentaries.reduce((grouped, commentary) => {

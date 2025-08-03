@@ -1,7 +1,8 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { BookInfo, ListPaginatedResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { BookList } from '~/components/book-list';
 import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
@@ -19,6 +20,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return books;
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = `Books`;
+  const description = `Explore a collection of Christian books on SermonIndex. Discover teachings, sermons, and writings from various authors.`;
+  const url = `https://sermonindex.net/books`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const books = useLoaderData<typeof loader>();

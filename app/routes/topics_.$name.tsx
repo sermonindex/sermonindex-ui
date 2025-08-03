@@ -7,6 +7,7 @@ import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
 
 import React from 'react';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { linkifyScripture } from '~/components/linkify-scripture';
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -24,29 +25,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
-  const title = `${data?.topic.name} | Sermons & Teachings | SermonIndex`;
-  const description = `Explore sermons and teachings on the topic of ${data?.topic.name} on SermonIndex.`;
+  const title = `Sermons on ${data?.topic.name}`;
+  const description = `Explore sermons and teachings on the topic of ${data?.topic.name}.`;
+  const url = `https://sermonindex.net/topics/${params.name}`;
 
-  return [
-    { title },
-    {
-      name: 'description',
-      content: description,
-    },
-    { property: 'og:title', content: title },
-    {
-      property: 'og:description',
-      content: description,
-    },
-    {
-      property: 'og:image',
-      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
-    },
-    {
-      property: 'og:url',
-      content: `https://sermonindex.net/topics/${params.name}`,
-    },
-  ];
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export default function Index() {

@@ -8,6 +8,7 @@ import {
   SermonInfo,
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { BookList } from '~/components/book-list';
 import { ContributorCard } from '~/components/contributor-card';
 import { SermonList } from '~/components/sermon-list';
@@ -51,29 +52,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
-  const title = `${data?.contributor.fullName} | Sermons & Teachings | SermonIndex`;
+  const title = `Sermons by ${data?.contributor.fullName}`;
   const description = `Explore sermons and teachings by ${data?.contributor.fullName} on SermonIndex.`;
+  const url = `https://sermonindex.net/speakers/${params.name}`;
 
-  return [
-    { title },
-    {
-      name: 'description',
-      content: description,
-    },
-    { property: 'og:title', content: title },
-    {
-      property: 'og:description',
-      content: description,
-    },
-    {
-      property: 'og:image',
-      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
-    },
-    {
-      property: 'og:url',
-      content: `https://sermonindex.net/speakers/${params.name}`,
-    },
-  ];
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export default function Index() {

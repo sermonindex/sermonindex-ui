@@ -3,6 +3,7 @@ import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import { ListPaginatedResponse, TopicInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { DynamicList } from '~/components/dynamic-list';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
@@ -27,27 +28,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = () => {
-  const title = 'Biblical Topics | Sermon Topics | SermonIndex';
+  const title = 'Biblical Topics';
   const description =
-    'Explore a variety of biblical topics and teachings on SermonIndex. Dive deep into sermons that address everything from theology to practical Christian living.';
+    'Explore a variety of biblical topics and teachings on SermonIndex.';
+  const url = 'https://sermonindex.net/topics';
 
-  return [
-    { title },
-    {
-      name: 'description',
-      content: description,
-    },
-    { property: 'og:title', content: title },
-    {
-      property: 'og:description',
-      content: description,
-    },
-    {
-      property: 'og:image',
-      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
-    },
-    { property: 'og:url', content: 'https://sermonindex.net/topics' },
-  ];
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 const getTopicGroupedItems = (topics: TopicInfo[]) => {

@@ -1,11 +1,12 @@
-import { SiPage } from '~/components/si-page';
 import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { fetchApi } from '~/api/sdk';
-import { Hymn, ListResponse } from '~/api/interfaces';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
+import { Hymn, ListResponse } from '~/api/interfaces';
+import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const [songs] = await Promise.all([fetchApi<ListResponse<Hymn>>('/hymns')]);
@@ -19,14 +20,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { songs };
 }
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: 'Hymns, Songs, and Spiritual Songs | SermonIndex' },
-    {
-      name: 'description',
-      content: 'A collection of hymns and songs on SermonIndex',
-    },
-  ];
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = 'Hymns, Songs, and Spiritual Songs';
+  const description = 'A collection of hymns and songs on SermonIndex.';
+  const url = 'https://sermonindex.net/songs';
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export interface Artist {

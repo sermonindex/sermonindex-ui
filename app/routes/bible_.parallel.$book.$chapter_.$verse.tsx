@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { ChapterData } from '~/api/bible.types';
 import {
@@ -23,6 +23,7 @@ import {
 
 import { OsisToBookName } from '~/common/bible-constants';
 import { formatNumber } from '~/common/format-number';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { BibleVerseParallel } from '~/components/bible-verse-parallel';
 import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
 import { AuthorImage } from '~/components/image-author';
@@ -64,6 +65,23 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { parallels, sermons, commentaries };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const reference = `${
+    OsisToBookName[data?.parallels.book as keyof typeof OsisToBookName]
+  } ${data?.parallels.chapter}:${data?.parallels.verse}`;
+  const verse =
+    data?.parallels.verses.find((v) => v.translationId === 'BSB')?.text || '';
+
+  const description = `${reference} - ${verse}`;
+  const url = `https://sermonindex.net/bible/parallel/${params.book}/${params.chapter}/${params.verse}`;
+
+  return getMetaTags({
+    title: reference,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const { parallels, sermons, commentaries } = useLoaderData<typeof loader>();

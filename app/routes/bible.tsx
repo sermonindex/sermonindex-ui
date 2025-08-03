@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { BibleTranslation, ListResponse } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { getLanguageName } from '~/common/languages';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
@@ -21,6 +22,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return translations;
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = 'Bible';
+  const description =
+    'Explore a collection of Bible translations on SermonIndex.';
+  const url = 'https://sermonindex.net/bible';
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 const getBibleGroupedItems = (bibles: BibleTranslation[]) => {
   return bibles.reduce((grouped, bible) => {

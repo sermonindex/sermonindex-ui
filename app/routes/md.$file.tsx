@@ -1,17 +1,13 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import {
-  useLoaderData,
-  useParams,
-  isRouteErrorResponse,
-  useRouteError,
-} from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import path from 'path';
 import invariant from 'tiny-invariant';
 
-import { SiPage } from '~/components/si-page';
-import MarkdownRenderer from '~/components/markdown';
 import fs from 'fs/promises';
+import { getMetaTags } from '~/common/get-meta-tags';
+import MarkdownRenderer from '~/components/markdown';
 import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
 
 const MARKDOWN_FILES_DIR = path.resolve(
   process.cwd(),
@@ -53,24 +49,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 // Meta function for SEO (page title, description, etc.)
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
-  if (!data || !data.slug) {
-    return [
-      { title: 'Markdown Page Not Found' },
-      {
-        name: 'description',
-        content: `Could not load markdown page for ${params.file}.`,
-      },
-    ];
-  }
-  // Simple title case for the slug
-  const title = data.slug
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-  return [
-    { title: `${title} | SermonIndex` }, // Adjust your site name
-    { name: 'description', content: `Viewing content for ${title}.` },
-  ];
+  const title =
+    data?.slug
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ') ?? 'Info';
+  const description = `View the SermonIndex ${title} page.`;
+  const url = `https://sermonindex.net/md/${data?.slug}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export default function MarkdownSlugPage() {

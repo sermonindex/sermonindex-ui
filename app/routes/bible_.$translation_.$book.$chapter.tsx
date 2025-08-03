@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
 import {
@@ -17,6 +17,7 @@ import {
 import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
 import { getBibleBookId } from '~/common/get-bible-book-id.fn';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { formatBibleChapter } from '~/components/bible-chapter';
 import { CommentaryChapterData } from '~/components/commentary-chapter';
 import { MiniPlayer } from '~/components/media/player';
@@ -63,6 +64,20 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { chapter: chapterContent, sermons, translation, commentaries };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const reference = `${
+    OsisToBookName[data?.chapter.bookId as keyof typeof OsisToBookName]
+  } ${data?.chapter.number}`;
+  const description = `Read ${reference} and explore sermons and commentary related to this chapter on SermonIndex.`;
+  const url = `https://sermonindex.net/bible/${params.translation}/${params.book}/${params.chapter}`;
+
+  return getMetaTags({
+    title: reference,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const { chapter, commentaries, sermons, translation } =

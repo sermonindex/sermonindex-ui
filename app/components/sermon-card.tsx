@@ -69,10 +69,10 @@ export function SermonCard({
               {topic.name}
             </span>
           ))}
-          {sermon.bibleReferences.map((reference) => (
+          {sermon.bibleReferences.map((reference, index) => (
             <span
               className="text-slate-800 dark:text-white bg-si-accent text-xs font-medium me-2 px-2.5 py-0.5 rounded-md"
-              key={reference.text}
+              key={`${index} - ${reference.text}`}
             >
               {reference.book} {reference.startChapter}:{reference.startVerse}
             </span>

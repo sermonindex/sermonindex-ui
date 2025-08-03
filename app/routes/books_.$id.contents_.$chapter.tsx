@@ -1,5 +1,10 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData, useOutletContext } from '@remix-run/react';
+import {
+  Link,
+  MetaFunction,
+  useLoaderData,
+  useOutletContext,
+} from '@remix-run/react';
 import { IconContext } from 'react-icons';
 import {
   FaRegArrowAltCircleLeft,
@@ -7,6 +12,7 @@ import {
 } from 'react-icons/fa';
 import { Book, BookChapter, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { MiniPlayer } from '~/components/media/player';
 import { SiPage } from '~/components/si-page';
 
@@ -25,6 +31,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { chapter };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `${data?.chapter.title}`;
+  const description = `Read the chapter "${data?.chapter.title}" on SermonIndex.`;
+  const url = `https://sermonindex.net/books/${params.id}/contents/${params.chapter}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const { chapter } = useLoaderData<typeof loader>();

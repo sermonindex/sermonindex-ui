@@ -1,11 +1,12 @@
 import { json, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import fs from 'fs/promises';
-import { SiPage } from '~/components/si-page';
-import { SiSection } from '~/components/section';
 import { useState } from 'react';
-import { GenericList } from '~/components/generic-list';
 import { BLOG_POSTS_DIR, getBlogPost, Post } from '~/api/blog';
+import { getMetaTags } from '~/common/get-meta-tags';
+import { GenericList } from '~/components/generic-list';
+import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
 
 export async function loader() {
   const files = await fs.readdir(BLOG_POSTS_DIR);
@@ -26,13 +27,15 @@ export async function loader() {
 }
 
 export const meta: MetaFunction = () => {
-  return [
-    { title: 'Blog | SermonIndex' },
-    {
-      name: 'description',
-      content: 'A collection of blog posts on SermonIndex',
-    },
-  ];
+  const title = 'Blog';
+  const description = 'A collection of blog posts on SermonIndex';
+  const url = 'https://sermonindex.net/blog';
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 // group posts by year

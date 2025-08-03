@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { IconContext } from 'react-icons';
 import {
   FaRegArrowAltCircleLeft,
@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fa';
 import { fetchApi } from '~/api/sdk';
 import { OsisToBookName } from '~/common/bible-constants';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { CommentaryChapterData } from '~/components/commentary-chapter';
 import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
@@ -26,6 +27,22 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { commentary };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const reference = `${
+    OsisToBookName[data?.commentary.book as keyof typeof OsisToBookName]
+  } ${data?.commentary.chapter}`;
+
+  const title = `${data?.commentary.name} on ${reference}`;
+  const description = `Explore commentary on the Bible by ${data?.commentary.author} on SermonIndex.`;
+  const url = `https://sermonindex.net/commentary/${params.id}/${params.book}/${params.chapter}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const { commentary } = useLoaderData<typeof loader>();

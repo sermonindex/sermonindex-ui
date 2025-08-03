@@ -27,27 +27,24 @@ export const Teaser = ({
   views,
 }: TeaserProps) => {
   return (
-    <Link
-      to={link}
-      key={title}
-      className="block flex-shrink md:w-[380px] w-full h-[480px] group"
-    >
-      <div className="h-full w-full flex flex-col bg-white/50 dark:bg-black/30 rounded-md border border-gray-200 border-t-4 border-t-si-accent shadow-md transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
+    <div className="relative flex-shrink md:w-[380px] w-full h-[480px] group">
+      {/* Invisible full-link */}
+      <Link to={link} className="absolute inset-0 z-10" aria-label={title} />
+
+      {/* Visible content */}
+      <div className="relative z-0 h-full w-full flex flex-col bg-white/50 dark:bg-black/30 rounded-md border border-gray-200 border-t-4 border-t-si-accent shadow-md transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1">
         <div className="p-5 flex flex-col flex-grow">
           {/* Top Section */}
-          <div>
-            <div className="pt-1 mb-4 border-b border-gray-200 w-full">
-              <span className="text-xs font-bold tracking-widest text-gray-700 dark:text-gray-300 uppercase">
-                {type}
-              </span>
-            </div>
+          <div className="pt-1 mb-4 border-b border-gray-200 w-full">
+            <span className="text-xs font-bold tracking-widest text-gray-700 dark:text-gray-300 uppercase">
+              {type}
+            </span>
           </div>
 
           {/* Middle Section */}
           <div className="flex-grow flex flex-col justify-center my-4">
             {imageUrl && (
               <div className="flex justify-center overflow-hidden rounded-lg">
-                {/* We use max-h-64 to constrain the image height, keeping layout consistent. */}
                 <img
                   className="object-cover max-h-64 rounded-lg"
                   src={imageUrl}
@@ -90,6 +87,6 @@ export const Teaser = ({
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { Contributor, MediaType, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { hasContent } from '~/common/sanitize';
@@ -8,6 +8,7 @@ import { SiPage } from '~/components/si-page';
 import { SpeakerBio } from '~/components/speaker-bio';
 
 import React, { useEffect, useState } from 'react';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { linkifyScripture } from '~/components/linkify-scripture';
 import { Player } from '~/components/media/player';
 import { SermonDownload } from '~/components/sermon-download';
@@ -42,6 +43,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { sermon, contributor };
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `${data?.sermon.title} by ${data?.sermon.contributorFullName}`;
+  const description = `Listen, read, download, and share this sermon by ${data?.sermon.contributorFullName} on SermonIndex.`;
+  const url = `https://sermonindex.net/sermons/${params.id}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 enum Tabs {
   Bio = 'Bio',

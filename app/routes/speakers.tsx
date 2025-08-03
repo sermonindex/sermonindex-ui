@@ -8,6 +8,7 @@ import {
 } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { formatNumber } from '~/common/format-number';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { DynamicList } from '~/components/dynamic-list';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
@@ -33,27 +34,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = () => {
-  const title = 'Speakers | Preachers | SermonIndex';
+  const title = 'Speakers';
   const description =
-    'Discover a wide range of speakers and preachers on SermonIndex. Explore their teachings, sermons, and contributions to the Christian faith.';
+    'Discover a wide range of speakers on SermonIndex. Explore their teachings, sermons, and contributions to the Christian faith.';
+  const url = 'https://sermonindex.net/speakers';
 
-  return [
-    { title },
-    {
-      name: 'description',
-      content: description,
-    },
-    { property: 'og:title', content: title },
-    {
-      property: 'og:description',
-      content: description,
-    },
-    {
-      property: 'og:image',
-      content: 'https://sermonindex3.b-cdn.net/si-images/og-image.png',
-    },
-    { property: 'og:url', content: 'https://sermonindex.net/speakers' },
-  ];
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 const getContributorGroupedItems = (contributors: ContributorInfo[]) => {

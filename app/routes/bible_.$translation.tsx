@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { BibleBook, BibleTranslation } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { isOldTestament } from '~/common/get-bible-book-id.fn';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { GenericList } from '~/components/generic-list';
 import { SiSection } from '~/components/section';
 import { SiPage } from '~/components/si-page';
@@ -19,6 +20,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return bible;
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `${data?.name}`;
+  const description = `Explore the ${data?.name} translation on SermonIndex.`;
+  const url = `https://sermonindex.net/bible/${params.translation}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 const getBibleBookGroupedItems = (books: BibleBook[]) => {
   return books.reduce((grouped, book) => {

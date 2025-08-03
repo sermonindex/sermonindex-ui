@@ -1,15 +1,16 @@
 import { json, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import path from 'path';
-import invariant from 'tiny-invariant';
 import fs from 'fs/promises';
 import matter from 'gray-matter';
+import path from 'path';
+import invariant from 'tiny-invariant';
 
-import { SiPage } from '~/components/si-page';
-import MarkdownRenderer from '~/components/markdown';
 import { BLOG_POSTS_DIR, createBlogSlugFromFilename, Post } from '~/api/blog';
-import { SiSection } from '~/components/section';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { hasContent } from '~/common/sanitize';
+import MarkdownRenderer from '~/components/markdown';
+import { SiSection } from '~/components/section';
+import { SiPage } from '~/components/si-page';
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.name, 'Expected params.name to be defined');
@@ -60,14 +61,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  if (!data || !data.frontmatter) {
-    return [{ title: 'Blog Post Not Found' }];
-  }
-  const { frontmatter } = data;
-  return [
-    { title: `${frontmatter.title} | SermonIndex Blog` },
-    { name: 'description', content: frontmatter.description },
-  ];
+  const title = data?.frontmatter.title ?? 'Blog Post';
+  const description =
+    data?.frontmatter.description ?? 'Read this blog post on SermonIndex.';
+  const url = `https://sermonindex.net/blog/${data?.frontmatter.slug}`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 export default function BlogPostPage() {

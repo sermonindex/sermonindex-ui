@@ -3,6 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, Hymn, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { ContributorCard } from '~/components/contributor-card';
 import { Player } from '~/components/media/player';
 import { SiSection } from '~/components/section';
@@ -30,22 +31,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { songs, artist: artist };
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  if (!data) {
-    return [
-      { title: 'Not Found | SermonIndex' },
-      { name: 'description', content: 'The requested content was not found.' },
-    ];
-  }
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  const title = `Songs by ${data?.artist.fullName}`;
+  const description = `A collection of songs by ${data?.artist.fullName} on SermonIndex.`;
+  const url = `https://sermonindex.net/songs/${params.artist}`;
 
-  const { songs, artist } = data;
-  return [
-    { title: `Songs by ${artist.fullName} | SermonIndex` },
-    {
-      name: 'description',
-      content: `A collection of songs by ${artist.fullName} on SermonIndex`,
-    },
-  ];
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
 };
 
 enum SongTabs {

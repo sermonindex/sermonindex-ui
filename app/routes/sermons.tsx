@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { ListPaginatedResponse, SermonInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
+import { getMetaTags } from '~/common/get-meta-tags';
 import { SermonList } from '~/components/sermon-list';
 import { SiPage } from '~/components/si-page';
 import {
@@ -48,6 +49,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   return { topSermons, recentViews, recentUploads, featured };
 }
+
+export const meta: MetaFunction<typeof loader> = () => {
+  const title = `Sermons`;
+  const description = `Explore a wide range of sermons on SermonIndex. Discover teachings from various speakers and topics.`;
+  const url = `https://sermonindex.net/sermons`;
+
+  return getMetaTags({
+    title,
+    description,
+    url,
+  });
+};
 
 export default function Index() {
   const { topSermons, recentViews, recentUploads, featured } =
