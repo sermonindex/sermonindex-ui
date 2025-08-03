@@ -306,13 +306,13 @@ export default function Index() {
         </div>
         <div className="flex w-1/3 border-l-2 border-si-gray dark:border-si-rock">
           <div className="flex-col">
-            <div className="relative w-full">
+            <div className="grid w-full">
               <img
                 src="https://sermonindex3.b-cdn.net/si-images/home-preacher.jpg"
-                className="w-full h-full object-cover"
+                className="w-full object-cover col-start-1 row-start-1"
                 alt="SermonIndex Preacher"
               />
-              <div className="absolute inset-0 flex items-center justify-center pt-32">
+              <div className="col-start-1 row-start-1 flex items-center justify-center pt-32">
                 <div className="flex flex-col items-center text-white">
                   <div>
                     <span className="2xl:text-2xl font-bold">
