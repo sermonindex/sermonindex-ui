@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sermonindex.net/sitemap-index.xml
+Sitemap: https://sermonindex.net/sitemap.xml
