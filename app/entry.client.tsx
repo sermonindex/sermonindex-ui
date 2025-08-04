@@ -4,6 +4,13 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
+// Shim structuredClone for older browsers
+if (typeof structuredClone !== 'function') {
+  window.structuredClone = function (obj: any) {
+    return JSON.parse(JSON.stringify(obj));
+  };
+}
+
 import { RemixBrowser } from '@remix-run/react';
 import { startTransition, StrictMode } from 'react';
 import { hydrateRoot } from 'react-dom/client';

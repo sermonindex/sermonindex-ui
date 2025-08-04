@@ -1,5 +1,4 @@
 import download from 'downloadjs';
-import { jsPDF } from 'jspdf';
 import { Sermon } from '~/api/interfaces';
 import { hasContent } from '~/common/sanitize';
 
@@ -61,6 +60,7 @@ async function createSermonPDF(
   text: string | undefined,
   filename: string,
 ) {
+  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
   const PAGE_MARGIN = 20; // Margin in millimeters (adjust as needed)
   const PAGE_HEIGHT = doc.internal.pageSize.getHeight(); // Total page height
