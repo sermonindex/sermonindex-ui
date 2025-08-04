@@ -16,7 +16,7 @@ export const SermonPlaylist = ({
   onPlaylistItemClick,
 }: SermonPlaylistProps) => {
   return (
-    <div className="p-2 bg-white dark:bg-gray-900 -mt-2">
+    <div className="p-2 bg-si-light/80 dark:bg-black/30 -mt-2">
       <ul className="space-y-1">
         {sermons.map((sermon, index) => {
           const isCurrentItem = index === currentIndex;
@@ -25,10 +25,10 @@ export const SermonPlaylist = ({
             <li
               key={sermon.id}
               onClick={() => onPlaylistItemClick(index)}
-              className={`flex items-center p-2 rounded-md transition-colors duration-200 ${
+              className={`flex items-center p-2 rounded-md transition-all duration-200 border-l-4 ${
                 isCurrentItem
-                  ? 'bg-blue-200 dark:bg-blue-900/50' // Active item style
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer' // Inactive item style
+                  ? 'bg-si-main/10 dark:bg-si-main/20 border-si-accent' // Active item style
+                  : 'border-transparent hover:bg-si-gray/60 dark:hover:bg-si-rock/80 cursor-pointer' // Inactive item style
               }`}
               // Add aria-current for better accessibility on the active item
               aria-current={isCurrentItem ? 'true' : 'false'}

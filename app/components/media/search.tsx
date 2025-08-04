@@ -413,10 +413,10 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
   const JumpButtonIconToDisplay = determinedJumpButtonIcon;
 
   return (
-    <div className="flex flex-col h-full w-full overflow-hidden media-fullscreen:bg-black/90">
+    <div className="flex flex-col h-full w-full overflow-hidden media-fullscreen:bg-black/90 dark:bg-black/70">
       {/* Search Bar */}
-      <div className="sticky top-0 z-10 bg-neutral-200 dark:bg-neutral-600 media-fullscreen:bg-neutral-600 shadow-md p-2 flex-shrink-0 flex items-center">
-        <div className="flex flex-1 items-center bg-white dark:bg-gray-800 media-fullscreen:bg-gray-800 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 media-fullscreen:border-gray-700 transition duration-150 ease-in-out">
+      <div className="sticky top-0 z-10 bg-neutral-200 dark:bg-neutral-600 media-fullscreen:bg-black/90 shadow-md p-2 flex-shrink-0 flex items-center">
+        <div className="flex flex-1 items-center bg-white dark:bg-black/70 media-fullscreen:bg-black/30 rounded-full px-4 py-2 w-full shadow-sm border border-gray-200 dark:border-gray-700 media-fullscreen:border-gray-700 transition duration-150 ease-in-out">
           <SearchIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 media-fullscreen:text-gray-500 mr-3 flex-shrink-0" />
           <input
             ref={inputRef}
@@ -541,7 +541,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   'bg-si-olive/20 dark:bg-si-main/30 media-fullscreen:bg-si-main/30';
               } else if (isActiveSearchResult) {
                 highlightClass =
-                  'bg-emerald-100 dark:bg-emerald-800/50 media-fullscreen:bg-emerald-800/50 font-semibold';
+                  'bg-emerald-200/20 dark:bg-emerald-600/20 media-fullscreen:bg-emerald-800/50 font-semibold';
               }
 
               return (
