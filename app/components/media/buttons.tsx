@@ -52,8 +52,19 @@ enum MediaButtonSize {
 }
 
 function getButtonSize(size: 'sm' | 'md' | 'lg' | 'xl'): string {
-  const s = MediaButtonSize[size] as number;
-  return `h-${s} w-${s}`;
+  switch (size) {
+    case 'sm':
+      return 'h-6 w-6';
+    case 'md':
+      return 'h-8 w-8';
+    case 'lg':
+      return 'h-14 w-14';
+    case 'xl':
+      return 'h-20 w-20';
+    default:
+      // default to medium sized button
+      return 'h-8 w-8';
+  }
 }
 
 export const buttonClass =
