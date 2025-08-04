@@ -1,14 +1,8 @@
 import { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/react';
+import * as fs from 'fs';
+import path from 'path';
 import { BookNameToOsis, OsisBookId } from '~/common/bible-constants';
-import { AudioContributorRouteMap } from '~/common/route-maps/audio-contributors';
-import { AudioSermonRouteMap } from '~/common/route-maps/audio-sermons';
-import { ContributorImageRouteMap } from '~/common/route-maps/images';
-import { TextContributorRouteMap } from '~/common/route-maps/text-contributors';
-import { TextSermonRouteMap } from '~/common/route-maps/text-sermons';
-import { TopicRouteMap } from '~/common/route-maps/topics';
-import { VideoContributorRouteMap } from '~/common/route-maps/video-contributors';
-import { VideoSermonRouteMap } from '~/common/route-maps/video-sermons';
 
 /**
  *
@@ -39,6 +33,12 @@ import { VideoSermonRouteMap } from '~/common/route-maps/video-sermons';
  * /newbb/viewtopic.php -> /
  */
 
+const REDIRECT_MAPS_DIR = path.resolve(
+  process.cwd(),
+  'public',
+  'redirect-maps',
+);
+
 export const loader: LoaderFunction = ({
   params,
   request,
@@ -50,16 +50,22 @@ export const loader: LoaderFunction = ({
   if (A === 'mydownloads') {
     if (B === 'viewcat.php') {
       const cid = url.searchParams.get('cid');
+      const audioContributorRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/audio-contributors.json`, 'utf8'),
+      );
       const slug =
-        AudioContributorRouteMap[cid as keyof typeof AudioContributorRouteMap];
+        audioContributorRouteMap[cid as keyof typeof audioContributorRouteMap];
 
       if (!slug) return redirect('/speakers');
 
       return redirect(`/speakers/${slug}`);
     } else if (B === 'visit.php' || B === 'singlefile.php') {
       const lid = url.searchParams.get('lid');
+      const audioSermonRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/audio-sermons.json`, 'utf8'),
+      );
       const sermonId =
-        AudioSermonRouteMap[lid as keyof typeof AudioSermonRouteMap];
+        audioSermonRouteMap[lid as keyof typeof audioSermonRouteMap];
 
       if (!sermonId) return redirect('/sermons');
 
@@ -71,7 +77,10 @@ export const loader: LoaderFunction = ({
         return redirect('/topics');
       } else if (act === 'topicSermons') {
         const topic = url.searchParams.get('topic');
-        const slug = TopicRouteMap[topic as keyof typeof TopicRouteMap];
+        const topicRouteMap: Record<string, string> = JSON.parse(
+          fs.readFileSync(`${REDIRECT_MAPS_DIR}/topics.json`, 'utf8'),
+        );
+        const slug = topicRouteMap[topic as keyof typeof topicRouteMap];
 
         if (!slug) return redirect('/topics');
 
@@ -103,16 +112,25 @@ export const loader: LoaderFunction = ({
       const view = url.searchParams.get('view');
       if (view === 'category') {
         const cid = url.searchParams.get('cid');
+        const textContributorRouteMap: Record<string, string> = JSON.parse(
+          fs.readFileSync(
+            `${REDIRECT_MAPS_DIR}/text-contributors.json`,
+            'utf8',
+          ),
+        );
         const slug =
-          TextContributorRouteMap[cid as keyof typeof TextContributorRouteMap];
+          textContributorRouteMap[cid as keyof typeof textContributorRouteMap];
 
         if (!slug) return redirect('/speakers');
 
         return redirect(`/speakers/${slug}`);
       } else if (view === 'article') {
         const aid = url.searchParams.get('aid');
+        const textSermonRouteMap: Record<string, string> = JSON.parse(
+          fs.readFileSync(`${REDIRECT_MAPS_DIR}/text-sermons.json`, 'utf8'),
+        );
         const sermonId =
-          TextSermonRouteMap[aid as keyof typeof TextSermonRouteMap];
+          textSermonRouteMap[aid as keyof typeof textSermonRouteMap];
 
         if (!sermonId) return redirect('/sermons');
 
@@ -122,16 +140,22 @@ export const loader: LoaderFunction = ({
   } else if (A === 'myvideo') {
     if (B === 'viewcat.php') {
       const cid = url.searchParams.get('cid');
+      const videoContributorRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/video-contributors.json`, 'utf8'),
+      );
       const slug =
-        VideoContributorRouteMap[cid as keyof typeof VideoContributorRouteMap];
+        videoContributorRouteMap[cid as keyof typeof videoContributorRouteMap];
 
       if (!slug) return redirect('/speakers');
 
       return redirect(`/speakers/${slug}`);
     } else if (B === 'photo.php') {
       const lid = url.searchParams.get('lid');
+      const videoSermonRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/video-sermons.json`, 'utf8'),
+      );
       const sermonId =
-        VideoSermonRouteMap[lid as keyof typeof VideoSermonRouteMap];
+        videoSermonRouteMap[lid as keyof typeof videoSermonRouteMap];
 
       if (!sermonId) return redirect('/sermons');
 
@@ -141,8 +165,11 @@ export const loader: LoaderFunction = ({
     if (B === 'index.php') return redirect('/speakers');
     else if (B === 'photo.php') {
       const lid = url.searchParams.get('lid');
+      const contributorImageRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/images.json`, 'utf8'),
+      );
       const slug =
-        ContributorImageRouteMap[lid as keyof typeof ContributorImageRouteMap];
+        contributorImageRouteMap[lid as keyof typeof contributorImageRouteMap];
 
       if (!slug) return redirect('/speakers');
 

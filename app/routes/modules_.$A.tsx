@@ -1,7 +1,7 @@
 import { LoaderFunction, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import * as fs from 'fs';
+import path from 'path';
 import { OsisBookId } from '~/common/bible-constants';
-import { BookRouteMap } from '~/common/route-maps/books';
-import { ChapterRouteMap } from '~/common/route-maps/chapters';
 
 /**
  *
@@ -37,6 +37,12 @@ enum BibleBookMap {
   YLT, // Young's Literal Translation
 }
 
+const REDIRECT_MAPS_DIR = path.resolve(
+  process.cwd(),
+  'public',
+  'redirect-maps',
+);
+
 export const loader: LoaderFunction = ({
   params,
   request,
@@ -69,15 +75,20 @@ export const loader: LoaderFunction = ({
       return redirect('/books');
     } else if (view === 'book') {
       const oldBookId = url.searchParams.get('book') || '1';
-      const bookId = BookRouteMap[oldBookId as keyof typeof BookRouteMap];
+      const bookRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/books.json`, 'utf8'),
+      );
+      const bookId = bookRouteMap[oldBookId];
 
       if (!bookId) return redirect('/books');
 
       return redirect(`/books/${bookId}/contents`);
     } else if (view === 'book_chapter') {
       const oldChapterId = url.searchParams.get('chapter') || '1';
-      const chapterRoute =
-        ChapterRouteMap[oldChapterId as keyof typeof ChapterRouteMap];
+      const chapterRouteMap: Record<string, string> = JSON.parse(
+        fs.readFileSync(`${REDIRECT_MAPS_DIR}/chapters.json`, 'utf8'),
+      );
+      const chapterRoute = chapterRouteMap[oldChapterId];
 
       if (!chapterRoute) return redirect('/books');
 
