@@ -19,6 +19,7 @@ import {
 import { getMedia } from '~/common/get-media';
 import { hasContent } from '~/common/sanitize';
 import { ClickableText } from '~/components/section';
+import { LoadingSpinner } from '~/components/spinner';
 
 interface SermonDownloadProps {
   sermon: Sermon;
@@ -69,7 +70,7 @@ export const DownloadItem = ({
               disabled={loading !== ''}
             >
               {loading === 'loading' ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-si-accent"></div>
+                LoadingSpinner()
               ) : loading === 'failed' ? (
                 <>
                   <TbFaceIdError className="text-xl" />
