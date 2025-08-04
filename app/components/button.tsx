@@ -1,6 +1,7 @@
 import {
   ButtonHTMLAttributes,
   FC,
+  forwardRef,
   MouseEventHandler,
   ReactNode,
   TouchEvent,
@@ -28,28 +29,26 @@ interface SiButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * `onTouchEnd` events, preventing the common "double tap" or "ghost click"
  * issue on touch devices.
  */
-export const SiButton: FC<SiButtonProps> = ({
-  children,
-  onClick,
-  ...rest // Passes down all other props like `className`, `aria-label`, `disabled`, etc.
-}) => {
-  const handleTouchEnd = (e: TouchEvent<HTMLButtonElement>) => {
-    // 1. Check if an onClick handler was provided.
-    if (onClick) {
-      // 2. Prevent the browser from firing a "compatibility" click event.
-      //    This is the key to avoiding the action firing twice.
-      e.preventDefault();
+export const SiButton = forwardRef<HTMLButtonElement, SiButtonProps>(
+  ({ children, onClick, ...rest }, ref) => {
+    const handleTouchEnd = (e: TouchEvent<HTMLButtonElement>) => {
+      // 1. Check if an onClick handler was provided.
+      if (onClick) {
+        // 2. Prevent the browser from firing a "compatibility" click event.
+        //    This is the key to avoiding the action firing twice.
+        e.preventDefault();
 
-      // 3. Execute the provided onClick handler.
-      //    We cast the TouchEvent to 'any' to satisfy the MouseEvent type
-      //    expected by onClick, as the core action is what matters here.
-      onClick(e as any);
-    }
-  };
+        // 3. Execute the provided onClick handler.
+        //    We cast the TouchEvent to 'any' to satisfy the MouseEvent type
+        //    expected by onClick, as the core action is what matters here.
+        onClick(e as any);
+      }
+    };
 
-  return (
-    <button onClick={onClick} onTouchEnd={handleTouchEnd} {...rest}>
-      {children}
-    </button>
-  );
-};
+    return (
+      <button onClick={onClick} onTouchEnd={handleTouchEnd} {...rest}>
+        {children}
+      </button>
+    );
+  },
+);

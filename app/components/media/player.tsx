@@ -99,7 +99,6 @@ export const Player = ({
       let isCancelled = false;
       setVttContent(undefined);
       setIsLoadingVtt(true);
-      console.log('Fetching VTT:', vttUrl);
 
       // @ts-ignore
       fetch(vttUrl)
@@ -130,7 +129,6 @@ export const Player = ({
 
       return () => {
         isCancelled = true;
-        console.log('Cancelling VTT fetch/update');
       };
     } else {
       // No VTT URL provided
