@@ -92,28 +92,29 @@ const HeadingRenderer = ({
         className={`relative items-center ${combinedClassName}`}
       >
         {/* Icon Button: Absolutely positioned to the left of the HeadingTag's content */}
-        <button
-          type="button"
-          onClick={handleCopyLink}
-          aria-label="Copy link to this section"
-          title="Copy link to this section"
-          className={`hidden md:inline-flex
-                      absolute top-1/2 -translate-y-1/2 left-[-1rem] 
-                      p-1 text-neutral-400 dark:text-neutral-500 
-                      hover:text-blue-500 dark:hover:text-blue-400 
-                      cursor-pointer transition-all duration-150
-                     ${
-                       isHovered || copied
-                         ? 'opacity-100 scale-100'
-                         : 'opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100'
-                     }`}
-        >
-          {copied ? (
-            <FaCheck className="w-4 h-4 text-green-800 dark:text-green-200" />
-          ) : (
-            <FaLink className="w-4 h-4" />
-          )}
-        </button>
+        {/* IMPORTANT NOTE: Greg asked for this nice feature to be removed for fear of search engines indexing tags */}
+        {/*<button*/}
+        {/*  type="button"*/}
+        {/*  onClick={handleCopyLink}*/}
+        {/*  aria-label="Copy link to this section"*/}
+        {/*  title="Copy link to this section"*/}
+        {/*  className={`hidden md:inline-flex*/}
+        {/*              absolute top-1/2 -translate-y-1/2 left-[-1rem] */}
+        {/*              p-1 text-neutral-400 dark:text-neutral-500 */}
+        {/*              hover:text-blue-500 dark:hover:text-blue-400 */}
+        {/*              cursor-pointer transition-all duration-150*/}
+        {/*             ${*/}
+        {/*               isHovered || copied*/}
+        {/*                 ? 'opacity-100 scale-100'*/}
+        {/*                 : 'opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100'*/}
+        {/*             }`}*/}
+        {/*>*/}
+        {/*  {copied ? (*/}
+        {/*    <FaCheck className="w-4 h-4 text-green-800 dark:text-green-200" />*/}
+        {/*  ) : (*/}
+        {/*    <FaLink className="w-4 h-4" />*/}
+        {/*  )}*/}
+        {/*</button>*/}
         {children}
       </HeadingTag>
     </div>
