@@ -208,7 +208,7 @@ function buildBookCrumbs(
   });
   if (crumbs.length > 3) {
     let chapter = safeParseInt(crumbs[3]);
-    let name = chapter !== null ? book.chapters[chapter].title : 'unknown';
+    let name = chapter !== null ? book.chapters[chapter - 1].title : 'unknown';
     nav.push({
       name: name,
       linkTo: `/books/${book.id}/contents/${crumbs[3]}`,
