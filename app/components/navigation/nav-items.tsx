@@ -22,7 +22,7 @@ export const mainNavItems: NavItem[] = [
     linkTo: '/speakers',
   },
   {
-    name: 'Sermons',
+    name: 'Top Sermons',
     icon: <RiFilePaper2Fill />,
     linkTo: '/sermons',
   },
@@ -92,7 +92,7 @@ export const NavItemLi = ({
   item,
   showIcon = false,
   iconClassName = 'w-5 h-5 text-neutral-500 transition duration-75 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white',
-  linkClassName = 'flex items-center px-2 border-b-2 border-transparent hover:border-si-accent group',
+  linkClassName = 'flex items-center px-2 border-b-2 border-transparent hover:border-si-accent group whitespace-nowrap',
   showSubItems = false,
 }: NavItemProps) => {
   return (
