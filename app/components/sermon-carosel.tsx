@@ -59,6 +59,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
             onClick={previousItem}
             disabled={currentIndex === 0}
             className="px-4 py-6 rounded-full hover:bg-gray-200"
+            aria-label="previous item"
           >
             ❮
           </button>
@@ -110,6 +111,7 @@ export const SermonCarousel: React.FC<SermonCarouselProps> = ({
             onClick={nextItem}
             disabled={currentIndex >= sermons.length - getItemsToShow()}
             className="px-4 py-6 rounded-full hover:bg-gray-200"
+            aria-label="next item"
           >
             ❯
           </button>

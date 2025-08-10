@@ -554,6 +554,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
                   data-cue-index={dataIndexForScroll}
                   onClick={() => handleCueClick(currentCue)}
                   className={`flex items-start w-full text-left px-3 py-1.5 gap-x-2 text-sm hover:bg-gray-200/50 dark:hover:bg-white/10 media-fullscreen:hover:bg-white/10 transition-colors duration-100 ${highlightClass}`}
+                  aria-label="seek to this caption"
                 >
                   <span className="font-mono text-xs text-gray-500 dark:text-gray-400 media-fullscreen:text-gray-400 mr-2 pt-0.5 w-12 shrink-0">
                     {formatTime(currentCue.startTime)}

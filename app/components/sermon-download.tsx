@@ -68,6 +68,7 @@ export const DownloadItem = ({
               className="flex items-center"
               onClick={handleDownload}
               disabled={loading !== ''}
+              aria-label="download sermon"
             >
               {loading === 'loading' ? (
                 LoadingSpinner()

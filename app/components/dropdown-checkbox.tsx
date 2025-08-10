@@ -60,6 +60,7 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
         className="relative inline-flex items-center justify-between min-w-[90px] md:min-w-[135px] p-3 rounded-lg text-black dark:text-white bg-neutral-200 dark:bg-neutral-600"
         onClick={toggleDropdown}
         aria-expanded={isOpen}
+        aria-label="toggle dropdown"
       >
         <span className="hidden md:inline whitespace-nowrap pr-3 text-sm">
           {title}
