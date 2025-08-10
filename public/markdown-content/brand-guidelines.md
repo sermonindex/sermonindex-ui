@@ -2,7 +2,7 @@
 
 :::table-of-contents
 
-As per our [Open Source Permissions](/copying-permissions.md) page, we have a policy to allow for the free distribution of
+As per our [Open Source Permissions](copying-permissions.md) page, we have a policy to allow for the free distribution of
 sermon materials on SermonIndex. Our logo and branding can be copied also for referencing our site
 as per below. As per our About Us page, our mission statement is:
 
@@ -37,6 +37,6 @@ by permission of SermonIndex.net" (Though it is not required as per our <a href=
 
 You can download our download logo images individually below.
 
-* [Green Logo (PNG)](/newlogofinal-si-green.png)
-* [White Logo (PNG)](/newlogofinal-si-white.png)
+* [Green Logo (PNG)](newlogofinal-si-green.png)
+* [White Logo (PNG)](newlogofinal-si-white.png)
 
