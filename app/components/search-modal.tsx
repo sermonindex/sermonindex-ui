@@ -172,6 +172,7 @@ export const SearchModal = ({}) => {
                   ref={inputRef}
                   className="block w-full p-2 ps-10 text-sm text-neutral-900 border border-neutral-300 rounded-lg bg-neutral-50 dark:bg-neutral-700 dark:border-neutral-600 dark:placeholder-neutral-400 dark:text-white"
                   placeholder="Search SermonIndex..."
+                  name="search sermonindex"
                   value={input}
                   onInput={(e) => setInput(e.currentTarget.value)}
                 />

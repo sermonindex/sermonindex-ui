@@ -89,6 +89,7 @@ const DropdownCheckbox: React.FC<DropdownCheckboxProps> = ({
                 <div className="relative mr-2">
                   <input
                     type="checkbox"
+                    name="filter media type"
                     className="opacity-0 absolute h-full w-full cursor-pointer"
                     checked={selectedOptions.includes(option)}
                     onChange={() => handleOptionsChange(option)}

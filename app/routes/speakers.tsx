@@ -95,6 +95,8 @@ export default function Index() {
         <input
           className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-black"
           placeholder="Find a speaker..."
+          type="search"
+          name="search speakers"
           onChange={(e) => setFullName(e.target.value.toLowerCase())}
           required
         />

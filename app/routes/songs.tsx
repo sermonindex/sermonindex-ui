@@ -78,6 +78,8 @@ export default function Index() {
         <input
           className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-black"
           placeholder="Find an artist or group..."
+          type="search"
+          name="search artists"
           onChange={(e) => setFilter(e.target.value.toLowerCase())}
         />
         <GenericList<Artist>

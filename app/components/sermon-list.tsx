@@ -40,6 +40,8 @@ export const SermonList = ({
         <input
           className="my-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
           placeholder="Find a sermon..."
+          type="search"
+          name="search sermons"
           onChange={(e) => setTitle(e.target.value.toLowerCase())}
           required
         />

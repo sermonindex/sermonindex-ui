@@ -59,6 +59,8 @@ export default function Index() {
           <input
             className="mt-4 bg-gray-50 border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-si-slate"
             placeholder="Find a commentary..."
+            type="search"
+            name="search commentaries"
             onChange={(e) => setFilter(e.target.value.toLowerCase())}
             required
           />

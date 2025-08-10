@@ -421,6 +421,7 @@ export const MediaSearch = ({ toggleSearch }: MediaSearchProps) => {
           <input
             ref={inputRef}
             type="search"
+            name="search transcript"
             placeholder={
               hasCues ? 'Search transcript...' : 'No transcript available'
             }
