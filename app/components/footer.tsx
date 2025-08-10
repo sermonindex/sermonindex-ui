@@ -34,6 +34,7 @@ const AboutLinks: { [key: string]: FooterAboutLink } = {
   brand: { name: 'Brand Guidelines', linkTo: '/md/brand-guidelines' },
   copying: { name: 'Copying Permissions', linkTo: '/md/copying-permissions' },
   privacy: { name: 'Privacy Policy', linkTo: '/md/privacy-policy' },
+  oss: { name: 'OSS Disclosure', linkTo: '/md/oss-disclosure' },
 };
 
 export const Footer = () => {
