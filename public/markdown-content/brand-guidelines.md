@@ -2,7 +2,7 @@
 
 :::table-of-contents
 
-As per our Open Source Permissions page, we have a policy to allow for the free distribution of
+As per our [Open Source Permissions](/copying-permissions.md) page, we have a policy to allow for the free distribution of
 sermon materials on SermonIndex. Our logo and branding can be copied also for referencing our site
 as per below. As per our About Us page, our mission statement is:
 
@@ -18,8 +18,8 @@ We have two main colours that have and do represent the SermonIndex ministry, it
 utilize these in any materials, magazines or other ways that have incorporated our logo.
 
 ```
-HEX: #70703d
-HEX: #908f59
+HEX: #65652e
+HEX: #858447
 ```
 
 ## Logo
@@ -35,12 +35,8 @@ by permission of SermonIndex.net" (Though it is not required as per our <a href=
 
 ## Assets
 
-You can download our presskit that includes all of our images in one convenient zip file, or download logo images individually below.
+You can download our download logo images individually below.
 
-* Green Logo (PNG)
-* Green Logo (SVG)
-* Green Logo (EPS)
-* White Logo (PNG)
-* White logo (SVG)
-* White logo (EPS)
-* Logo on Header Image (PNG)
+* [Green Logo (PNG)](/newlogofinal-si-green.png)
+* [White Logo (PNG)](/newlogofinal-si-white.png)
+
