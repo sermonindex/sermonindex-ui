@@ -4,7 +4,6 @@ date: '2025-06-07'
 author: 'Elder Paisios'
 description: 'from the book "Passions and Virtues" - Words of the Elder Paisios Vol.5'
 tags: ['SermonIndex', 'blog', 'elder paisios']
-imgUrl: 'https://www.orthodoxphotos.com/Orthodox_Elders/Greek/Fr._Paisios/2.jpg'
 ---
 
 # How to cultivate humility
