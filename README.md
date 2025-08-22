@@ -1,6 +1,6 @@
-# SermonIndex PoC
+# SermonIndex UI
 
-This is a proof of concept for a SermonIndex app using Remix. You can read the [OSS Disclosure](/public/markdown-content/oss-disclosure.md) of all open source packages used.
+SermonIndex UI using Remix. You can read the [OSS Disclosure](/public/markdown-content/oss-disclosure.md) of all open source packages used.
 
 ## Development
 
