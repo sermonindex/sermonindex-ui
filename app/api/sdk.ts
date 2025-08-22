@@ -3,7 +3,7 @@ import { IErrorResponse } from './interfaces';
 // Uncomment for local testing
 // todo: set SI_API_URL in .env
 // export const SI_API_URL = 'http://localhost:3000/v1';
-export const SI_API_URL = 'https://sermonindex-api-3l6te.ondigitalocean.app/v1';
+export const SI_API_URL = 'https://api.sermonindex.net/v1';
 
 export async function fetchApi<T>(
   path: string,
