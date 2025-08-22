@@ -8,6 +8,7 @@ import { SiSection } from '~/components/section';
 import { SermonCard } from '~/components/sermon-card';
 import { SiPage } from '~/components/si-page';
 import { Teaser } from '~/components/teaser';
+import { TeaserSermon } from '~/components/teaser-sermon';
 
 export const meta: MetaFunction = () => {
   const title = 'SermonIndex';
@@ -254,14 +255,8 @@ export default function Index() {
       <div className="hidden lg:flex">
         <div className="flex w-2/3">
           <div className="flex-col w-full space-y-2">
-            <SiSection title="Featured Audio Sermon" sharesRightPadding={true}>
-              <Link to={`/sermons/${featured.id}`} key={featured.id}>
-                <SermonCard
-                  sermon={featured}
-                  showContributor={true}
-                  className="hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors duration-200 ease-in-out"
-                />
-              </Link>
+            <SiSection title="Featured Sermon" sharesRightPadding={true}>
+              <TeaserSermon sermon={featured} />
             </SiSection>
             <SiSection title="Featured Verse" sharesRightPadding={true}>
               <div className="px-8 pt-2">
@@ -389,7 +384,7 @@ export default function Index() {
 
       {/* Mobile View */}
       <div className="flex flex-col lg:hidden">
-        <SiSection title="Featured Audio Sermon">
+        <SiSection title="Featured Sermon">
           <Link to={`/sermons/${featured.id}`} key={featured.id}>
             <SermonCard
               sermon={featured}
