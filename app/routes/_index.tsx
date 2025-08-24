@@ -13,7 +13,7 @@ import { TeaserSermon } from '~/components/teaser-sermon';
 export const meta: MetaFunction = () => {
   const title = 'SermonIndex';
   const description =
-    "Sermonindex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.";
+    "SermonIndex's assignment is to honour and preserve the past preaching of God's Word and to promote revival to this generation.";
   const url = 'https://sermonindex.net';
 
   return getMetaTags({
