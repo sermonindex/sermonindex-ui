@@ -91,6 +91,7 @@ const Teasers = ({
         type={'Featured Blog'}
         title={'A New Chapter for SermonIndex'}
         link={`/blog/a_new_chapter_for_sermonindex`}
+        imageUrl={'https://sermonindex3.b-cdn.net/newsite-announcement.jpg'}
         text={
             'After much prayer, planning, and work behind the scenes, we are grateful to announce the launch of the new SermonIndex.net website. For over two decades, SermonIndex has been a place where believers from all over the world can access historic sermons, revival resources, and messages that lift up the name of Jesus Christ. Our heart has never changed — to encourage a deeper walk with God, to inspire personal holiness, and to point the Church back to the simplicity and power of the Gospel.'
         }

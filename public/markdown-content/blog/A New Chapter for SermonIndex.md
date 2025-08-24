@@ -4,6 +4,7 @@ date: '2025-08-10'
 author: 'Greg Gordon'
 description: 'Discover the new SermonIndex.net with powerful Bible study tools, 30+ free Bible translations, and a fully open-source archive of sermons and resources.'
 tags: ['sermonindex', 'announcement']
+imgUrl: 'https://sermonindex3.b-cdn.net/newsite-announcement.jpg'
 ---
 
 # A New Chapter for SermonIndex.net — Our Website Has Been Renewed
