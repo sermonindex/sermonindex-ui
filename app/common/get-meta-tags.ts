@@ -5,8 +5,16 @@ interface MetaTags {
 }
 
 export function getMetaTags(tags: MetaTags) {
+  if (tags.title === 'SermonIndex' || tags.title === undefined || tags.title === null) {
+    tags.title = 'SermonIndex';
+  } else {
+    tags.title = `${tags.title} | SermonIndex`;
+  }
+
   const metaTags = [
-    { title: `${tags.title} | SermonIndex` },
+    { title: tags.title },
+    { charset: 'utf-8' },
+    { viewport: 'width=device-width,initial-scale-1' },
     {
       name: 'description',
       content: tags.description,

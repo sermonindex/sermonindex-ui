@@ -1,4 +1,4 @@
-import type { LinksFunction } from '@remix-run/node';
+import type {LinksFunction, MetaFunction} from '@remix-run/node';
 import {
   isRouteErrorResponse,
   Links,
@@ -99,9 +99,8 @@ export default function App() {
   return (
     <html lang="en">
       <head>
-        <title>SermonIndex</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* Note: We set title through the meta function */}
+        {/* Metadata is nested, see the MetaFunction and remix meta docs */}
         <Meta />
         <Links />
       </head>
