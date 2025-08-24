@@ -8,7 +8,7 @@ tags: ['sermonindex', 'announcement']
 
 # A New Chapter for SermonIndex.net — Our Website Has Been Renewed
 
-After much prayer, planning, and work behind the scenes, we are grateful to announce the launch of the new [SermonIndex.net[(https://www.sermonindex.net)] website.
+After much prayer, planning, and work behind the scenes, we are grateful to announce the launch of the new [SermonIndex.net](https://www.sermonindex.net) website.
 
 For over two decades, SermonIndex has been a place where believers from all over the world can access historic sermons, revival resources, and messages that lift up the name of Jesus Christ. Our heart has never changed — to encourage a deeper walk with God, to inspire personal holiness, and to point the Church back to the simplicity and power of the Gospel.
 
