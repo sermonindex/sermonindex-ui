@@ -89,12 +89,12 @@ const Teasers = ({
 
       <Teaser
         type={'Featured Blog'}
-        title={'Mercy Must Triumph Over Judgment in Our Hearts'}
-        link={`/blog/an_old_blog`}
+        title={'A New Chapter for SermonIndex'}
+        link={`/blog/a_new_chapter_for_sermonindex`}
         text={
-          '“Blessed are the merciful, for they shall receive mercy” (Matthew 5:7).Jesus taught us to pray, “Our Father in Heaven, forgive us our sins in exactly the same way as we forgive others for their sins against us” (Matthew 6:12, Luke 11:4).'
+            'After much prayer, planning, and work behind the scenes, we are grateful to announce the launch of the new SermonIndex.net website. For over two decades, SermonIndex has been a place where believers from all over the world can access historic sermons, revival resources, and messages that lift up the name of Jesus Christ. Our heart has never changed — to encourage a deeper walk with God, to inspire personal holiness, and to point the Church back to the simplicity and power of the Gospel.'
         }
-        author={'Zac Poonen'}
+        author={'Greg Gordon'}
         mediaType={'blog'}
       />
     </div>
