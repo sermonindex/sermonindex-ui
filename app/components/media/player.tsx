@@ -214,8 +214,6 @@ export const Player = ({
     if (!hasPlaybackStarted.current) {
       hasPlaybackStarted.current = true;
     }
-
-    console.log('Playback started for sermon:', currentSermon.title);
     // Record the view after playback has started
     recordView();
   };
