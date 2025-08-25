@@ -11,12 +11,19 @@ export async function downloadUrl(
     // Handle the error appropriately (e.g., show an error message to the user)
     return;
   }
+  // if url starts only with http and not with https, then force https
+  // note that this is a temporary patch until the api returns only https
+  let secureUrl = url;
+  if (secureUrl.startsWith('http://')) {
+    secureUrl = secureUrl.replace('http://', 'https://');
+  }
+
   try {
-    const response = await fetch(url);
+    const response = await fetch(secureUrl);
     const data = await response.blob(); // Get the file content as a Blob
     download(data, filename, type);
   } catch (error) {
-    throw new Error(`Failed to download url: '${url}' because '${error}'`);
+    throw new Error(`Failed to download url: '${secureUrl}' because '${error}'`);
   }
 }
 
