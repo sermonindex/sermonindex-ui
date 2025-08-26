@@ -13,8 +13,14 @@ export function getMetaTags(tags: MetaTags) {
 
   const metaTags = [
     { title: tags.title },
-    { charset: 'utf-8' },
-    { viewport: 'width=device-width,initial-scale-1' },
+    {
+      name: 'charset',
+      content: 'utf-8',
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width,initial-scale-1',
+    },
     {
       name: 'description',
       content: tags.description,
