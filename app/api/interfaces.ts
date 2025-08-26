@@ -148,6 +148,7 @@ export interface TopicInfo {
 
 export interface Topic {
   name: string;
+  slug: string;
   summary: string;
   sermons: SermonInfo[];
   updatedAt: string;
