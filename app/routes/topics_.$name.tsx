@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { MetaFunction, useLoaderData } from '@remix-run/react';
-import { Topic } from '~/api/interfaces';
+import { ListPaginatedResponse, SermonInfo, Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SiSection } from '~/components/section';
 import { SermonList } from '~/components/sermon-list';
@@ -11,17 +11,20 @@ import { getMetaTags } from '~/common/get-meta-tags';
 import { linkifyScripture } from '~/components/linkify-scripture';
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const [topic] = await Promise.all([
+  const [topic, sermons] = await Promise.all([
     fetchApi<Topic>(`/topics/slug/${params.name}`),
+    fetchApi<ListPaginatedResponse<SermonInfo>>(
+      `/sermons?topicSlug=${params.name}&offset=0&limit=25`,
+    ),
   ]);
 
-  if ('statusCode' in topic) {
+  if ('statusCode' in topic || 'statusCode' in sermons) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
 
-  return { topic };
+  return { topic, sermons };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
@@ -37,7 +40,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 };
 
 export default function Index() {
-  const { topic } = useLoaderData<typeof loader>();
+  const { topic, sermons } = useLoaderData<typeof loader>();
 
   return (
     <SiPage>
@@ -48,14 +51,11 @@ export default function Index() {
           ))}
         </p>
       </SiSection>
-      <SiSection
-        title={topic.name}
-        count={topic.sermons.length}
-        tag="sermon-list"
-      >
+      <SiSection title={topic.name} count={sermons.total} tag="sermon-list">
         <SermonList
-          sermons={topic.sermons}
-          filters={{ topic: topic.name }}
+          sermons={sermons.values}
+          filters={{ topicSlug: topic.slug }}
+          nextPage={sermons.nextPage}
           showContributor={true}
         />
       </SiSection>
