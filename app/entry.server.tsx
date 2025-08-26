@@ -60,6 +60,7 @@ function handleBotRequest(
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set('Content-Type', 'text/html');
+          responseHeaders.set('Cache-Control', 'public, max-age=86400');
 
           resolve(
             new Response(stream, {
@@ -110,6 +111,7 @@ function handleBrowserRequest(
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set('Content-Type', 'text/html');
+          responseHeaders.set('Cache-Control', 'public, max-age=86400');
 
           resolve(
             new Response(stream, {
