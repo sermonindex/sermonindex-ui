@@ -297,7 +297,7 @@ export interface BibleChapter {
   translationName: string;
   json: string;
   streamUrl?: string;
-  // verses: Verse[];
+  verses: BibleVerse[];
   // book: Book;
   // footnotes: Footnote[];
   nextChapterNumber?: number;
