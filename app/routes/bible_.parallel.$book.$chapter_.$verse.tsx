@@ -3,6 +3,7 @@ import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { ChapterData } from '~/api/bible.types';
 import {
+  BibleChapter,
   BibleParallel,
   CommentaryVerse,
   ListPaginatedResponse,
@@ -40,7 +41,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { book, chapter, verse } = params;
   const bookId = getBibleBookId(book);
 
-  const [parallels, sermons, commentaries] = await Promise.all([
+  // Prepare API calls for navigation data
+  const apiCalls = [
     // translations=BSB,KJV,ASV,WEB,YLT,BBE,DRV,GNV,T4T,OUR,FBV,PEV,ULB,WBS,LST
     fetchApi<BibleParallel>(
       `/bible/eng/parallel/${bookId}/${chapter}/${verse}?translations=BSB,eng_kjv,eng_asv,eng_webp,eng_ylt,eng_bbe,eng_drv,eng_gnv,eng_t4t,eng_our,eng_fbv,eng_pev,eng_ulb,eng_wbs,eng_lst`,
@@ -51,25 +53,48 @@ export async function loader({ params }: LoaderFunctionArgs) {
     fetchApi<ListResponse<CommentaryVerse>>(
       `/commentary/eng/parallel/${bookId}/${chapter}/${verse}`,
     ),
-  ]);
+    // Hardcoded BSB for now. Would be good to include this in parallel contextJson
+    fetchApi<BibleChapter>(
+      `/bible/eng/BSB/${bookId}/${chapter}`
+    ),
+  ];
+
+  const [parallels, sermons, commentaries, chapterData] = await Promise.all(apiCalls);
 
   if (
     'statusCode' in parallels ||
     'statusCode' in sermons ||
-    'statusCode' in commentaries
+    'statusCode' in commentaries ||
+    'statusCode' in chapterData
+
   ) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
     });
   }
 
-  return { parallels, sermons, commentaries };
+  // Add previous chapter API call if it exists
+  let previousChapterDataPromise = null;
+  if (chapterData.previousBookId && chapterData.previousChapterNumber) {
+    previousChapterDataPromise = fetchApi<BibleChapter>(`/bible/eng/BSB/${chapterData.previousBookId}/${chapterData.previousChapterNumber}`);
+  }
+
+  // Fetch previous and next chapter data if needed
+  let previousChapterData = null;
+
+  if (previousChapterDataPromise) {
+    previousChapterData = await previousChapterDataPromise;
+    if ('statusCode' in previousChapterData) {
+      previousChapterData = null; // Handle gracefully
+    }
+  }
+
+  return { parallels, sermons, commentaries, chapterData, previousChapterData };
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
-  const reference = `${
-    OsisToBookName[data?.parallels.book as keyof typeof OsisToBookName]
-  } ${data?.parallels.chapter}:${data?.parallels.verse}`;
+  const reference = `${OsisToBookName[data?.parallels.book as keyof typeof OsisToBookName]
+    } ${data?.parallels.chapter}:${data?.parallels.verse}`;
   const verse =
     data?.parallels.verses.find((v) => v.translationId === 'BSB')?.text || '';
 
@@ -84,7 +109,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 };
 
 export default function Index() {
-  const { parallels, sermons, commentaries } = useLoaderData<typeof loader>();
+  const { parallels, sermons, commentaries, chapterData, previousChapterData } = useLoaderData<typeof loader>();
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
@@ -93,29 +118,10 @@ export default function Index() {
     <SiPage>
       {/* Desktop View */}
       <div className="w-full hidden lg:block pb-8">
-        <h1 className="flex w-full text-2xl md:text-3xl items-center justify-center">
-          {OsisToBookName[parallels.book as keyof typeof OsisToBookName]}{' '}
-          {parallels.chapter}:{parallels.verse}
-        </h1>
-
         <div className="grid grid-cols-3">
           <div className="col-span-2">
             <SiSection title="Verse">
-              {parallels.verses.map((verse, index) => {
-                return (
-                  <div key={index} className="py-1 px-2">
-                    {/* TODO: LINK TRANSLATION NAME TO CHAPTER PAGE */}
-                    <Link
-                      to={`/bible/${verse.translationId}/${parallels.book}/${parallels.chapter}`}
-                    >
-                      <span className="text-si-main dark:text-si-brown hover:underline hover:cursor-pointer">
-                        {verse.translationName}
-                      </span>
-                    </Link>
-                    <div>{verse.text}</div>
-                  </div>
-                );
-              })}
+              <BibleVerseParallel parallels={parallels} chapterData={chapterData} previousChapterData={previousChapterData} />
             </SiSection>
           </div>
           <div>
@@ -192,7 +198,7 @@ export default function Index() {
             active={activeTab === Tabs.Scripture}
             className="py-4 px-2 md:p-4"
           >
-            <BibleVerseParallel parallels={parallels} />
+            <BibleVerseParallel parallels={parallels} chapterData={chapterData} previousChapterData={previousChapterData} />
           </TabContent>
 
           {/* <TabContent
