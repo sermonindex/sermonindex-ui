@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import {
   ContributorInfo,
@@ -30,7 +30,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { featured, contributors };
+  return json(
+    { featured, contributors },
+    { headers: { 'Cache-Control': 'public, max-age=86400' } },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = () => {

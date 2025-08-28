@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useMemo, useState } from 'react';
 import { ListPaginatedResponse, TopicInfo } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
@@ -24,7 +24,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { topics, popular };
+  return json(
+    { topics, popular },
+    { headers: { 'Cache-Control': 'public, max-age=86400' } },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = () => {

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, MetaFunction, useLoaderData } from '@remix-run/react';
 import { ListPaginatedResponse, SermonInfo, Topic } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { SiSection } from '~/components/section';
@@ -24,7 +24,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { topic, sermons };
+  return json(
+    { topic, sermons },
+    { headers: { 'Cache-Control': 'public, max-age=86400' } },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
