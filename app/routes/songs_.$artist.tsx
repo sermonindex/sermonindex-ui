@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { json, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { Contributor, Hymn, ListResponse, Sermon } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
@@ -28,7 +28,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { songs, artist: artist };
+  return json(
+    { songs, artist: artist },
+    { headers: { 'Cache-Control': 'public, max-age=86400' } },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
