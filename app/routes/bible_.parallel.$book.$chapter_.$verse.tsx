@@ -29,6 +29,8 @@ import { BibleVerseParallel } from '~/components/bible-verse-parallel';
 import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
 import { AuthorImage } from '~/components/image-author';
 import { SiSection } from '~/components/section';
+import {calculateVerseNavigation} from "~/common/verse-navigation";
+import {VerseNavigator} from "~/components/bible-verse-navigator";
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -115,14 +117,46 @@ export default function Index() {
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
   const uniqueVerseKey = `${parallels.book}-${parallels.chapter}-${parallels.verse}`;
 
+  const navigation = calculateVerseNavigation(
+      parallels.book,
+      parallels.chapter,
+      parallels.verse,
+      chapterData,
+      previousChapterData,
+  );
+
+  const reference = `${OsisToBookName[parallels.book as keyof typeof OsisToBookName]
+  } ${parallels.chapter}:${parallels.verse}`;
+
+  // Build previous verse URL
+  const previousUrl = navigation.previousBook && navigation.previousChapter && navigation.previousVerse
+      ? `/bible/parallel/${navigation.previousBook}/${navigation.previousChapter}/${navigation.previousVerse}`
+      : '#';
+
+  // Build next verse URL
+  const nextUrl = navigation.nextBook && navigation.nextChapter && navigation.nextVerse
+      ? `/bible/parallel/${navigation.nextBook}/${navigation.nextChapter}/${navigation.nextVerse}`
+      : '#';
+
   return (
     <SiPage>
       {/* Desktop View */}
       <div className="w-full hidden lg:block pb-8">
+
+        <VerseNavigator
+            book={parallels.book}
+            chapter={parallels.chapter}
+            verse={parallels.verse}
+            previousUrl={previousUrl}
+            nextUrl={nextUrl}
+            showPrevious={!navigation.isFirstVerseOfGenesis}
+            showNext={!navigation.isLastVerseOfRevelation}
+        />
+
         <div className="grid grid-cols-3">
           <div className="col-span-2">
             <SiSection title="Verse">
-              <BibleVerseParallel parallels={parallels} chapterData={chapterData} previousChapterData={previousChapterData} />
+              <BibleVerseParallel parallels={parallels} />
             </SiSection>
           </div>
           <div>
@@ -176,6 +210,16 @@ export default function Index() {
 
       {/* Mobile View */}
       <div className="lg:hidden block">
+        <VerseNavigator
+            book={parallels.book}
+            chapter={parallels.chapter}
+            verse={parallels.verse}
+            previousUrl={previousUrl}
+            nextUrl={nextUrl}
+            showPrevious={!navigation.isFirstVerseOfGenesis}
+            showNext={!navigation.isLastVerseOfRevelation}
+        />
+
         <VerseContext
           key={uniqueVerseKey}
           context={verseContext}
@@ -201,7 +245,7 @@ export default function Index() {
             active={activeTab === Tabs.Scripture}
             className="py-4 px-2 md:p-4"
           >
-            <BibleVerseParallel parallels={parallels} chapterData={chapterData} previousChapterData={previousChapterData} />
+            <BibleVerseParallel parallels={parallels} />
           </TabContent>
 
           {/* <TabContent

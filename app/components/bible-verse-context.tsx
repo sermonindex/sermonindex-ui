@@ -72,12 +72,6 @@ export const VerseContext = ({
 
   return (
     <div className={outerPadding}>
-      {!slim && (
-        <h1 className="text-2xl md:text-3xl">
-          {OsisToBookName[book as keyof typeof OsisToBookName]} {chapterNumber}:
-          {verseNumber}
-        </h1>
-      )}
       <h2
         id="context-heading"
         className="mb-1 text-neutral-500 dark:text-neutral-400"
