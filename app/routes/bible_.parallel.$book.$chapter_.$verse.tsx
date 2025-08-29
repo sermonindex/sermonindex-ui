@@ -113,6 +113,7 @@ export default function Index() {
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
+  const uniqueVerseKey = `${parallels.book}-${parallels.chapter}-${parallels.verse}`;
 
   return (
     <SiPage>
@@ -127,6 +128,7 @@ export default function Index() {
           <div>
             <SiSection title="Context">
               <VerseContext
+                key={uniqueVerseKey}
                 context={verseContext}
                 book={parallels.book}
                 chapter={parallels.chapter}
@@ -175,6 +177,7 @@ export default function Index() {
       {/* Mobile View */}
       <div className="lg:hidden block">
         <VerseContext
+          key={uniqueVerseKey}
           context={verseContext}
           book={parallels.book}
           chapter={parallels.chapter}
