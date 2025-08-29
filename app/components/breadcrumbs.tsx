@@ -137,7 +137,7 @@ function buildBibleCrumbs(crumbs: string[], nav: NavCrumb[]): NavCrumb[] {
         // verse
         if (crumbs.length > 4) {
           nav.push({
-            name: `Verse ${crumbs[3]}`,
+            name: `Verse ${crumbs[4]}`,
             linkTo: `/bible/${translation}/${crumbs[2]}/${crumbs[3]}/${crumbs[4]}`,
           });
         }
