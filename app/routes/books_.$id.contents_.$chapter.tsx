@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
 import {
+  json,
   Link,
   MetaFunction,
   useLoaderData,
@@ -29,7 +30,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { chapter };
+  return json(
+    { chapter },
+    {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
