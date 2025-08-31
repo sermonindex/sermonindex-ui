@@ -29,8 +29,8 @@ import { BibleVerseParallel } from '~/components/bible-verse-parallel';
 import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
 import { AuthorImage } from '~/components/image-author';
 import { SiSection } from '~/components/section';
-import {calculateVerseNavigation} from "~/common/verse-navigation";
-import {VerseNavigator} from "~/components/bible-verse-navigator";
+import { calculateVerseNavigation } from '~/common/verse-navigation';
+import { VerseNavigator } from '~/components/bible-verse-navigator';
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -56,19 +56,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
       `/commentary/eng/parallel/${bookId}/${chapter}/${verse}`,
     ),
     // Hardcoded BSB for now. Would be good to include this in parallel contextJson
-    fetchApi<BibleChapter>(
-      `/bible/eng/BSB/${bookId}/${chapter}`
-    ),
+    fetchApi<BibleChapter>(`/bible/eng/BSB/${bookId}/${chapter}`),
   ];
 
-  const [parallels, sermons, commentaries, chapterData] = await Promise.all(apiCalls);
+  const [parallels, sermons, commentaries, chapterData] = await Promise.all(
+    apiCalls,
+  );
 
   if (
     'statusCode' in parallels ||
     'statusCode' in sermons ||
     'statusCode' in commentaries ||
     'statusCode' in chapterData
-
   ) {
     throw new Response('Oh no! Something went wrong!', {
       status: 500,
@@ -78,7 +77,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   // Add previous chapter API call if it exists
   let previousChapterDataPromise = null;
   if (chapterData.previousBookId && chapterData.previousChapterNumber) {
-    previousChapterDataPromise = fetchApi<BibleChapter>(`/bible/eng/BSB/${chapterData.previousBookId}/${chapterData.previousChapterNumber}`);
+    previousChapterDataPromise = fetchApi<BibleChapter>(
+      `/bible/eng/BSB/${chapterData.previousBookId}/${chapterData.previousChapterNumber}`,
+    );
   }
 
   // Fetch previous and next chapter data if needed
@@ -95,8 +96,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
-  const reference = `${OsisToBookName[data?.parallels.book as keyof typeof OsisToBookName]
-    } ${data?.parallels.chapter}:${data?.parallels.verse}`;
+  const reference = `${
+    OsisToBookName[data?.parallels.book as keyof typeof OsisToBookName]
+  } ${data?.parallels.chapter}:${data?.parallels.verse}`;
   const verse =
     data?.parallels.verses.find((v) => v.translationId === 'BSB')?.text || '';
 
@@ -111,30 +113,36 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 };
 
 export default function Index() {
-  const { parallels, sermons, commentaries, chapterData, previousChapterData } = useLoaderData<typeof loader>();
+  const { parallels, sermons, commentaries, chapterData, previousChapterData } =
+    useLoaderData<typeof loader>();
   const verseContext = JSON.parse(parallels.contextJson) as ChapterData;
 
   const [activeTab, setActiveTab] = useState(Tabs.Scripture);
   const uniqueVerseKey = `${parallels.book}-${parallels.chapter}-${parallels.verse}`;
 
   const navigation = calculateVerseNavigation(
-      parallels.book,
-      parallels.chapter,
-      parallels.verse,
-      chapterData,
-      previousChapterData,
+    parallels.book,
+    parallels.chapter,
+    parallels.verse,
+    chapterData,
+    previousChapterData,
   );
 
-  const reference = `${OsisToBookName[parallels.book as keyof typeof OsisToBookName]
+  const reference = `${
+    OsisToBookName[parallels.book as keyof typeof OsisToBookName]
   } ${parallels.chapter}:${parallels.verse}`;
 
   // Build previous verse URL
-  const previousUrl = navigation.previousBook && navigation.previousChapter && navigation.previousVerse
+  const previousUrl =
+    navigation.previousBook &&
+    navigation.previousChapter &&
+    navigation.previousVerse
       ? `/bible/parallel/${navigation.previousBook}/${navigation.previousChapter}/${navigation.previousVerse}`
       : '#';
 
   // Build next verse URL
-  const nextUrl = navigation.nextBook && navigation.nextChapter && navigation.nextVerse
+  const nextUrl =
+    navigation.nextBook && navigation.nextChapter && navigation.nextVerse
       ? `/bible/parallel/${navigation.nextBook}/${navigation.nextChapter}/${navigation.nextVerse}`
       : '#';
 
@@ -142,15 +150,14 @@ export default function Index() {
     <SiPage>
       {/* Desktop View */}
       <div className="w-full hidden lg:block pb-8">
-
         <VerseNavigator
-            book={parallels.book}
-            chapter={parallels.chapter}
-            verse={parallels.verse}
-            previousUrl={previousUrl}
-            nextUrl={nextUrl}
-            showPrevious={!navigation.isFirstVerseOfGenesis}
-            showNext={!navigation.isLastVerseOfRevelation}
+          book={parallels.book}
+          chapter={parallels.chapter}
+          verse={parallels.verse}
+          previousUrl={previousUrl}
+          nextUrl={nextUrl}
+          showPrevious={!navigation.isFirstVerseOfGenesis}
+          showNext={!navigation.isLastVerseOfRevelation}
         />
 
         <div className="grid grid-cols-3">
@@ -211,13 +218,13 @@ export default function Index() {
       {/* Mobile View */}
       <div className="lg:hidden block">
         <VerseNavigator
-            book={parallels.book}
-            chapter={parallels.chapter}
-            verse={parallels.verse}
-            previousUrl={previousUrl}
-            nextUrl={nextUrl}
-            showPrevious={!navigation.isFirstVerseOfGenesis}
-            showNext={!navigation.isLastVerseOfRevelation}
+          book={parallels.book}
+          chapter={parallels.chapter}
+          verse={parallels.verse}
+          previousUrl={previousUrl}
+          nextUrl={nextUrl}
+          showPrevious={!navigation.isFirstVerseOfGenesis}
+          showNext={!navigation.isLastVerseOfRevelation}
         />
 
         <VerseContext
