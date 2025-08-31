@@ -68,7 +68,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
   const reference = `${
     OsisToBookName[data?.chapter.bookId as keyof typeof OsisToBookName]
-  } ${data?.chapter.number}`;
+  } ${data?.chapter.number} (${data?.translation})`;
   const description = `Read ${reference} and explore sermons and commentary related to this chapter on SermonIndex.`;
   const url = `https://sermonindex.net/bible/${params.translation}/${params.book}/${params.chapter}`;
 
