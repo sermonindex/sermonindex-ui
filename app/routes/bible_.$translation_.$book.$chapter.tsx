@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { IconContext } from 'react-icons';
 import {
@@ -62,7 +62,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { chapter: chapterContent, sermons, translation, commentaries };
+  return json(
+    { chapter: chapterContent, sermons, translation, commentaries },
+    {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {

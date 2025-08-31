@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { IconContext } from 'react-icons';
 import {
   FaRegArrowAltCircleLeft,
@@ -25,7 +25,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { commentary };
+  return json(
+    { commentary },
+    {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {

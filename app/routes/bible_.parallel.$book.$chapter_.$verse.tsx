@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, Link, MetaFunction, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { ChapterData } from '~/api/bible.types';
 import {
@@ -25,12 +25,12 @@ import {
 import { OsisToBookName } from '~/common/bible-constants';
 import { formatNumber } from '~/common/format-number';
 import { getMetaTags } from '~/common/get-meta-tags';
+import { calculateVerseNavigation } from '~/common/verse-navigation';
+import { VerseNavigator } from '~/components/bible-verse-navigator';
 import { BibleVerseParallel } from '~/components/bible-verse-parallel';
 import { CommentaryByVerseTabbed } from '~/components/commentary-verse';
 import { AuthorImage } from '~/components/image-author';
 import { SiSection } from '~/components/section';
-import { calculateVerseNavigation } from '~/common/verse-navigation';
-import { VerseNavigator } from '~/components/bible-verse-navigator';
 
 enum Tabs {
   Scripture = 'Scripture',
@@ -92,7 +92,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
   }
 
-  return { parallels, sermons, commentaries, chapterData, previousChapterData };
+  return json(
+    { parallels, sermons, commentaries, chapterData, previousChapterData },
+    { headers: { 'Cache-Control': 'public, max-age=86400' } },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {

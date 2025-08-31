@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { MetaFunction, Outlet, useLoaderData } from '@remix-run/react';
+import { json, MetaFunction, Outlet, useLoaderData } from '@remix-run/react';
 import { Book } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { getMetaTags } from '~/common/get-meta-tags';
@@ -15,7 +15,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return { book };
+  return json(
+    { book },
+    {
+      headers: { 'Cache-Control': 'public, max-age=86400' },
+    },
+  );
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {

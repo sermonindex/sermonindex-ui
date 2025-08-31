@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { MetaFunction, useLoaderData } from '@remix-run/react';
+import { json, MetaFunction, useLoaderData } from '@remix-run/react';
 import { BibleBook, BibleTranslation } from '~/api/interfaces';
 import { fetchApi } from '~/api/sdk';
 import { isOldTestament } from '~/common/get-bible-book-id.fn';
@@ -18,7 +18,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
 
-  return bible;
+  return json(bible, {
+    headers: { 'Cache-Control': 'public, max-age=86400' },
+  });
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
