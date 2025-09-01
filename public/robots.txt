@@ -1,4 +1,6 @@
-User-agent: *
+User-Agent: *
 Allow: /
+Sitemap: https://www.sermonindex.net/6450867_index.xml
 
-Sitemap: https://sermonindex.net/sitemap.xml
+
+Sitemap: https://www.sermonindex.net/6450867_index.xml
