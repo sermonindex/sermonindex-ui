@@ -1,6 +1,3 @@
 User-Agent: *
 Allow: /
 Sitemap: https://www.sermonindex.net/6450867_index.xml
-
-
-Sitemap: https://www.sermonindex.net/6450867_index.xml
