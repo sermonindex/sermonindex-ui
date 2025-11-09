@@ -13,13 +13,15 @@ export function getMetaTags(tags: MetaTags) {
 
   const metaTags = [
     { title: tags.title },
-    {
-      name: 'charset',
-      content: 'utf-8',
-    },
+    { charSet: 'utf-8' },
     {
       name: 'viewport',
-      content: 'width=device-width,initial-scale-1',
+      content: 'width=device-width, initial-scale=1',
+    },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: tags.url,
     },
     {
       name: 'description',
