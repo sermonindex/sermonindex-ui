@@ -39,6 +39,7 @@ const newTestamentBooks = new Set<string>([
   'Mark',
   'Luke',
   'John',
+  'Yochanan', // John in WMB
   'Acts',
   'Romans',
   '1 Corinthians',
@@ -55,12 +56,17 @@ const newTestamentBooks = new Set<string>([
   'Philemon',
   'Hebrews',
   'James',
+  'Jacob', // James in WMB
   '1 Peter',
   '2 Peter',
   '1 John',
+  '1 Yochanan', // 1 John in WMB
   '2 John',
+  '2 Yochanan', // 2 John in WMB
   '3 John',
+  '3 Yochanan', // 3 John in WMB
   'Jude',
+  'Judah', // Jude in WMB
   'Revelation',
 ]);
 
