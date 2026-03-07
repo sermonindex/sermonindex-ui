@@ -1,78 +1,31 @@
-# Copying Permissions
+# Copying Permission
 
-Since the inception of SermonIndex to goal of the ministry has been to freely distribute the sermons to as many people as possible. _"Give as freely as you have received!"_ (Matthew 10:8 NLT)
+For more than twenty-two years, SermonIndex has been entrusted with a sacred privilege. Thousands of
+pastors, missionaries, evangelists, and ministry leaders from around the world have entrusted us
+with their messages so that they might continue to speak to future generations.
 
-Paul the Apostle gives the example to us of freely sharing the gospel without cost: _"What is my reward then? That when I preach the gospel, I may present the gospel of Christ without charge."_ (1 Corinthians 9:18 NKJV)
+We do not see these sermons as mere recordings or resources. They are testimonies of God's work
+through faithful servants who preached Christ and called the Church to repentance, holiness, and
+revival. To steward these messages is a solemn responsibility that we undertake with gratitude and
+reverence before the Lord. (2 Timothy 1:14, 1 Corinthians 4:1–2)
 
-:::card-start
+It has been our prayer from the beginning that these sermons would continue to strengthen believers,
+awaken hearts, and stir a deeper love for Christ in generations yet to come. We carry this
+responsibility in the fear of the Lord, recognizing that the gospel we handle is holy and precious.
 
-![C.H. Spurgeon](https://sermonindex3.b-cdn.net/pdf/chspurgeon.png)
+## Freely Received, Freely Given
 
-:::card-middle
+From its earliest days, SermonIndex has carried the desire that these messages be freely shared for
+the glory of God and the strengthening of His Church.
 
-> In the 19th century, C.H. Spurgeon said: "The Gospel is not to be bought or sold. I cannot bear to hear of a man who puts a price upon sermons or prayers." and “We do not serve for pay; we feed the flock of God not for filthy lucre, but of a ready mind. It is detestable that men should teach in order to earn money by it... God save us from such degradation!”
+George Fox a 17th century minister challenged the body of Christ in his day saying, "Christ
+commanded His ministers to give freely, as they had received freely." and "The Gospel of Christ is
+not to be sold for money, but to be declared freely. He that preaches for money has his reward, but
+not from Christ."
 
-
-:::card-end
-
-:::card-start
-
-![George Fox](https://sermonindex3.b-cdn.net/pdf/georgefox.png)
-
-:::card-middle
-
-> George Fox a 17th century minister challenged the body of Christ in his day saying, "Christ
-commanded His ministers to give freely, as they had received freely." and "The Gospel of Christ is not to be sold for money, but to be declared freely. He that preaches for money has his reward, but not from Christ."
-
-
-:::card-end
-
-## Copying Permission Statement
-
-All materials on SermonIndex.net can be freely copied, distributed, re-shared for the spread of the
-gospel. Our personal admonition and desire is that the materials will not be bought or sold but
-freely shared as per Matthew 10:8.
-
-We have submitted the entire SermonIndex website, databases, code and content (whereas applicable) into the public domain
-[CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) The rights holder has waived
-all copyright so that it may be used without hindrance.
-
-If otherwise noted at the bottom of this page you can:
-
-* Copy — Share and distribute the resource in whole or in part
-* Modify — Improve or adapt the resource
-* Translate — Make the resource available in a new language
-
-Sermons can be re-played in public settings as well as re-uploaded to other websites. It is
-recommended that you cite SermonIndex.net as the source where it seems reasonable but that is not
-necessary.
-
-All sermons can be translated in any foreign language and re-distributed freely as per the above
-statements. Our recommendation if you want to quote statements from SermonIndex in a published sold
-book that you cite the reference as per below.
-
-## Citing SermonIndex.net
-
-In order to help those of you who would like to reference our articles in a book, blog or academic
-setting, appropriate citation formats using MLA and APA can be found below. We are using the sermon
-on "Unity that brings revival by A.W. Tozer" as an example.
-
-* MLA — "Unity that brings revival by A.W. Tozer." SermonIndex.net.
-  https://www.sermonindex.net/sermons/62b509fd-2df5-43fc-a16b-26db7a8d8256.
-* APA — "Unity that brings revival by A.W. Tozer." (n.d.). Retrieved [insert date of access formatted:
-  February 15, 2024], from https://www.sermonindex.net/sermons/62b509fd-2df5-43fc-a16b-26db7a8d8256.
-* Chicago Style — "Unity that brings revival by A.W. Tozer." SermonIndex.net, accessed February 15,
-  2024, [https://www.sermonindex.net/sermons/62b509fd-2df5-43fc-a16b-26db7a8d8256]
-
-## Downloading Sermon / Bible Content in Bulk
-
-We will be providing ways soon to download all sermons, bibles, content and databases in bulk form as per our license and distribution goals. The Holy Scriptures and expounded texts upon it should never be copyright. 
-
-## Notions of Content That Hold Different Licensing
-
-If you are a copyright holder of any content and do not wish for the sermon content to be distributed in the above manner please let us know at: sermonindex@gmail.com
-
-_"Let the one who is thirsty come, and the one who desires the water of life drink freely."_ - Revelation 22:17 (BSB)
+For this reason, the sermons, recordings, and materials hosted on SermonIndex are made available
+without cost so they can be used to bless others. Our desire is simply that these messages would
+continue to spread the knowledge of Christ throughout the world.
 
 :::card-start
 
@@ -80,10 +33,46 @@ _"Let the one who is thirsty come, and the one who desires the water of life dri
 
 :::card-middle
 
-> C.H. Spurgeon in the 19th century, again said: "We give freely, because we have received freely. It would be vile to charge for the Bread of Life." He also said: “Shame on the man who can preach only if he is paid for it. He serves not the Master, but himself. Such men degrade the pulpit and hinder the Gospel.”
-
+> In the 19th century, C.H. Spurgeon said: "The Gospel is not to be bought or sold. I cannot bear to
+> hear of a man who puts a price upon sermons or prayers." and "We do not serve for pay; we feed the
+> flock of God not for filthy lucre, but of a ready mind. It is detestable that men should teach in
+> order to earn money by it... God save us from such degradation!"
 
 :::card-end
+
+## For Personal and Ministry Use
+
+All materials on SermonIndex are freely available for personal edification and for the work of
+discipleship and evangelism. These messages may be shared with others, played in churches, homes,
+Bible studies, and ministry gatherings, and used in teaching and other ministry settings. Online
+sharing or translation into other languages may also be undertaken where it serves the purpose of
+personal ministry, missionary outreach, or the edification of believers, and is done in a careful
+and respectful manner that honors the original message.
+
+Our desire is that these messages remain freely given and not used for commercial gain, in keeping
+with the words of our Lord: “Freely you have received; freely give” (Matthew 10:8). It brings us
+great joy whenever these sermons are used to encourage believers, strengthen the Church, and lead
+many into a deeper devotion to Jesus Christ.
+
+## Guarding Against Commercial Use
+
+While these materials are freely available for ministry purposes, they are not intended to be bought
+or sold for commercial gain.
+
+The sermons and recordings hosted on SermonIndex represent the lives and ministries of many faithful
+servants of God. We desire to honor both their legacy and the sacred message they preached by
+ensuring these materials remain freely available to all.
+
+For this reason, we ask that the materials not be packaged, sold, or used in commercial products or
+profit-driven ventures. Our hope is that the messages entrusted to us will always remain freely
+accessible to the Body of Christ, without financial barriers.
+
+## Our Prayer
+
+May the Lord, in His mercy, use these sermons to awaken the hearts of many, to strengthen His Church
+in holiness, and to proclaim the glory of Jesus Christ throughout the earth. And if through these
+messages the gospel continues to pass from generation to generation, we give thanks to God, who has
+entrusted us with this solemn and sacred stewardship.
 
 :::card-start
 
@@ -91,7 +80,9 @@ _"Let the one who is thirsty come, and the one who desires the water of life dri
 
 :::card-middle
 
-> Augustine in the 4th century said: "The Gospel is not for sale. I do not sell the truth I teach." and "Do not make a business out of the Word of God.", “What was freely given to the apostles ought to be freely given by their successors.”
+> Augustine in the 4th century said: "The Gospel is not for sale. I do not sell the truth I teach."
+> and "Do not make a business out of the Word of God.", “What was freely given to the apostles ought
+> to be freely given by their successors.”
 
 :::card-end
 
@@ -101,9 +92,8 @@ _"Let the one who is thirsty come, and the one who desires the water of life dri
 
 :::card-middle
 
-> Cyprian of Carthage in the 3rd century said: "That which is freely given by God must not be sold, and the grace of the Lord must be administered without price." and "He who traffics in the priesthood, and makes merchandise of the laying on of hands, is not a bishop but a blasphemer."
+> Cyprian of Carthage in the 3rd century said: "That which is freely given by God must not be sold,
+> and the grace of the Lord must be administered without price." and "He who traffics in the
+> priesthood, and makes merchandise of the laying on of hands, is not a bishop but a blasphemer."
 
 :::card-end
-
-
-We have sought for over 20 years to emulate this and give the gospel freely.
