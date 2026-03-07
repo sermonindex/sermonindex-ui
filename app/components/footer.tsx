@@ -251,10 +251,7 @@ export const Footer = () => {
             </div>
           </div>
           <p className="text-si-tan text-sm py-4 text-center">
-            {Math.max(new Date().getFullYear(), 2024)} SermonIndex |{' '}
-            <a href="/md/copying-permissions">
-              public domain CC0 1.0 Universal
-            </a>
+            © {Math.max(new Date().getFullYear(), 2024)} SermonIndex
           </p>
         </div>
       </div>
